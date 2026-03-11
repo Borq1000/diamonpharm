@@ -26,6 +26,9 @@ image/cache/
 
 # Скриншоты (временные)
 screenshots/
+/*.png
+/*.zip
+/*.tar.gz
 
 # IDE
 nbproject/
