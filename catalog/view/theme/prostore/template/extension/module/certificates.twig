@@ -1,0 +1,451 @@
+{% if certificates %}
+<div class="certificates-gallery premium-certificates">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md">
+				<span class="h2 products-featured__title">{{ heading_title }}</span>
+			</div>
+		</div>
+		<div class="certificates-gallery__grid" id="certificates-container">
+			{% for certificate in certificates %}
+			<div class="certificate-item" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+				<div class="certificate-item__wrapper">
+					<div class="certificate-item__inner">
+						<div class="certificate-item__image">
+							<img src="{{ certificate.thumb }}" alt="{{ certificate.alt }}" loading="lazy">
+							<div class="certificate-item__overlay">
+								<button type="button" class="certificate-item__zoom" data-popup="{{ certificate.popup }}" data-title="{{ certificate.title }}" data-description="{{ certificate.description }}">
+									<svg class="icon-zoom" width="28" height="28" viewBox="0 0 24 24" fill="none">
+										<path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3S3 5.91 3 9.5S5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14Z" fill="currentColor"/>
+									</svg>
+								</button>
+							</div>
+						</div>
+						{% if certificate.title %}
+						<h3 class="products__item-title">{{ certificate.title }}</h3>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		
+		{% if show_more %}
+		<div class="certificates-gallery__load-more">
+			<button type="button" class="ui-btn ui-btn--primary show-more" id="load-more-certificates" 
+				data-module-id="{{ module_id }}" 
+				data-offset="{{ loaded_certificates }}" 
+				data-per-page="{{ per_page }}">
+				<span class="btn-load-more__text">{{ text_load_more }}</span>
+				<svg class="btn-load-more__spinner" width="20" height="20" viewBox="0 0 24 24" fill="none">
+					<path d="M12 2V6M12 18V22M4.93 4.93L7.76 7.76M16.24 16.24L19.07 19.07M2 12H6M18 12H22M4.93 19.07L7.76 16.24M16.24 7.76L19.07 4.93" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+			</button>
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+<!-- Modal для просмотра сертификатов -->
+<div id="certificate-modal" class="certificate-modal" style="display: none;">
+	<div class="certificate-modal__backdrop">
+		<div class="certificate-modal__wrapper">
+			<img id="modal-certificate-image" src="" alt="">
+			<button type="button" class="certificate-modal__close">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+					<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+			</button>
+			<h3 id="modal-certificate-title"></h3>
+		</div>
+	</div>
+</div>
+
+<style>
+.premium-certificates {
+	margin: 4rem 0;
+	position: relative;
+}
+
+.certificates-gallery__grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 1.5rem;
+	margin-top: 2rem;
+	margin-bottom: 3rem;
+}
+
+.certificate-item {
+	position: relative;
+	height: 100%;
+}
+
+.certificate-item__wrapper {
+	height: 100%;
+	background: transparent;
+	overflow: hidden;
+	transition: all 0.3s ease;
+}
+
+.certificate-item:hover .certificate-item__wrapper {
+	transform: translateY(-5px);
+}
+
+.certificate-item__inner {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.certificate-item__image {
+	position: relative;
+	width: 100%;
+	height: 0;
+	padding-bottom: 142.85%; /* 400/280 = 1.4285 для соотношения сторон */
+	overflow: hidden;
+	background: #ffffff;
+	border: 1px solid rgba(0,0,0,0.08);
+	border-radius: 8px;
+}
+
+.certificate-item__image img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: center;
+	transition: all 0.4s ease;
+}
+
+.certificate-item:hover .certificate-item__image img {
+	transform: scale(1.05);
+}
+
+.certificate-item__overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.85);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.certificate-item:hover .certificate-item__overlay {
+	opacity: 1;
+}
+
+.certificate-item__zoom {
+	background: #fff;
+	border: none;
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #548267;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.certificate-item__zoom:hover {
+	transform: scale(1.1);
+	box-shadow: 0 6px 30px rgba(0,0,0,0.3);
+}
+
+/* Дополнительный отступ для заголовков сертификатов */
+.certificate-item .products__item-title {
+	padding-top: 1rem;
+	margin-bottom: 0;
+	text-align: center;
+}
+
+/* Load More Button */
+.certificates-gallery__load-more {
+	text-align: center;
+	margin-top: 4rem;
+}
+
+/* Дополнительные стили для кнопки */
+.ui-btn.show-more {
+	margin-top: 2rem;
+}
+
+.btn-load-more__spinner {
+	display: none;
+	animation: spin 1s linear infinite;
+}
+
+.ui-btn.loading .btn-load-more__spinner {
+	display: inline-block;
+}
+
+@keyframes spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+/* Modal styles */
+.certificate-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10000;
+	animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+.certificate-modal__backdrop {
+	background: rgba(0,0,0,0.9);
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 40px;
+}
+
+.certificate-modal__wrapper {
+	position: relative;
+	max-width: 80vw;
+	max-height: 90vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.certificate-modal__wrapper img {
+	max-width: 100%;
+	max-height: 80vh;
+	object-fit: contain;
+	display: block;
+}
+
+.certificate-modal__close {
+	position: absolute;
+	top: -30px;
+	right: -30px;
+	background: #000;
+	color: #fff;
+	border: none;
+	border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.certificate-modal__close:hover {
+	background: #333;
+	transform: scale(1.1);
+}
+
+#modal-certificate-title {
+	color: #fff;
+	margin-top: 20px;
+	font-size: 1.2rem;
+	font-weight: 400;
+	text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+	.certificates-gallery__grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 992px) {
+	.certificates-gallery__grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.5rem;
+	}
+}
+
+@media (max-width: 992px) {
+	.certificates-gallery__grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.certificates-gallery__grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 576px) {
+	.certificates-gallery__grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+	}
+	
+	.certificates-gallery__title {
+		font-size: 1.8rem;
+	}
+	
+	.certificate-modal__backdrop {
+		padding: 20px;
+	}
+	
+	.certificate-modal__close {
+		top: -20px;
+		right: -20px;
+		width: 28px;
+		height: 28px;
+	}
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	// Load More functionality
+	const loadMoreBtn = document.getElementById('load-more-certificates');
+	const certificatesContainer = document.getElementById('certificates-container');
+	
+	if (loadMoreBtn) {
+		loadMoreBtn.addEventListener('click', function() {
+			const moduleId = this.dataset.moduleId;
+			const offset = parseInt(this.dataset.offset);
+			const perPage = parseInt(this.dataset.perPage);
+			
+			// Show loading state
+			this.classList.add('loading');
+			this.disabled = true;
+			
+			// AJAX request
+			fetch('index.php?route=extension/module/certificates/loadMore', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: new URLSearchParams({
+					module_id: moduleId,
+					offset: offset,
+					per_page: perPage
+				})
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success && data.success.length > 0) {
+					// Add new certificates with animation
+					data.success.forEach((certificate, index) => {
+						const certificateItem = document.createElement('div');
+						certificateItem.className = 'certificate-item';
+						certificateItem.setAttribute('data-aos', 'fade-up');
+						certificateItem.setAttribute('data-aos-delay', index * 100);
+						certificateItem.innerHTML = `
+							<div class="certificate-item__wrapper">
+								<div class="certificate-item__inner">
+									<div class="certificate-item__image">
+										<img src="${certificate.thumb}" alt="${certificate.alt}" loading="lazy">
+										<div class="certificate-item__overlay">
+											<button type="button" class="certificate-item__zoom" data-popup="${certificate.popup}" data-title="${certificate.title}" data-description="${certificate.description}">
+												<svg class="icon-zoom" width="28" height="28" viewBox="0 0 24 24" fill="none">
+													<path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3S3 5.91 3 9.5S5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14Z" fill="currentColor"/>
+												</svg>
+											</button>
+										</div>
+									</div>
+									${certificate.title ? `<h3 class="products__item-title">${certificate.title}</h3>` : ''}
+								</div>
+							</div>
+						`;
+						certificatesContainer.appendChild(certificateItem);
+					});
+					
+					// Refresh AOS animations
+					if (typeof AOS !== 'undefined') {
+						AOS.refreshHard();
+					}
+					
+					// Update offset
+					this.dataset.offset = offset + data.success.length;
+					
+					// Hide button if no more items
+					if (!data.hasMore) {
+						this.style.display = 'none';
+					}
+				} else {
+					this.style.display = 'none';
+				}
+			})
+			.catch(error => {
+				console.error('Error loading certificates:', error);
+			})
+			.finally(() => {
+				this.classList.remove('loading');
+				this.disabled = false;
+			});
+		});
+	}
+	
+	// Modal functionality
+	const modal = document.getElementById('certificate-modal');
+	const modalImage = document.getElementById('modal-certificate-image');
+	const modalTitle = document.getElementById('modal-certificate-title');
+	const closeBtn = modal.querySelector('.certificate-modal__close');
+	
+	// Open modal
+	document.addEventListener('click', function(e) {
+		if (e.target.closest('.certificate-item__zoom')) {
+			e.preventDefault();
+			const zoomBtn = e.target.closest('.certificate-item__zoom');
+			const popup = zoomBtn.dataset.popup;
+			const title = zoomBtn.dataset.title;
+			
+			modalImage.src = popup;
+			modalTitle.textContent = title || '';
+			
+			// Hide title if empty
+			if (!title) {
+				modalTitle.style.display = 'none';
+			} else {
+				modalTitle.style.display = 'block';
+			}
+			
+			modal.style.display = 'block';
+			document.body.style.overflow = 'hidden';
+		}
+	});
+	
+	// Close modal
+	function closeModal() {
+		modal.style.display = 'none';
+		document.body.style.overflow = '';
+	}
+	
+	closeBtn.addEventListener('click', closeModal);
+	
+	modal.addEventListener('click', function(e) {
+		if (e.target === modal || e.target.classList.contains('certificate-modal__backdrop')) {
+			closeModal();
+		}
+	});
+	
+	// Close on ESC key
+	document.addEventListener('keydown', function(e) {
+		if (e.key === 'Escape' && modal.style.display === 'block') {
+			closeModal();
+		}
+	});
+});
+</script>
+{% endif %}

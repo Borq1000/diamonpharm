@@ -1,0 +1,178 @@
+/* General */
+.sticker-catalog > div, .sticker-product > div {
+	background-repeat: no-repeat !important;
+}
+.sticker-catalog, .sticker-product {
+	position: absolute;
+	top: 5px;
+	z-index: 99;
+	font-family: 'Open Sans', sans-serif;
+	text-align: center;
+	color: #fff;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+/* Star */
+.sticker-star > div {
+    overflow: hidden;
+	width: 70px;
+	height: 70px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+	font-size: 10px;
+	line-height: 12px;
+	transform: rotate(-27deg);
+}
+.sticker-star > div + div {
+	margin-top: 2px;
+}
+.sticker-star.sticker-left {
+	left: 20px;	
+}
+.sticker-star.sticker-right {
+	right: 20px;
+}
+.sticker-star > div > div {
+	position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+	width: 50px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.sticker-star .sticker-percent > div {
+	font-size: 20px;
+	line-height: 20px;
+}
+.sticker-star  .sticker-text-percent {
+	font-size: 18px;
+	line-height: 20px;
+}
+.sticker-star .sticker-special {
+	background: url('/image/catalog/stickers/star/special.png');
+}
+.sticker-star .sticker-new {
+	background: url('/image/catalog/stickers/star/new.png');
+}
+.sticker-star .sticker-featured {
+	background: url('/image/catalog/stickers/star/featured.png');
+}
+.sticker-star .sticker-bestseller {
+	background: url('/image/catalog/stickers/star/bestseller.png');
+}
+
+.sticker-stock.sticker-stock {
+	background: url('/image/catalog/stickers/star/stock.png');
+}
+/* Rectangle */
+.sticker-rectangle > div {
+	border-radius: 4px;
+	white-space: nowrap;
+    overflow: hidden;
+	min-width: 70px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+	font-size: 10px;
+	line-height: 17px;
+	background-repeat: repeat-x !important;
+}
+.sticker-rectangle > div + div {
+	margin-top: 2px;
+}
+.sticker-rectangle.sticker-left {
+	left: 20px;
+}
+.sticker-rectangle.sticker-right {
+	right: 20px;
+}
+.sticker-rectangle .sticker-new {
+	background: url('/image/catalog/stickers/rectangle/new.png');
+}
+.sticker-rectangle .sticker-special {
+	background: url('/image/catalog/stickers/rectangle/special.png');
+}
+.sticker-rectangle .sticker-bestseller {
+	background: url('/image/catalog/stickers/rectangle/bestseller.png');
+}
+.sticker-rectangle .sticker-stock {
+	background: url('/image/catalog/stickers/rectangle/stock.png');
+}
+/* Ribbon */
+.sticker-ribbon > div {
+	white-space: nowrap;
+    overflow: hidden;
+	width: 120px;
+	height: 40px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+	font-size: 11px;
+	line-height: 18px;
+	padding: 3px 0 0 0;
+}
+.sticker-ribbon > div + div {
+	margin-top: 1px;
+}
+.sticker-ribbon.sticker-left {
+	left: 4px;
+}
+.sticker-ribbon.sticker-right {
+	right: 4px;
+	transform: scale(-1, 1);
+}
+.sticker-ribbon.sticker-right > div > div {
+	transform: scale(-1, 1);
+}
+.sticker-ribbon .sticker-new {
+	background: url('/image/catalog/stickers/ribbon/new.png');
+}
+.sticker-ribbon .sticker-special {
+	background: url('/image/catalog/stickers/ribbon/special.png');
+}
+.sticker-ribbon .sticker-bestseller {
+	background: url('/image/catalog/stickers/ribbon/bestseller.png');
+}
+.sticker-ribbon .sticker-stock {
+	background: url('/image/catalog/stickers/ribbon/stock.png');
+}
+/* Diagonal */
+.sticker-diagonal {
+	top: -7px;
+}
+.sticker-diagonal > div {
+	white-space: nowrap;
+    overflow: hidden;
+	width: 112px;
+	height: 112px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+	font-size: 12px;
+	line-height: 19px;
+	padding: 4px 0 0 0;
+}
+.sticker-diagonal.sticker-left {
+	left: 8px;
+}
+.sticker-diagonal.sticker-left div div {
+	width: 85px;
+	margin-top: 24px;
+	margin-left: -5px;
+    transform: rotate(-45deg);
+}
+.sticker-diagonal.sticker-right {
+	right: 8px;
+	transform: scale(-1, 1);
+}
+.sticker-diagonal.sticker-right div div {
+	width: 85px;
+	margin-top: 24px;
+	margin-left: -5px;
+    transform: scale(-1, 1) rotate(45deg);
+}
+.sticker-diagonal .sticker-new {
+	background: url('/image/catalog/stickers/diagonal/new.png');
+}
+.sticker-diagonal .sticker-special {
+	background: url('/image/catalog/stickers/diagonal/special.png');
+}
+.sticker-diagonal .sticker-bestseller {
+	background-image: url('/image/catalog/stickers/diagonal/bestseller.png');
+}
+.sticker-diagonal .sticker-stock {
+	background: url('/image/catalog/stickers/diagonal/stock.png');
+}

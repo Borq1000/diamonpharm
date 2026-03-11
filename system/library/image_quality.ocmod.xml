@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Увеличение качества изображений</name>
+    <code>image_quality_100</code>
+    <version>1.0.0</version>
+    <author>Diamond Pharm</author>
+    
+    <!-- Изменение качества сохранения изображений -->
+    <file path="system/library/image.php">
+        <operation>
+            <search><![CDATA[public function save($file, $quality = 90)]]></search>
+            <add position="replace"><![CDATA[public function save($file, $quality = 85)]]></add>
+        </operation>
+        
+        <operation>
+            <search><![CDATA[imagejpeg($this->image, $file, $quality);]]></search>
+            <add position="replace"><![CDATA[imagejpeg($this->image, $file, $quality);]]></add>
+        </operation>
+    </file>
+</modification>

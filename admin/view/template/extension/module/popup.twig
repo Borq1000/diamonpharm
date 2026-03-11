@@ -1,0 +1,109 @@
+{# Popup Module v1.0.0 #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="module_popup_status" id="input-status" class="form-control">
+                {% if module_popup_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-image">{{ entry_image }}</label>
+            <div class="col-sm-10">
+              <a href="" id="thumb-image" data-toggle="image" class="img-thumbnail">
+                <img src="{{ thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" />
+              </a>
+              <input type="hidden" name="module_popup_image" value="{{ module_popup_image }}" id="input-image" />
+              <span class="help-block">{{ help_image }}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-image-link">{{ entry_image_link }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_popup_image_link" value="{{ module_popup_image_link }}" placeholder="https://" id="input-image-link" class="form-control" />
+              <span class="help-block">{{ help_image_link }}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-form-title">{{ entry_form_title }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_popup_form_title" value="{{ module_popup_form_title }}" placeholder="{{ entry_form_title }}" id="input-form-title" class="form-control" />
+              <span class="help-block">{{ help_form_title }}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-delay">{{ entry_delay }}</label>
+            <div class="col-sm-10">
+              <input type="number" name="module_popup_delay" value="{{ module_popup_delay }}" id="input-delay" class="form-control" min="0" max="60" />
+              <span class="help-block">{{ help_delay }}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-hide-days">{{ entry_hide_days }}</label>
+            <div class="col-sm-10">
+              <input type="number" name="module_popup_hide_days" value="{{ module_popup_hide_days }}" id="input-hide-days" class="form-control" min="1" max="365" />
+              <span class="help-block">{{ help_hide_days }}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-button-text">{{ entry_button_text }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_popup_button_text" value="{{ module_popup_button_text }}" id="input-button-text" class="form-control" />
+              <span class="help-block">{{ help_button_text }}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-dev-mode">{{ entry_dev_mode }}</label>
+            <div class="col-sm-10">
+              <select name="module_popup_dev_mode" id="input-dev-mode" class="form-control">
+                {% if module_popup_dev_mode %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+              <span class="help-block">{{ help_dev_mode }}</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

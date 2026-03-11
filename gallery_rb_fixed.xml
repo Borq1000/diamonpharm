@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Gallery RB Fixed</name>
+  <code>gallery_rb_fixed</code>
+  <version>3.1.3</version>
+  <author>noti (fixed)</author>
+  <link>https://opencartforum.com/profile/672553-noti/</link>
+  <file path="catalog/model/setting/module.php">
+    <operation>
+      <search>
+        <![CDATA[
+          return json_decode($query->row['setting'], true);
+        ]]>
+      </search>
+      <add position="replace">
+        <![CDATA[
+          $settings = json_decode($query->row['setting'], true);
+          $settings['module_id'] = $module_id;
+          return $settings;
+        ]]>
+      </add>
+    </operation>
+  </file> 
+  <file path="catalog/controller/{blog/article,blog/category,product/category,product/compare,product/product,product/manufacturer,information/information,uni_blog/article,uni_blog/category,information/uni_news,information/uni_news_story,information/article,extension/module/prostore_blog}.php">
+    <operation>
+      <search>
+        <![CDATA[
+          $data['column_left'] = $this->load->controller('common/column_left');
+        ]]>
+      </search>
+      <add position="before">
+        <![CDATA[
+          // Intagration of Gallery RB Start 
+          if(isset($data['description'])){
+            $find_gallery_rb = preg_match_all('/\[\s*gallery_rb\s*id\s*=\s*\s*\d{1,}\s*\]/', $data['description'], $gallery_rb_matches); // Find [gallery_rb id=""]
+            if($find_gallery_rb){
+              $this->load->model('setting/module');
+              
+              foreach($gallery_rb_matches[0] as $gallery_rb){
+                $find_gallery_rb_id = preg_match('/\d{1,}/', $gallery_rb, $gallery_rb_id_matches); //Find module ID
+                $custom_module_info = $this->model_setting_module->getModule($gallery_rb_id_matches[0]);
+                
+                if($custom_module_info && $custom_module_info['status']){
+                  $gallery_rb_html = $this->load->controller('extension/module/galleryrb', $custom_module_info);
+                  $data['description'] = str_replace($gallery_rb, $gallery_rb_html, $data['description']);
+                }
+              } 
+            }
+          }
+          // Intagration of Gallery RB END
+        ]]>
+      </add>
+    </operation>
+  </file> 
+  <file path="catalog/controller/product/{category,compare,manufacturer,search,special,product}.php">
+    <operation>
+      <search>
+        <![CDATA[
+          $result['description']
+        ]]>
+      </search>
+      <add position="replace">
+        <![CDATA[
+          preg_replace('/\[\s*gallery_rb\s*id\s*=\s*\s*\d{1,}\s*\]/', '', $result['description'])
+        ]]>
+      </add>
+    </operation>
+  </file> 
+  <file path="catalog/controller/{extension/module,module}/{bestseller,featured,latest,special}.php">
+    <operation>
+      <search>
+        <![CDATA[
+          $result['description']
+        ]]>
+      </search>
+      <add position="replace">
+        <![CDATA[
+          preg_replace('/\[\s*gallery_rb\s*id\s*=\s*\s*\d{1,}\s*\]/', '', $result['description'])
+        ]]>
+      </add>
+    </operation>
+  </file> 
+  <file path="system/library/image.php">
+    <operation>
+      <search>
+        <![CDATA[			} elseif ($this->mime == 'image/jpeg') {
+				$this->image = imagecreatefromjpeg($file);
+			}]]>
+      </search>
+      <add position="replace">
+        <![CDATA[			} elseif ($this->mime == 'image/jpeg') {
+				$this->image = imagecreatefromjpeg($file);
+			} elseif ($this->mime == 'image/webp') {
+				if (function_exists('imagecreatefromwebp')) {
+					$this->image = imagecreatefromwebp($file);
+				}
+			}]]>
+      </add>
+    </operation>
+    <operation>
+      <search>
+        <![CDATA[		} elseif ($this->mime == 'image/jpeg') {
+			imagejpeg($this->image, $file, $quality);
+		}]]>
+      </search>
+      <add position="replace">
+        <![CDATA[		} elseif ($this->mime == 'image/jpeg') {
+			imagejpeg($this->image, $file, $quality);
+		} elseif ($this->mime == 'image/webp') {
+			if (function_exists('imagewebp')) {
+				imagewebp($this->image, $file, $quality);
+			}
+		}]]>
+      </add>
+    </operation>
+    <operation>
+      <search>
+        <![CDATA[          $this->image = imagecreatetruecolor($bottom_x - $top_x, $bottom_y - $top_y);]]>
+      </search>
+      <add position="after">
+        <![CDATA[
+          if ($this->mime == 'image/png') {
+            imagealphablending($this->image, false);
+            imagesavealpha($this->image, true);
+            $background = imagecolorallocatealpha($this->image, 255, 255, 255, 127);
+            imagecolortransparent($this->image, $background);
+          } elseif ($this->mime == 'image/webp') {
+            imagealphablending($this->image, false);
+            imagesavealpha($this->image, true);
+            $background = imagecolorallocatealpha($this->image, 255, 255, 255, 127);
+            imagecolortransparent($this->image, $background);
+          } else {
+            $background = imagecolorallocate($this->image, 255, 255, 255);
+          }
+        ]]>
+      </add>
+    </operation>
+  </file>  
+</modification>

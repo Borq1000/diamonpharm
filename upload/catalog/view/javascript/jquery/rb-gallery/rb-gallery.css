@@ -1,0 +1,701 @@
+.rb-gallery-list {
+  overflow: hidden;
+}
+.rb-gallery-item {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.rb-gallery-inner {
+  position: relative;
+}
+
+.rb-gallery-link {
+  outline: none !important;
+  text-decoration: none !important;
+  overflow: hidden;
+}
+
+.rb-gallery-img {
+  width: 100%;
+  box-sizing: border-box;
+  transition: 0.5s;
+}
+
+.rb-gallery-img-outer {
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.rb-gallery-img-outer.foto {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  border: 8px solid #fff;
+}
+
+.rb-gallery-item:hover .rb-gallery-img.anim-scale {
+  -moz-transform: scale(1.2); /* Для Firefox */
+  -ms-transform: scale(1.2); /* Для IE */
+  -webkit-transform: scale(1.2); /* Для Safari, Chrome, iOS */
+  -o-transform: scale(1.2); /* Для Opera */
+  transform: scale(1.2);
+}
+.rb-gallery-item:hover .rb-gallery-img.anim-opacity {
+  transform: none;
+  opacity: 0.7;
+}
+.rb-gallery-item:hover .rb-gallery-img.anim-grayscale {
+  transform: none;
+  -webkit-filter: grayscale(0.85);
+  filter: grayscale(0.85);
+}
+.rb-gallery-item:hover .rb-gallery-img.anim-sepia {
+  transform: none;
+  -webkit-filter: sepia(90%);
+  filter: sepia(90%);
+}
+.rb-gallery-item:hover .rb-gallery-img.anim-contrast {
+  transform: none;
+  -webkit-filter: contrast(100%);
+  filter: contrast(120%);
+}
+.rb-gallery .text-gallery {
+  color: #000;
+  line-height: 1;
+  text-align: left;
+      padding: 0 0 10px;
+    transition: 0.5s;
+}
+
+.rb-gallery-item:hover .text-gallery,
+.rb-gallery-inner.style-over .rb-gallery-link:hover+.text-gallery {
+  opacity: 1 !important;
+}
+
+.rb-gallery-inner.style-over .rb-gallery-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+}
+
+.rb-gallery-inner.style-over .text-gallery {
+  position: absolute;
+  padding: 20px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.rb-gallery .col-lg-1,
+.rb-gallery .col-lg-12,
+.rb-gallery .col-lg-2,
+.rb-gallery .col-lg-3,
+.rb-gallery .col-lg-4,
+.rb-gallery .col-lg-6 {
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+  box-sizing: border-box;
+}
+
+
+/* Magnific Popup Style ----------------*/
+
+.mfp-figure figure {
+  border-radius: 2px;
+  padding: 5px;
+  background: none;
+}
+
+.rb-gallery .mfp-image-holder .mfp-close,
+.rb-gallery .mfp-iframe-holder .mfp-close {
+  color: white;
+  right: -6px;
+  text-align: right;
+  padding-right: 6px;
+  width: 100%;
+}
+
+.rb-gallery .mfp-bottom-bar {
+  margin-top: -36px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  cursor: auto;
+}
+
+.rb-gallery .mfp-title {
+  text-align: left;
+  line-height: 18px;
+  color: #f3f3f3;
+  word-wrap: break-word;
+  padding-right: 36px;
+}
+
+.rb-gallery .mfp-counter {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #cccccc;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.rb-gallery .mfp-arrow:hover,
+.rb-gallery .mfp-arrow:focus {
+  opacity: 1;
+}
+
+.rb-gallery button.mfp-close,
+.rb-gallery button.mfp-arrow {
+  overflow: visible;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+  display: block;
+  outline: none;
+  padding: 0;
+  z-index: 1046;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.rb-gallery .mfp-arrow-right {
+  right: 0;
+}
+
+.rb-gallery .mfp-arrow {
+  position: absolute;
+  opacity: 0.65 !important;
+  margin: 0;
+  top: 50%;
+  margin-top: -55px;
+  padding: 0;
+  width: 90px;
+  height: 110px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+@media (min-width: 1200px) {
+  .rb-gallery .col-lg-2:nth-child(6n+1),
+  .rb-gallery .col-lg-3:nth-child(4n+1),
+  .rb-gallery .col-lg-4:nth-child(3n+1),
+  .rb-gallery .col-lg-6:nth-child(2n+1) {
+    clear: left;
+  }
+  .rb-gallery .col-lg-1 {
+    width: 8.33333333%;
+  }
+  .rb-gallery .col-lg-2 {
+    width: 16.66666667%;
+  }
+  .rb-gallery .col-lg-3 {
+    width: 25%;
+  }
+  .rb-gallery .col-lg-4 {
+    width: 33.33333333%;
+  }
+  .rb-gallery .col-lg-6 {
+    width: 50%;
+  }
+  .rb-gallery .col-lg-12 {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .rb-gallery .col-md-2:nth-child(6n+1),
+  .rb-gallery .col-md-3:nth-child(4n+1),
+  .rb-gallery .col-md-4:nth-child(3n+1),
+  .rb-gallery .col-md-6:nth-child(2n+1) {
+    clear: left;
+  }
+  .rb-gallery .col-md-1 {
+    width: 8.33333333%;
+  }
+  .rb-gallery .col-md-2 {
+    width: 16.66666667%;
+  }
+  .rb-gallery .col-md-3 {
+    width: 25%;
+  }
+  .rb-gallery .col-md-4 {
+    width: 33.33333333%;
+  }
+  .rb-gallery .col-md-6 {
+    width: 50%;
+  }
+  .rb-gallery .col-md-12 {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .rb-gallery .col-sm-2:nth-child(6n+1),
+  .rb-gallery .col-sm-3:nth-child(4n+1),
+  .rb-gallery .col-sm-4:nth-child(3n+1),
+  .rb-gallery .col-sm-6:nth-child(2n+1) {
+    clear: left;
+  }
+  .rb-gallery .col-sm-1 {
+    width: 8.33333333%;
+  }
+  .rb-gallery .col-sm-2 {
+    width: 16.6666%;
+  }
+  .rb-gallery .col-sm-3 {
+    width: 25%;
+  }
+  .rb-gallery .col-sm-4 {
+    width: 33.3333%;
+  }
+  .rb-gallery .col-sm-6 {
+    width: 50%;
+  }
+  .rb-gallery .col-sm-12 {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .rb-gallery .col-xs-2:nth-child(6n+1),
+  .rb-gallery .col-xs-3:nth-child(4n+1),
+  .rb-gallery .col-xs-4:nth-child(3n+1),
+  .rb-gallery .col-xs-6:nth-child(2n+1) {
+    clear: left;
+  }
+  .rb-gallery .col-xs-1 {
+    width: 8.33333333%;
+  }
+  .rb-gallery .col-xs-2 {
+    width: 16.6666%;
+  }
+  .rb-gallery .col-xs-3 {
+    width: 25%;
+  }
+  .rb-gallery .col-xs-4 {
+    width: 33.3333%;
+  }
+  .rb-gallery .col-xs-6 {
+    width: 50%;
+  }
+  .rb-gallery .col-xs-12 {
+    width: 100%;
+  }
+}
+
+
+/*-----------------------------------------------
+-------- Owl Carousel ---------------------------
+-----------------------------------------------*/
+
+
+/**
+ * Owl Carousel v2.3.3
+ * Copyright 2013-2018 David Deutsch
+ * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
+ */
+
+
+/*
+ *  Owl Carousel - Core
+ */
+
+.rb-gallery-owl-carousel {
+  display: none;
+  width: 100%;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  /* position relative and z-index fix webkit rendering fonts issue */
+  position: relative;
+  z-index: 1;
+}
+
+.rb-gallery-owl-carousel .owl-stage {
+  position: relative;
+  -ms-touch-action: pan-Y;
+  touch-action: manipulation;
+  -moz-backface-visibility: hidden;
+  /* fix firefox animation glitch */
+}
+
+.rb-gallery-owl-carousel .owl-stage:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+.rb-gallery-owl-carousel .owl-stage-outer {
+  position: relative;
+  overflow: hidden;
+  /* fix for flashing background */
+  -webkit-transform: translate3d(0px, 0px, 0px);
+}
+
+.rb-gallery-owl-carousel .owl-wrapper,
+.rb-gallery-owl-carousel .owl-item {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+}
+
+.rb-gallery-owl-carousel .owl-item {
+  position: relative;
+  min-height: 1px;
+  float: left;
+  -webkit-backface-visibility: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+.rb-gallery-owl-carousel .owl-item img {
+  display: block;
+  width: 100%;
+}
+
+.rb-gallery-owl-carousel .owl-nav.disabled,
+.rb-gallery-owl-carousel .owl-dots.disabled {
+  display: none;
+}
+
+.rb-gallery-owl-carousel .owl-nav .owl-prev,
+.rb-gallery-owl-carousel .owl-nav .owl-next,
+.rb-gallery-owl-carousel .owl-dot {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.rb-gallery-owl-carousel .owl-nav button.owl-prev,
+.rb-gallery-owl-carousel .owl-nav button.owl-next,
+.rb-gallery-owl-carousel button.owl-dot {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+}
+
+.rb-gallery-owl-carousel.owl-loaded {
+  display: block;
+}
+
+.rb-gallery-owl-carousel.owl-loading {
+  opacity: 0;
+  display: block;
+}
+
+.rb-gallery-owl-carousel.owl-hidden {
+  opacity: 0;
+}
+
+.rb-gallery-owl-carousel.owl-refresh .owl-item {
+  visibility: hidden;
+}
+
+.rb-gallery-owl-carousel.owl-drag .owl-item {
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.rb-gallery-owl-carousel.owl-grab {
+  cursor: move;
+  cursor: grab;
+}
+
+.rb-gallery-owl-carousel.owl-rtl {
+  direction: rtl;
+}
+
+.rb-gallery-owl-carousel.owl-rtl .owl-item {
+  float: right;
+}
+
+
+/* No Js */
+
+.no-js .rb-gallery-owl-carousel {
+  display: block;
+}
+
+
+/*
+ *  Owl Carousel - Animate Plugin
+ */
+
+.rb-gallery-owl-carousel .animated {
+  animation-duration: 1000ms;
+  animation-fill-mode: both;
+}
+
+.rb-gallery-owl-carousel .owl-animated-in {
+  z-index: 0;
+}
+
+.rb-gallery-owl-carousel .owl-animated-out {
+  z-index: 1;
+}
+
+.rb-gallery-owl-carousel .fadeOut {
+  animation-name: fadeOut;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+/*
+ * 	Owl Carousel - Auto Height Plugin
+ */
+
+.owl-height {
+  transition: height 500ms ease-in-out;
+}
+
+
+/*
+ * 	Owl Carousel - Lazy Load Plugin
+ */
+
+.rb-gallery-owl-carousel .owl-item .owl-lazy {
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.rb-gallery-owl-carousel .owl-item img.owl-lazy {
+  transform-style: preserve-3d;
+}
+
+
+/*
+ * 	Owl Carousel - Video Plugin
+ */
+
+.rb-gallery-owl-carousel .owl-video-wrapper {
+  position: relative;
+  height: 100%;
+  background: #000;
+}
+
+.rb-gallery-owl-carousel .owl-video-play-icon {
+  position: absolute;
+  height: 80px;
+  width: 80px;
+  left: 50%;
+  top: 50%;
+  margin-left: -40px;
+  margin-top: -40px;
+  background: url("owl.video.play.png") no-repeat;
+  cursor: pointer;
+  z-index: 1;
+  -webkit-backface-visibility: hidden;
+  transition: transform 100ms ease;
+}
+
+.rb-gallery-owl-carousel .owl-video-play-icon:hover {
+  -ms-transform: scale(1.3, 1.3);
+  transform: scale(1.3, 1.3);
+}
+
+.rb-gallery-owl-carousel .owl-video-playing .owl-video-tn,
+.rb-gallery-owl-carousel .owl-video-playing .owl-video-play-icon {
+  display: none;
+}
+
+.rb-gallery-owl-carousel .owl-video-tn {
+  opacity: 0;
+  height: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: opacity 400ms ease;
+}
+
+.rb-gallery-owl-carousel .owl-video-frame {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+}
+
+.rb-gallery-owl-carousel .owl-nav {
+  position: absolute;
+  top: 34%;
+  text-align: center;
+      width: 100%;
+}
+.rb-gallery-owl-carousel .owl-nav button.owl-prev,
+.rb-gallery-owl-carousel .owl-nav button.owl-next{
+  color: #2e2e2e;
+  outline: none;
+    font-size: 40px;
+    margin: 5px;
+    padding: 4px 15px 11px;
+    background: rgba(206, 206, 206, 0.36);
+    position: absolute;
+    cursor: pointer;
+    font-family: Arial;
+    opacity: 0;
+    transition: 0.5s;
+}
+.rb-gallery-owl-carousel .owl-nav button.owl-prev{
+  left: 0;
+}
+.rb-gallery-owl-carousel .owl-nav button.owl-next{
+  right: 0;
+}
+
+.rb-gallery-owl-carousel .owl-nav [class*='owl-']:hover {
+  background: rgba(106, 106, 106, 0.7);
+  color: #fff;
+  text-decoration: none;
+}
+.rb-gallery-owl-carousel:hover .owl-nav [class*='owl-'] {
+  opacity: 1;
+}
+.rb-gallery-owl-carousel .owl-nav .disabled {
+  opacity: 0.5 !important;
+}
+
+.rb-gallery-owl-carousel .owl-nav.disabled+.owl-dots {
+  margin-top: 10px;
+}
+
+.rb-gallery-owl-carousel .owl-dots {
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rb-gallery-owl-carousel .owl-dots .owl-dot {
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+}
+
+.rb-gallery-owl-carousel .owl-dots .owl-dot span {
+  width: 8px;
+  height: 8px;
+  margin: 5px;
+  background: #D6D6D6;
+  display: block;
+  -webkit-backface-visibility: visible;
+  transition: opacity 200ms ease;
+  border-radius: 30px;
+}
+
+.rb-gallery-owl-carousel .owl-dots .owl-dot.active span,
+.rb-gallery-owl-carousel .owl-dots .owl-dot:hover span {
+  background: #676767;
+}
+/* Magnific Popup Style ----------------*/
+.rb-gallery .mfp-figure figure {
+    border-radius: 2px;
+    padding: 5px;
+    background: none;
+}
+.rb-gallery .mfp-image-holder .mfp-close, 
+.rb-gallery .mfp-iframe-holder  .mfp-close {
+    color: white;
+    right: -6px;
+    text-align: right;
+    padding-right: 6px;
+    width: 100%;
+}
+.rb-gallery .mfp-bottom-bar {
+    margin-top: -36px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    cursor: auto;
+}
+.rb-gallery .mfp-title {
+    text-align: left;
+    line-height: 18px;
+    color: #f3f3f3;
+    word-wrap: break-word;
+    padding-right: 36px;
+}
+.rb-gallery .mfp-counter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #cccccc;
+    font-size: 12px;
+    line-height: 18px;
+}
+.rb-gallery .mfp-arrow:hover, 
+.rb-gallery .mfp-arrow:focus {
+    opacity: 1;
+}
+.rb-gallery button.mfp-close, 
+.rb-gallery button.mfp-arrow {
+    overflow: visible;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    display: block;
+    outline: none;
+    padding: 0;
+    z-index: 1046;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.rb-gallery .mfp-arrow-right {
+    right: 0;
+}
+.rb-gallery .mfp-arrow {
+    position: absolute;
+    opacity: 0.65 !important;
+    margin: 0;
+    top: 50%;
+    margin-top: -55px;
+    padding: 0;
+    width: 90px;
+    height: 110px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.rb-gallery .gallery-load-more{
+  background: #000;
+    color: #fff;
+    border: 0;
+        outline: none;
+    border-radius: 0;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    font-family: Verdana;
+    letter-spacing: 1px;
+    transition: 0.5s;
+    margin: 20px 0;
+}
+.rb-gallery .gallery-load-more:hover{
+  background: #6d6d6d;
+}

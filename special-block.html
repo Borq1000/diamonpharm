@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jufora Story Block</title>
+    <style>
+        /* Jufora Story Block Styles - Premium Design */
+        .jufora-story-block {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            padding: 80px 0;
+            background: transparent;
+        }
+
+        .jufora-story-container {
+            width: 100%;
+            padding: 0;
+        }
+
+        .jufora-story-row {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            background: #ffffff;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            min-height: 600px;
+        }
+
+        .jufora-story-image {
+            flex: 0 0 45%;
+            position: relative;
+            overflow: hidden;
+            background: #f0f4f7;
+        }
+
+        .jufora-story-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transform: scale(1.01);
+            transition: transform 0.8s ease;
+        }
+
+        .jufora-story-row:hover .jufora-story-image img {
+            transform: scale(1.05);
+        }
+
+        .jufora-story-content {
+            flex: 1;
+            padding: 50px 80px 40px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #f5f5f5;
+        }
+
+        .jufora-story-subtitle {
+            font-size: 12px;
+            font-weight: 500;
+            color: #548267;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 24px;
+            opacity: 0.8;
+        }
+
+        .jufora-story-title {
+            font-size: 36px;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 32px;
+            color: #0a0a0a;
+            letter-spacing: -0.02em;
+        }
+
+        .jufora-story-description {
+            font-size: 17px;
+            color: #555;
+            margin-bottom: 48px;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .jufora-story-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #000;
+            border: 2px solid #548267;
+            border-radius: 5px;
+            padding: 1rem 2rem;
+            font-size: 1.6rem;
+            line-height: 1.2;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            height: 5rem;
+            transition: border-color 0.25s, color 0.25s, background 0.25s;
+            margin-bottom: 60px;
+            width: auto;
+            align-self: flex-start;
+        }
+
+        .jufora-story-btn:hover {
+            background: #548267;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(84, 130, 103, 0.2);
+            text-decoration: none;
+        }
+
+
+        .jufora-story-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .jufora-story-stat {
+            text-align: left;
+            position: relative;
+        }
+
+        .jufora-story-stat::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 40px;
+            background: rgba(0,0,0,0.06);
+        }
+
+        .jufora-story-stat:last-child::after {
+            display: none;
+        }
+
+        .jufora-story-stats .jufora-story-stat .jufora-story-stat-number {
+            font-size: 42px;
+            font-weight: 800;
+            color: #116354 !important;
+            margin-bottom: 8px;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .jufora-story-stats .jufora-story-stat .jufora-story-stat-number sup {
+            font-size: 0.4em;
+            vertical-align: super;
+            font-weight: 600;
+        }
+
+        .jufora-story-stat-label {
+            font-size: 13px;
+            color: #777;
+            line-height: 1.5;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .jufora-story-content {
+                padding: 40px 60px 30px 60px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .jufora-story-row {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .jufora-story-image {
+                flex: none;
+                height: 350px;
+                width: 100%;
+            }
+
+            .jufora-story-content {
+                padding: 40px 40px 30px 40px;
+            }
+
+            .jufora-story-title {
+                font-size: 28px;
+            }
+
+            .jufora-story-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+
+            .jufora-story-stat::after {
+                display: none;
+            }
+
+            .jufora-story-stat:nth-child(odd)::after {
+                display: block;
+            }
+
+            .jufora-story-stat:last-child::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .jufora-story-content {
+                padding: 30px 24px;
+            }
+
+            .jufora-story-title {
+                font-size: 24px;
+            }
+
+            .jufora-story-stat-number {
+                font-size: 32px;
+            }
+
+            .jufora-story-btn {
+                padding: 16px 32px;
+                font-size: 14px;
+                align-self: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HTML код для вставки в HTML-модуль OpenCart -->
+<div class="jufora-story-block">
+    <div class="jufora-story-container">
+        <div class="jufora-story-row">
+            <div class="jufora-story-image">
+                <img src="/image/catalog/jufora-lab.jpg" alt="Jufora Laboratory">
+            </div>
+            <div class="jufora-story-content">
+                <div class="jufora-story-subtitle">JUFORA STORY</div>
+                <h2 class="jufora-story-title">JUFORA® — ПЕРВЫЙ СОБСТВЕННЫЙ БРЕНД НАУЧНО-ПРОИЗВОДСТВЕННОЙ КОМПАНИИ SIGMA LAB</h2>
+                <p class="jufora-story-description">
+                    Научно-производственное предприятие разрабатываем, протоколируем и запускаем в серийное производство изделия на основе биотехнологий. Собственная производственная платформа и ИНД лаборатория в ИЦ Сколково.
+                </p>
+                <a href="/contact" class="jufora-story-btn">
+                    Оставить запрос
+                </a>
+
+                <div class="jufora-story-stats">
+                    <div class="jufora-story-stat">
+                        <div class="jufora-story-stat-number">1000+</div>
+                        <div class="jufora-story-stat-label">Проведенных<br>исследований</div>
+                    </div>
+                    <div class="jufora-story-stat">
+                        <div class="jufora-story-stat-number">1.5млн</div>
+                        <div class="jufora-story-stat-label">Выпущенной<br>продукции в год</div>
+                    </div>
+                    <div class="jufora-story-stat">
+                        <div class="jufora-story-stat-number">&gt;10</div>
+                        <div class="jufora-story-stat-label">Стран, где<br>представлен<br>бренд</div>
+                    </div>
+                    <div class="jufora-story-stat">
+                        <div class="jufora-story-stat-number">&gt;1000м<sup>3</sup></div>
+                        <div class="jufora-story-stat-label">Чистых<br>помещений<br>класса ИСО 7</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

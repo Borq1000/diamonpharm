@@ -1,0 +1,60 @@
+{{ header }}{{ column_left }}
+	<div id="content">
+	   <div class="page-header">
+		<div class="container-fluid">
+		  <div class="pull-right">
+			<button type="submit" form="form" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+			<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+		  <h1>{{ heading_title }}</h1>
+		  <ul class="breadcrumb">
+			{% for breadcrumb in breadcrumbs %}
+			<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+			{% endfor %}
+		  </ul>
+		</div>
+	  </div>
+	  <div class="container-fluid">
+		{% if error_warning %}
+		<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+		{% endif %}
+		{% if success %}
+		<div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+		{% endif %}
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+			<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+		  </div>
+		  <div class="panel-body">
+		  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form" class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 text-right">{{ protection_txt }}</label>
+				<div class="col-sm-10">
+					<div class="input-group">
+						<div class="input-group-btn">
+							<button class="btn btn-default" type="button"><i class="fa fa-key"></i></button>
+						</div>
+						<input type="text" class="form-control" name="module_cheaper30_code" value="{% if module_cheaper30_code %}{{ module_cheaper30_code }}{% endif %}" size="30" placeholder="{{ text_protection_help }}" style="height: 37px !important;" />
+					</div>	
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-10">
+					<span style="font-weight: normal;">{{ help_protection }}</span>
+				</div>
+			</div>
+		  </form>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<style>
+		#form .input-group-btn > .btn {
+			height: 37px;
+		}
+	</style>
+  {{ footer }}

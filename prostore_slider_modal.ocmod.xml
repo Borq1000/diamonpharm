@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>ProStore Slider - Modal/Link Button</name>
+    <code>prostore_slider_modal_button</code>
+    <version>1.0.0</version>
+    <author>Diamond Pharm</author>
+    <link>https://diamondpharm.ru</link>
+    
+    <!-- Добавление подсказки в админку -->
+    <file path="admin/view/template/extension/module/prostore_main_slider.twig">
+        <operation>
+            <search><![CDATA[<td class="text-left">Ссылка</td>]]></search>
+            <add position="replace"><![CDATA[
+                <td class="text-left">
+                    Ссылка
+                    <span data-toggle="tooltip" title="Если ссылка указана - кнопка ведёт на неё. Если пустая - открывает форму заказа">
+                        <i class="fa fa-question-circle"></i>
+                    </span>
+                </td>
+            ]]></add>
+        </operation>
+    </file>
+    
+    <!-- Добавление описания в языковой файл -->
+    <file path="admin/language/ru-ru/extension/module/prostore_main_slider.php">
+        <operation>
+            <search><![CDATA[$_['entry_name']]]></search>
+            <add position="before"><![CDATA[
+$_['help_link_mode'] = 'Если ссылка указана - кнопка ведёт на неё. Если поле пустое - кнопка открывает модальное окно с формой заказа.';
+            ]]></add>
+        </operation>
+    </file>
+    
+    <!-- Модификация шаблона слайдера на фронте -->
+    <file path="catalog/view/theme/prostore/template/extension/module/prostore_main_slider.twig">
+        <operation>
+            <search><![CDATA[{% if (banner['btn_text']) %}]]></search>
+            <add position="replace"><![CDATA[
+                {% if banner['btn_text'] %}
+                    {% if banner['link'] and banner['link'] != '' %}
+                        {# Если ссылка указана - обычная кнопка-ссылка #}
+                        {% if img_link %}
+                            <p class="intro__item-price">{{ banner['btn_text'] }}</p>
+                        {% else %}
+                            <a href="{{ banner['link'] }}" class="intro__item-price">{{ banner['btn_text'] }}</a>
+                        {% endif %}
+                    {% else %}
+                        {# Если ссылка пустая - кнопка для модального окна #}
+                        <button onclick="ajaxCheaper('index.php?route=extension/module/cheaper30&prod_id={{ product_id|default('0') }}&module_id=70', this);" 
+                                data-module_id="70" 
+                                class="intro__item-price" 
+                                style="background: transparent; border: none; cursor: pointer; padding: 0; text-align: left;">
+                            {{ banner['btn_text'] }}
+                        </button>
+                    {% endif %}
+                {% endif %}
+            ]]></add>
+        </operation>
+        
+        <!-- Для правого слайдера -->
+        <operation>
+            <search><![CDATA[{% if (banner['btn_text']) %}<div class="intro__item-action">]]></search>
+            <add position="replace"><![CDATA[
+                {% if banner['btn_text'] %}
+                    <div class="intro__item-action">
+                        {% if banner['link'] and banner['link'] != '' %}
+                            {# Обычная ссылка #}
+                            <span class="ui-btn ui-btn--35 ui-btn--{% if banner['text_color'] == '1' %}dark{% else %}white{% endif %} ui-btn--outline">
+                                {{ banner['btn_text'] }}
+                                <svg class="icon-arrow-btn"><use xlink:href="catalog/view/theme/prostore/sprites/sprite.svg#icon-arrow-btn"></use></svg>
+                            </span>
+                        {% else %}
+                            {# Модальное окно #}
+                            <button onclick="ajaxCheaper('index.php?route=extension/module/cheaper30&prod_id={{ product_id|default('0') }}&module_id=70', this); event.preventDefault(); event.stopPropagation();" 
+                                    data-module_id="70"
+                                    class="ui-btn ui-btn--35 ui-btn--{% if banner['text_color'] == '1' %}dark{% else %}white{% endif %} ui-btn--outline"
+                                    style="background: transparent; cursor: pointer;">
+                                {{ banner['btn_text'] }}
+                                <svg class="icon-arrow-btn"><use xlink:href="catalog/view/theme/prostore/sprites/sprite.svg#icon-arrow-btn"></use></svg>
+                            </button>
+                        {% else %}
+                    </div>
+                {% endif %}
+            ]]></add>
+        </operation>
+    </file>
+</modification>

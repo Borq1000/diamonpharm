@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Gallery RB WebP Fix</name>
+    <code>gallery_rb_webp_fix</code>
+    <version>1.0</version>
+    <author>Fix Team</author>
+    <link>https://diamondpharm.ru</link>
+    
+    <file path="system/library/image.php">
+        <operation>
+            <search><![CDATA[			} elseif ($this->mime == 'image/jpeg') {
+				$this->image = imagecreatefromjpeg($file);
+			}]]></search>
+            <add position="replace"><![CDATA[			} elseif ($this->mime == 'image/jpeg') {
+				$this->image = imagecreatefromjpeg($file);
+			} elseif ($this->mime == 'image/webp') {
+				if (function_exists('imagecreatefromwebp')) {
+					$this->image = imagecreatefromwebp($file);
+				} else {
+					$this->image = imagecreatefromjpeg($file);
+				}
+			}]]></add>
+        </operation>
+        
+        <operation>
+            <search><![CDATA[		if ($this->mime == 'image/gif') {
+			imageinterlace($this->image, 1);
+			imagegif($this->image, $file);
+		} elseif ($this->mime == 'image/png') {
+			imagepng($this->image, $file);
+		} elseif ($this->mime == 'image/jpeg') {
+			imagejpeg($this->image, $file, $quality);
+		}</![CDATA]]></search>
+            <add position="replace"><![CDATA[		if ($this->mime == 'image/gif') {
+			imageinterlace($this->image, 1);
+			imagegif($this->image, $file);
+		} elseif ($this->mime == 'image/png') {
+			imagepng($this->image, $file);
+		} elseif ($this->mime == 'image/jpeg') {
+			imagejpeg($this->image, $file, $quality);
+		} elseif ($this->mime == 'image/webp') {
+			if (function_exists('imagewebp')) {
+				imagewebp($this->image, $file, $quality);
+			} else {
+				imagejpeg($this->image, $file, $quality);
+			}
+		}]]></add>
+        </operation>
+    </file>
+</modification>

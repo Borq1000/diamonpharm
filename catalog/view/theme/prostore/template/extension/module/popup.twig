@@ -1,0 +1,300 @@
+{# Popup Module v1.0.0 #}
+<!-- Popup Module -->
+<div id="promo-popup-overlay" class="promo-popup-overlay" style="display:none;">
+	<div class="promo-popup">
+		<button type="button" class="promo-popup-close" aria-label="Close">&times;</button>
+
+		{% if image %}
+		<div class="promo-popup-banner">
+			{% if image_link %}
+			<a href="{{ image_link }}" target="_blank">
+				<img src="{{ image }}" alt="">
+			</a>
+			{% else %}
+			<img src="{{ image }}" alt="">
+			{% endif %}
+		</div>
+		{% endif %}
+
+		<div class="promo-popup-form">
+			<h3 class="promo-popup-title">{{ form_title }}</h3>
+			<form id="promo-popup-form" method="post">
+				<div class="promo-popup-field">
+					<input type="text" name="name" placeholder="{{ text_name }}" required>
+				</div>
+				<div class="promo-popup-field">
+					<input type="tel" name="phone" placeholder="{{ text_phone }}" required>
+				</div>
+				<div class="promo-popup-field">
+					<button type="submit" class="promo-popup-btn">{{ button_text }}</button>
+				</div>
+				<div class="promo-popup-message" style="display:none;"></div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<style>
+.promo-popup-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 99999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 15px;
+	box-sizing: border-box;
+}
+
+.promo-popup {
+	background: #fff;
+	max-width: 420px;
+	width: 100%;
+	border-radius: 8px;
+	overflow: hidden;
+	position: relative;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+	animation: popupFadeIn 0.3s ease;
+}
+
+@keyframes popupFadeIn {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.promo-popup-close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 32px;
+	height: 32px;
+	background: rgba(255, 255, 255, 0.9);
+	border: none;
+	border-radius: 50%;
+	font-size: 24px;
+	line-height: 1;
+	cursor: pointer;
+	z-index: 10;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.2s;
+}
+
+.promo-popup-close:hover {
+	background: #fff;
+}
+
+.promo-popup-banner img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.promo-popup-form {
+	padding: 25px 30px 30px;
+}
+
+.promo-popup-title {
+	text-align: center;
+	font-size: 18px;
+	font-weight: 700;
+	margin: 0 0 20px;
+	color: #333;
+}
+
+.promo-popup-field {
+	margin-bottom: 12px;
+}
+
+.promo-popup-field input[type="text"],
+.promo-popup-field input[type="tel"] {
+	width: 100%;
+	padding: 14px 16px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 15px;
+	box-sizing: border-box;
+	transition: border-color 0.2s;
+}
+
+.promo-popup-field input[type="text"]:focus,
+.promo-popup-field input[type="tel"]:focus {
+	border-color: #333;
+	outline: none;
+}
+
+.promo-popup-btn {
+	width: 100%;
+	padding: 14px 20px;
+	background: #000;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.promo-popup-btn:hover {
+	background: #333;
+}
+
+.promo-popup-btn:disabled {
+	background: #999;
+	cursor: not-allowed;
+}
+
+.promo-popup-message {
+	text-align: center;
+	padding: 10px;
+	margin-top: 10px;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.promo-popup-message.success {
+	background: #d4edda;
+	color: #155724;
+}
+
+.promo-popup-message.error {
+	background: #f8d7da;
+	color: #721c24;
+}
+
+@media (max-width: 480px) {
+	.promo-popup {
+		max-width: 100%;
+	}
+
+	.promo-popup-form {
+		padding: 20px;
+	}
+
+	.promo-popup-title {
+		font-size: 16px;
+	}
+}
+</style>
+
+<script>
+(function() {
+	var POPUP_DELAY = {{ delay }};
+	var HIDE_DAYS = {{ hide_days }};
+	var DEV_MODE = {{ dev_mode }};
+	var COOKIE_NAME = 'promo_popup_closed';
+	var ACTION_URL = '{{ action }}';
+
+	// Check if popup was already closed
+	function getCookie(name) {
+		var matches = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+		return matches ? decodeURIComponent(matches[1]) : null;
+	}
+
+	function setCookie(name, value, days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+		document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + date.toUTCString() + '; path=/';
+	}
+
+	// Don't show if already closed (skip in dev mode)
+	if (!DEV_MODE && getCookie(COOKIE_NAME)) {
+		return;
+	}
+
+	var overlay = document.getElementById('promo-popup-overlay');
+	var form = document.getElementById('promo-popup-form');
+	var closeBtn = overlay.querySelector('.promo-popup-close');
+	var messageDiv = overlay.querySelector('.promo-popup-message');
+
+	function showPopup() {
+		overlay.style.display = 'flex';
+		document.body.style.overflow = 'hidden';
+	}
+
+	function hidePopup() {
+		overlay.style.display = 'none';
+		document.body.style.overflow = '';
+		if (!DEV_MODE) {
+			setCookie(COOKIE_NAME, '1', HIDE_DAYS);
+		}
+	}
+
+	// Show popup after delay
+	setTimeout(showPopup, POPUP_DELAY);
+
+	// Close on X button
+	closeBtn.addEventListener('click', hidePopup);
+
+	// Close on overlay click
+	overlay.addEventListener('click', function(e) {
+		if (e.target === overlay) {
+			hidePopup();
+		}
+	});
+
+	// Close on Escape key
+	document.addEventListener('keydown', function(e) {
+		if (e.key === 'Escape' && overlay.style.display === 'flex') {
+			hidePopup();
+		}
+	});
+
+	// Form submit
+	form.addEventListener('submit', function(e) {
+		e.preventDefault();
+
+		var submitBtn = form.querySelector('button[type="submit"]');
+		var originalText = submitBtn.textContent;
+		submitBtn.disabled = true;
+		submitBtn.textContent = '...';
+
+		var formData = new FormData(form);
+		Object.keys( utmymcollect ).forEach( (k, v) => formData.append( k, utmymcollect[k] ) );
+
+		fetch(ACTION_URL, {
+			method: 'POST',
+			body: formData
+		})
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(data) {
+			messageDiv.style.display = 'block';
+
+			if (data.success) {
+				messageDiv.className = 'promo-popup-message success';
+				messageDiv.textContent = data.success;
+				form.reset();
+
+				// Hide popup after success
+				setTimeout(hidePopup, 3000);
+			} else if (data.error) {
+				messageDiv.className = 'promo-popup-message error';
+				messageDiv.textContent = data.error;
+				submitBtn.disabled = false;
+				submitBtn.textContent = originalText;
+			}
+		})
+		.catch(function() {
+			messageDiv.style.display = 'block';
+			messageDiv.className = 'promo-popup-message error';
+			messageDiv.textContent = '{{ text_error }}';
+			submitBtn.disabled = false;
+			submitBtn.textContent = originalText;
+		});
+	});
+})();
+</script>

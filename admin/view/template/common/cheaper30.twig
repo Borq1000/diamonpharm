@@ -1,0 +1,7 @@
+<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ text_module_request }} <i class="fa fa-caret-down fa-fw"></i></a>
+	<ul class="dropdown-menu dropdown-menu-right">
+		{% for key,cheaper in cheaperings %}
+		<li><a href="{{ cheaper.href }}">{{ cheaper.name }}&nbsp;&nbsp;<span class="label{% if cheaper.total > 0 %} label-danger {% else %} label-success {% endif %}">{{ cheaper.total }}</span></a></li>
+		{% endfor %}
+	</ul>
+</li>

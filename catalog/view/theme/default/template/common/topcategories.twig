@@ -1,0 +1,10 @@
+{# Top-level categories for mobile menu #}
+{% if categories %}
+{% for category in categories %}
+<li>
+	<a class="header__catalog-link" href="{{ category.href }}">
+		<span class="header__catalog-link-text">{{ category.name }}</span>
+	</a>
+</li>
+{% endfor %}
+{% endif %}

@@ -1,0 +1,168 @@
+{% if (galleries is defined) %} 
+<div class="rb-gallery-{{ module }} rb-gallery">
+  {% if (title) %}<h2>{{ title }}</h2>{% endif %} 
+  <div class="rb-gallery-description">{{ description }}</div>
+  <div class="rb-gallery-list {{ style == 'carousel' ? 'rb-gallery-owl-carousel' : '' }} row">
+    {% if (style != 'carousel') %} 
+      {% set mobile_class = 'col-lg-' ~ col_lg ~ ' col-md-' ~ col_md ~ ' col-sm-' ~ col_sm ~ ' col-xs-' ~col_xs %} 
+    {% else %} 
+      {% set mobile_class = '' %} 
+    {% endif %} 
+    {% for gallery in galleries %} 
+    <div class="rb-gallery-item {{ mobile_class }}">
+      <div class="rb-gallery-inner {{ text ? 'style-over' : '' }}">
+        {% if (text) %} 
+          <div class="rb-gallery-img-outer {% if (borderimage is defined) %} {{ 'foto' }}{% endif %}">
+            <img src="{{ gallery['thumb'] }}" alt="{{ gallery['alt'] }}" title="{{ gallery['title'] }}" class="rb-gallery-img anim-{{ animation }}" />
+          </div>
+          <a href="{{ gallery['link'] }}" class="rb-gallery-link {{ gallery['class'] }}"></a>
+        {% else %} 
+          <div class="rb-gallery-img-outer {% if (borderimage is defined) %} {{ 'foto' }}{% endif %}">
+            <a href="{{ gallery['link'] }}" class="rb-gallery-link {{ gallery['class'] }}">
+              <img src="{{ gallery['thumb'] }}" alt="{{ gallery['alt'] }}" title="{{ gallery['title'] }}" class="rb-gallery-img anim-{{ animation }}" />
+            </a>
+          </div>
+        {% endif %} 
+        {% if (gallery['description']) %} 
+          <div class="text-gallery" style="background: {{ textbg }}; opacity: {{ texthover }};">
+            {{ gallery['description'] }} 
+          </div> 
+        {% endif %} 
+      </div>        
+    </div>
+    {% endfor %} 
+  </div>
+  {% if (load_more_status and style != 'carousel') %} 
+  <div class="text-center">
+    <button type="button" class="btn gallery-load-more" data-module-id="{{ module_id }}" data-gallery-length="{{ gallery_length - count_per_page }}" data-count-per-page="{{ count_per_page }}" data-offset="{{ count_per_page }}">{{ text_load_more }}</button>
+  </div>
+  {% endif %} 
+</div>
+<script><!--
+$(document).ready(function(){
+	$('.rb-gallery-{{ module }}').magnificPopup({
+		type:'image',
+		delegate: '.rb-gallery-popup',
+		gallery: {
+			enabled:true
+		},
+    image: {
+      titleSrc: function(item) {
+        return item.el.parents('.rb-gallery-item').find('.text-gallery').text();
+      }
+    },
+    callbacks: {
+      beforeOpen: function() {
+        this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
+        this.st.mainClass = 'rb-gallery ' + this.st.el.attr('data-effect');
+      },
+      elementParse: function(item) {
+        if(item.el.hasClass('video-link')) {
+          item.type = 'iframe';
+        } else {
+          item.type = 'image';
+        }
+      }
+    }
+	});
+  {% if (style == 'carousel') %} 
+  $('.rb-gallery-{{ module }} .rb-gallery-list').rbOwlCarousel({
+    margin:10,
+    nav:true,
+    responsiveClass:true,
+    responsive:{
+      0:{
+        items: 12 / {{ col_xs }} 
+      },
+      768:{
+        items: 12 / {{ col_sm }} 
+      },
+      992:{
+        items:12 / {{ col_md }} 
+      },
+      1200:{
+        items:12 / {{ col_lg }} 
+      }
+    }
+  }) 
+  {% endif %} 
+  {% if (load_more_status and style != 'carousel') %} 
+  $('.rb-gallery-{{ module }} .gallery-load-more').click(function(){
+    var galleryList = $(this).parents('.rb-gallery').find('.rb-gallery-list');
+    var buttonLoadMore = $(this);
+    var moduleID = '{{ module }}';
+    var galleryLength = $(this).data('gallery-length');
+    var countPerPage = $(this).data('count-per-page');
+    var offset = $(this).data('offset');
+    $.ajax({
+      url: 'index.php?route=extension/module/galleryrb/loadMore',
+      type: 'POST',
+      dataType: 'json',
+      data: 'module_id={{ module_id }}&count_per_page=' + countPerPage + '&offset=' + offset,
+      success: function(json) {
+        if(json['success']){
+          var html = '';
+          var galleries = json['success'];
+          galleries.forEach(function(gallery, i, galleries) {
+            html += '    <div class="rb-gallery-item col-lg-{{ col_lg }} col-md-{{ col_md }} col-sm-{{ col_sm }} col-xs-{{ col_xs }}">';
+            html += '      <div class="rb-gallery-inner {{ text ? "style-over" : '' }}">';
+            {% if (text) %} 
+            html += '          <div class="rb-gallery-img-outer {% if (borderimage is defined) %} {{ 'foto' }}{% endif %}">';
+            html += '            <img src="' + gallery['thumb'] + '" alt="' + gallery['alt'] + '" title="' + gallery['title'] + '" class="rb-gallery-img anim-{{ animation }}" />';
+            html += '          </div>';
+            html += '          <a href="' + gallery['link'] + '" class="rb-gallery-link ' + gallery['class'] + '"></a>';
+            {% else %} 
+            html += '          <div class="rb-gallery-img-outer {% if (borderimage is defined) %} {{ "foto" }}{% endif %}">';
+            html += '            <a href="' + gallery['link'] + '" class="rb-gallery-link ' + gallery['class'] + '">';
+            html += '              <img src="' + gallery['thumb'] + '" alt="' + gallery['alt'] + '" title="' + gallery['title'] + '" class="rb-gallery-img anim-{{ animation }}" />';
+            html += '            </a>';
+            html += '          </div>';
+            {% endif %} 
+            if(gallery['description']){
+              html += '          <div class="text-gallery" style="background: {{ textbg }}; opacity: {{ texthover }};">' + gallery['description'] + '</div>'; 
+            }
+            html += '      </div>';        
+            html += '    </div>';
+            
+          });
+          {% if (style == 'masonry') %} 
+            galleryList.append(html);
+            galleryList.masonry('reloadItems');        
+
+            galleryList.find('img').load(function(){
+               galleryList.masonry();
+            });
+          {% else %} 
+            galleryList.append(html);
+          {% endif %}
+           
+        }
+        if(galleryLength < 1){
+          buttonLoadMore.remove();
+        } 
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
+    galleryLength -= countPerPage;
+    buttonLoadMore.data('offset', offset + countPerPage);
+    buttonLoadMore.data('gallery-length', galleryLength);
+    console.log(galleryLength);
+    //offset{{ module }} += countPerPage{{ module }};
+    
+  });
+  
+  {% endif %} 
+});
+{% if (style == 'masonry') %} 
+$(window).on('load', function(){
+  $('.rb-gallery-{{ module }} .rb-gallery-list').masonry({
+    columnWidth: '.rb-gallery-item',
+    itemSelector: '.rb-gallery-item',
+    //horizontalOrder: true
+  });
+});
+{% endif %} 
+--></script>
+{% endif %}

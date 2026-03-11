@@ -1,0 +1,3864 @@
+<?php echo $header; ?><?php echo $column_left; ?>
+ <div id="content">
+   <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+		<?php if (isset($module_id)) { ?><button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-delete').submit() : false;"><i class="fa fa-trash-o"></i></button><?php } ?>
+		<button onClick="$('#form-module').submit();" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary" id="save_click"><i class="fa fa-save"></i></button>
+        <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1><?php echo $heading_title; ?></h1>
+      <ul class="breadcrumb">
+	    <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+        <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+        <?php } ?>
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <?php if ($error_warning) { ?>
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?>
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    <?php } ?>
+	<?php if ($success) { ?>
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $success; ?>
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    <?php } ?>
+	<?php if ($text_info) { ?>
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $text_info; ?>
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    <?php } ?>
+	<ul class="nav nav-tabs" id="tab">
+		<li<?php if (isset($module_id)){ ?> class="active"<?php } ?>><a ref="#tab-guest"><i class="fa fa-list"></i> <?php echo $cheapering; ?></a></li>
+		<li<?php if (!isset($module_id)){ ?> class="active"<?php } ?>><a ref="#tab-settings"><i class="fa fa-wrench"></i> <?php echo $text_settings; ?></a></li>
+		<li><a ref="#tab-position"><i class="fa fa-th-list"></i> <?php echo $text_position; ?><span class="pro-style green">New</span></a></li>
+		<li><a ref="#tab-template"><i class="fa fa-laptop"></i> <?php echo $text_template; ?><span class="pro-style green">New</span></a></li>
+		<li><a ref="#tab-captcha"><i class="fa fa-android"></i> <?php echo $text_captcha; ?></a></li>
+		<li><a ref="#tab-alerts"><i class="fa fa-bell-o"></i> <?php echo $text_alerts; ?><span class="pro-style green">New</span></a></li>
+		<li><a ref="#tab-calculator"><i class="fa fa-calculator"></i> <?php echo $text_calculator; ?><span class="pro-style">Pro</span></a></li>
+		<li><a ref="#tab-license"><i class="fa fa-thumbs-o-up"></i> <?php echo $text_license; ?></a></li>
+		<li><a ref="#tab-help"><i class="fa fa-info"></i> <?php echo $text_o_module; ?></a></li>
+	</ul>
+    <div class="panel panel-default tab-content">
+		<form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+		<div class="tab-pane<?php if (!isset($module_id)){ ?> active<?php } ?>" id="tab-settings">
+			<fieldset>
+				<div class="form-group"><br /></div>
+				<div class="form-group bg-gray">
+					<div class="col-sm-12">
+						<label class="col-sm-2 control-label" for="input-status"><?php echo $entry_status; ?></label>
+						<div class="col-sm-10">
+						  <select name="status" id="input-status" class="form-control">
+							<?php if ($status) { ?>
+							<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+							<option value="0"><?php echo $text_disabled; ?></option>
+							<?php } else { ?>
+							<option value="1"><?php echo $text_enabled; ?></option>
+							<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+							<?php } ?>
+						  </select>
+						</div>
+					</div>
+				</div>
+				<div class="form-group"><br /></div>
+				<div class="fields-text" id="select-text">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<label class="col-sm-2 control-label" for="input-name"><?php echo $entry_name; ?></label>
+							<div class="col-sm-10">
+							  <input type="text" name="name" value="<?php echo $name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
+							  <?php if ($error_name) { ?>
+							  <div class="text-danger"><?php echo $error_name; ?></div>
+							  <?php } ?>
+							</div>
+						</div>
+					</div>
+					<div class="form-group fields-text">
+						<label class="col-sm-2 control-label"><?php echo $text_settings_text; ?></label>
+						<div class="col-sm-10">
+							<div class="form-group">
+								<div class="col-sm-3 text-right"><br /><label class="control-label">
+									<span data-toggle="tooltip" title="" data-title="<?php echo $help_text_tooltip_fields; ?>" style="font-weight: normal;"><?php echo $text_h1_module; ?></span>
+								</label></div>
+								<div class="col-sm-9">
+									<div class="col-sm-12">
+										<ul class="nav nav-tabs" id="language_h1">
+											<?php foreach ($languages as $language) { ?>
+											<li><a href="#language_h1<?php echo $language['language_id']; ?>" data-toggle="tab" aria-expanded="true"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>"> <?php echo $language['name']; ?></a></li>
+											<?php } ?>
+										</ul>
+										<div class="tab-content padding">
+											<?php foreach ($languages as $language) { ?>
+												<div id="language_h1<?php echo $language['language_id']; ?>" class="tab-pane">
+													<input type="text" name="cheaper30_h1[<?php echo $language['language_id']; ?>]" value="<?php if (isset($cheaper30_h1[$language['language_id']])){ ?><?php echo $cheaper30_h1[$language['language_id']]; ?><?php } ?>" placeholder="<?php echo $text_select; ?>" class="form-control" maxlength="200" />
+												</div>
+											<?php } ?>
+											<?php if ($error_cheaper30_h1) { ?>
+												<div class="text-danger"><?php echo $error_cheaper30_h1; ?></div>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-3 text-right"><br /><label class="control-label">
+									<span data-toggle="tooltip" title="" data-title="<?php echo $help_text_tooltip_fields; ?>" style="font-weight: normal;"><?php echo $text_h4_module; ?></span>
+								</label></div>
+								<div class="col-sm-9">
+									<div class="col-sm-12">
+										<ul class="nav nav-tabs" id="language_h4">
+											<?php foreach ($languages as $language) { ?>
+											<li><a href="#language_h4<?php echo $language['language_id']; ?>" data-toggle="tab" aria-expanded="true"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>"> <?php echo $language['name']; ?></a></li>
+											<?php } ?>
+										</ul>
+										<div class="tab-content padding">
+											<?php foreach ($languages as $language) { ?>
+												<div id="language_h4<?php echo $language['language_id']; ?>" class="tab-pane">
+													<input type="text" name="cheaper30_h4[<?php echo $language['language_id']; ?>]" value="<?php if (isset($cheaper30_h4[$language['language_id']])) { ?><?php echo $cheaper30_h4[$language['language_id']]; ?><?php } ?>" placeholder="<?php echo $text_select; ?>" class="form-control" maxlength="200" />
+												</div>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-3 text-right"><br /><label class="control-label">
+									<span data-toggle="tooltip" title="" data-title="<?php echo $help_text_tooltip_fields_required; ?>" style="font-weight: normal;"><?php echo $text_succes_cheaper; ?></span>
+								</label></div>
+								<div class="col-sm-9">
+									<div class="col-sm-12">
+										<ul class="nav nav-tabs" id="language_success">
+											<?php foreach ($languages as $language) { ?>
+											<li><a href="#language_success<?php echo $language['language_id']; ?>" data-toggle="tab" aria-expanded="true"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>"> <?php echo $language['name']; ?></a></li>
+											<?php } ?>
+										</ul>
+										<div class="tab-content padding">
+											<?php foreach ($languages as $language) { ?>
+												<div id="language_success<?php echo $language['language_id']; ?>" class="tab-pane">
+													<input type="text" name="cheaper30_succes[<?php echo $language['language_id']; ?>]" value="<?php if (isset($cheaper30_succes[$language['language_id']])) { ?><?php echo $cheaper30_succes[$language['language_id']]; ?><?php } ?>" placeholder="<?php echo $text_select; ?>" class="form-control" maxlength="200" />
+												</div>
+											<?php } ?>
+											<?php if ($error_cheaper30_succes) { ?>
+												<div class="text-danger"><?php echo $error_cheaper30_succes; ?></div>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-3 text-right"><br /><label class="control-label">
+									<span data-toggle="tooltip" title="" data-title="<?php echo $help_text_tooltip_fields_required; ?>" style="font-weight: normal;"><?php echo $text_error_cheaper; ?></span>
+								</label></div>
+								<div class="col-sm-9">
+									<div class="col-sm-12">
+										<ul class="nav nav-tabs" id="language_error">
+											<?php foreach ($languages as $language) { ?>
+											<li><a href="#language_error<?php echo $language['language_id']; ?>" data-toggle="tab" aria-expanded="true"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>"> <?php echo $language['name']; ?></a></li>
+											<?php } ?>
+										</ul>
+										<div class="tab-content padding">
+											<?php foreach ($languages as $language) { ?>
+												<div id="language_error<?php echo $language['language_id']; ?>" class="tab-pane">
+													<input type="text" name="cheaper30_errort[<?php echo $language['language_id']; ?>]" value="<?Php if (isset($cheaper30_errort[$language['language_id']])){ ?><?php echo $cheaper30_errort[$language['language_id']]; ?><?php } ?>" placeholder="<?php echo $text_select; ?>" class="form-control" maxlength="200" />
+												</div>
+											<?php } ?>
+											<?php if ($error_cheaper30_errort) { ?>
+												<div class="text-danger"><?php echo $error_cheaper30_errort; ?></div>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div><div class="clearfix"></div>
+					</div>
+					<div class="form-group fields-text">
+						<label class="col-sm-2 control-label"><?php echo $text_settings_input; ?><br /><br /><br /><br />
+						  <div class="well well-sm button-default"><?php echo $entry_defaults; ?><br /><br /><br />
+							<span class="btn btn-primary" id="tableLoadcheaper" data-toggle="tooltip" type="button" title="<?php echo $entry_defaults_1; ?>" onClick="table_load('cheaper');"><i class="fa fa-level-down"></i> <?php echo $help_entry_defaults_1; ?></span><br /><br />
+							<span class="btn btn-primary" id="tableLoadquestion" data-toggle="tooltip" type="button" title="<?php echo $entry_defaults_2; ?>" onClick="table_load('question');"><i class="fa fa-question"></i> <?php echo $help_entry_defaults_2; ?></span><br /><br />
+							<span class="btn btn-primary" id="tableLoadsurvey" data-toggle="tooltip" type="button" title="<?php echo $entry_defaults_3; ?>" onClick="table_load('survey');"><i class="fa fa-bar-chart"></i> <?php echo $help_entry_defaults_3; ?></span><br /><br />
+							<span class="btn btn-primary" id="tableLoadcallback" data-toggle="tooltip" type="button" title="<?php echo $entry_defaults_4; ?>" onClick="table_load('callback');"><i class="fa fa-phone"></i> <?php echo $help_entry_defaults_4; ?></span><br /><br /><br />
+							<?php echo $text_primer_calc_help; ?>
+							<br /><br />
+							<span class="btn btn-primary" id="tableLoadcredit" data-toggle="tooltip" type="button" title="<?php echo $entry_defaults_5; ?>" onClick="table_load('credit');"><i class="fa fa-rouble"></i> <?php echo $help_entry_defaults_5; ?></span><br><br>
+							<span class="btn btn-primary" id="tableLoadkirpish" data-toggle="tooltip" type="button" title="<?php echo $entry_defaults_6; ?>" onClick="table_load('kirpish');"><i class="fa fa-th"></i> <?php echo $help_entry_defaults_6; ?></span><br /><br />
+							<span class="btn btn-primary" id="tableLoadkrovla" data-toggle="tooltip" type="button" title="<?php echo $entry_defaults_7; ?>" onClick="table_load('zabor');"><i class="fa fa-building-o"></i> <?php echo $help_entry_defaults_7; ?></span><br /><br />
+						  </div>
+						  
+						</label>
+						<div class="col-sm-10"><div class="col-sm-12"><div>
+							<fieldset class="fields-value-fieldset"><br /><br />
+							<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_alert_position_8; ?></div><br />
+							<table id="fields-value" class="table table-striped table-bordered table-hover">
+							  <thead>
+								<tr>
+								  <td class="text-center"><?php echo $entry_icons_fields; ?></td>
+								  <td class="text-left required"><?php echo $entry_name_fields; ?></td>
+								  <td class="text-center"><?php echo $entry_type_fields; ?></td>
+								  <td class="text-center">
+									<label class="control-label"><span style="font-weight: normal;"  title="<?php echo $help_entry_select_fields; ?>" data-toggle="tooltip"><?php echo $entry_select_fields; ?></span></label>
+								  </td>
+								  <td class="text-center">
+									<label class="control-label"><span style="font-weight: normal;"  title="<?php echo $help_entry_validation_fields; ?>" data-toggle="tooltip"><?php echo $entry_validation_fields; ?></span></label>
+								  </td>
+								  <td class="text-center">
+									<label class="control-label"><span style="font-weight: normal;"  title="<?php echo $help_entry_required_fields; ?>" data-toggle="tooltip"><?php echo $entry_required_fields; ?></span></label>
+								  </td>
+								  <td></td>
+								</tr>
+							  </thead>
+							  <tbody><tr><td style="display: none;"></td></tr>
+							  <?php $fields_value_row = 1; ?>
+							  <?php foreach ($results as $field_value_id => $result) { ?>
+							  <tr id="fields-value-row<?php echo $result['id']; ?>">
+								<td class="nav text-center">
+									<li>
+									  <span type="text" class="btn btn-default icons" data-field="<?php echo $result['id']; ?>" onClick="selectIcons('<?php echo $result['id']; ?>'); return false;"><?php if ($result['icon']) { ?><i class="fa fa-<?php echo $result['icon']; ?>"></i><?php } else { ?><?php echo $text_select_icons; ?><?php } ?></span>
+									  <input type="hidden" value="<?php if ($result['icon']){ ?><?php echo $result['icon']; ?><?php } ?>" name="field_value[<?php echo $result['id']; ?>][icon]">
+									</li>
+								</td>
+								<td class="text-left"><input type="hidden" name="field_value[<?php echo $result['id']; ?>][field_value_id]" value="<?php echo $result['id']; ?>" />
+								<?php foreach ($languages as $language) { ?>
+									<div class="input-group">
+										<span class="input-group-addon"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>" /></span><input type="text" name="field_value[<?php echo $result['id']; ?>][name][<?php echo $language['language_id']; ?>]" value="<?php echo $result['name'][$language['language_id']]; ?>" placeholder="<?php echo $entry_name_fields; ?>" class="form-control name-fields" />
+									</div>
+									<?php if (isset($error_name_field[$result['id']][$language['language_id']])){ ?>
+										<div class="text-danger"><?php echo $error_name_field[$result['id']][$language['language_id']]; ?></div>
+									<?php } ?>
+								<?php } ?>
+								</td>
+								<td class="text-right">
+									<select name="field_value[<?php echo $result['id']; ?>][type]" value=""  class="form-control select-regex" data-row="<?php echo $result['id']; ?>">
+										<?php foreach($select_type as $select){ ?>
+											<optgroup label="<?php echo $select['text']; ?>">
+											<?php foreach($select['items'] as $key => $item){ ?>
+											<option value="<?php echo $key; ?>"<?php if ($key == $result['type']){ ?> selected="selected"<?php } ?>><?php echo $item; ?></option><?php } ?></optgroup>
+										<?php } ?>
+									</select>
+								</td>
+								<td class="text-center parameter">
+								<?php if ($result['type'] == 'select' or $result['type'] == 'radio' or $result['type'] == 'checked'){ ?>
+									<div class="radio-div well well-sm">
+										<?php if (isset($result['query_value'][$result['id']])) { ?>
+											<label class="checked_value control-label"><?php echo $text_select_value; ?></span></label>
+											<?php if ($result['type'] == 'select'){ ?>
+												<select class="form-control">
+												<?php foreach ($result['query_value'][$result['id']] as $query_value){ ?>
+													<optgroup label="<?php echo $query_value['name'][$config_language_id]; ?>"></optgroup>
+												<?php } ?>
+												</select>
+											<?php } ?>
+											<?php if ($result['type'] == 'radio'){ ?>
+												<?php foreach ($result['query_value'][$result['id']] as $query_value){ ?>
+													<label class="text-left"><input type="radio" disabled="disabled" /> <?php echo $query_value['name'][$config_language_id]; ?></label>
+												<?php } ?>
+											<?php } ?>
+											<?php if ($result['type'] == 'checked'){ ?>
+												<?php foreach ($result['query_value'][$result['id']] as $query_value){ ?>
+													<label class="text-left"><input type="checkbox" disabled="disabled" /> <?php echo $query_value['name'][$config_language_id]; ?></label>
+												<?php } ?>
+											<?php } ?>
+										<?php } else { ?>
+											<label class="checked_value control-label"><?php echo $text_select_value_empty; ?></span></label>
+										<?php } ?>
+									</div>
+									<span class="btn btn-primary" data-toggle="tooltip" onClick="selectValue('<?php echo $result['id']; ?>','<?php echo $result['type']; ?>'); updateNumberValue('<?php echo $result['id']; ?>'); return false;" title="<?php echo $button_field_parametr_add; ?>"><i class="fa fa-edit"></i></span>
+								<?php } else { ?>-<?php } ?>
+								</td>
+								<td class="text-center regex">
+									<?php if ($result['type'] == 'text' or $result['type'] == 'textarea'){ ?>
+										<select name="field_value[<?php echo $result['id']; ?>][regex]" class="form-control type-regex select<?php echo $result['id']; ?>" data-row="<?php echo $result['id']; ?>">
+											<?php if ($result['type'] == 'text'){ ?>
+												<?php foreach ($code_regex_text as $regex){ ?>
+													<option value="<?php echo $regex['valid']; ?>"<?php if ($result['regex'] == $regex['valid']){ ?> selected="selected"<?php } ?>><?php echo $regex['text']; ?></option>
+												<?php } ?>
+											<?php } ?>
+											<?php if ($result['type'] == 'textarea'){ ?>
+												<?php foreach ($code_regex_textarea as $regex){ ?>
+													<?php foreach ($regex['valid'] as $reg => $valid){ ?>
+														
+													<?php } ?>
+													<option value="<?php echo $regex['valid']; ?>"<?php if ($result['regex'] == $regex['valid']){ ?> selected="selected"<?php } ?>><?php echo $regex['text']; ?></option>
+												<?php } ?>
+											<?php } ?>
+										</select><br />
+										<?php if ($result['regex'] == 'minlength' or $result['regex'] == 'maxlength' or $result['regex'] == 'max' or $result['regex'] == 'min' or $result['regex'] == 'step'){ ?>
+											<input type="text" class="form-control" placeholder="<?php echo $result['placeholder']; ?>" value="<?php echo $result['valid']; ?>" name="field_value[<?php echo $result['id']; ?>][valid]">
+										<?php } ?>
+										<?php if ($result['regex'] == 'rangelength' or $result['regex'] == 'range'){ ?>
+											<div class="row">
+												<div class="col-sm-6 col-xs-12"><input type="text" class="form-control" placeholder="<?php echo $text_range_before; ?>" value="<?php echo $result['valid'][0]; ?>" name="field_value[<?php echo $result['id']; ?>][valid][0]"></div>
+												<div class="col-sm-6 col-xs-12"><input type="text" class="form-control" placeholder="<?php echo $text_range_after; ?>" value="<?php echo $result['valid'][1]; ?>" name="field_value[<?php echo $result['id']; ?>][valid][1]"></div>
+											</div>
+										<?php } ?>
+										<?php if ($result['regex'] == 'phoneUS'){ ?>
+											<div class="input-group-phone">
+												<label class="control-label" style="text-align: left; padding-bottom: 7px;"><span data-toggle="tooltip" title="<?php echo $text_help_phoneUS; ?>" style="font-weight: normal;"><?php echo $label_help_phoneUS; ?></span></label>
+												<?php foreach ($languages as $language){ ?>
+													<div class="input-group">
+														<span class="input-group-addon"><img title="<?php echo $language['name']; ?>" src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>"></span>
+														<input type="text" class="form-control" placeholder="<?php if (isset($phones_placeholder[$language['code']])){ ?><?php echo $phones_placeholder[$language['code']]; ?><?php } else { ?><?php echo $text_phoneUS; ?><?php } ?>" value="<?php if ($result['valid'][$language['code']]) { ?><?php echo $result['valid'][$language['code']]; ?><?php } ?>" name="field_value[<?php echo $result['id']; ?>][valid][<?php echo $language['code']; ?>]">
+													</div>
+												<?php } ?>
+											</div>
+										<?php } ?>
+										<?php if (isset($error_name_valid[$result['id']])){ ?>
+											<div class="text-danger"><?php echo $error_name_valid[$result['id']]; ?></div>
+										<?php } ?>
+									<?php } else { ?>
+										-
+									<?php } ?>
+								</td>
+								<td class="text-center"><label><input type="checkbox" name="field_value[<?php echo $result['id']; ?>][required]"<?php if ($result['required']){ ?> checked="checked"<?php } ?> value="1"></label><br /></td>
+								<td class="text-right"><button type="button" onclick="$('#fields-value-row<?php echo $result['id']; ?>').remove(); testStorageFields();" data-toggle="tooltip" title="<?php echo $text_remove_module; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+							  </tr>
+							  <?php $fields_value_row = $fields_value_row + 1; ?>
+							  <?php } ?>
+							  </tbody>
+							  <tfoot>
+								<tr>
+								  <td colspan="6">
+									<?php if ($error_field_value){ ?>
+										<div class="text-danger"><br /><?php echo $error_field_value; ?><br /><br /></div>
+									<?php } ?>
+								  </td>
+								  <td class="text-right"><button type="button" onclick="addFieldValue();" data-toggle="tooltip" title="<?php echo $button_field_value_add; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+								</tr>
+							  </tfoot>
+							</table>
+						  </fieldset>
+						</div></div></div>
+					</div>
+					<div id="select-value">
+						<div class="select-value col-lg-offset-2 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10 hide">
+							<div class="row">
+								<h3><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp; <?php echo $entry_value_fields_option; ?></h3>
+								<div class="close-cheaper" onclick="closeIcons('.select-value');"><svg class="svg-icon-cheaper"><use xlink:href="/catalog/view/javascript/cheaper30/icons.svg#svg-close"/></svg></div>
+								<?php if ($results){ ?>
+									<?php $value_row = 0; ?>
+									<?php foreach ($results as $result){ ?><?php $value_row = $value_row + 1; ?>
+									<div class="col-sm-12 hide overf" id="body-value-<?php echo $result['id']; ?>">
+										<div class="container-fluid">
+											<div class="pull-right"><span class="btn btn-primary" title="" data-toggle="tooltip" onclick="save<?php echo $result['type']; ?>Value('<?php echo $result['id']; ?>'); $('.close-cheaper').trigger('click'); return false;" data-original-title="<?php echo $button_save; ?>"><i class="fa fa-save"></i> <?php echo $button_save; ?></span></div>
+										</div>
+										<div style="margin-top: 15px;"><?php echo $text_sor; ?></div>
+										<table class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<td class="text-center" width="1%"><?php echo $text_head_value_1; ?></td>
+													<td class="text-left"><?php echo $text_head_value_2; ?></td>
+													<td width="1%"></td>
+												</tr>
+											</thead>
+											<tbody class="body-value" data-id="#body-value-<?php echo $result['id']; ?>">
+											<?php if (isset($result['query_value'][$result['id']]) && $result['query_value'][$result['id']]){ ?>
+												<?php foreach ($result['query_value'][$result['id']] as $query_row => $query_value){ ?>
+													<?php $query_row = $query_row + 1; ?>
+													<tr id="fields-value-<?php echo $query_row; ?>" style="cursor: move;" class="ui-state-default">
+														<td class="text-center cont-td"><?php echo $query_row; ?></td>
+														<td class="text-left">
+														<?php foreach ($languages as $language){ ?>
+															<div class="input-group">
+																<span class="input-group-addon"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>" /></span>
+																<input type="text" name="field_value[<?php echo $result['id']; ?>][!<?php echo $result['type']; ?>!][<?php echo $query_row; ?>][<?php echo $language['language_id']; ?>]" value="<?php echo $query_value['name'][$language['language_id']]; ?>" placeholder="<?php echo $entry_param_fields; ?>" class="form-control name-fields" data-language="<?php echo $language['language_id']; ?>" data-row="<?php echo $result['id']; ?>" data-type="<?php echo $result['type']; ?>" data-split-field-row="field_value[<?php echo $result['id']; ?>][!<?php echo $result['type']; ?>!][" data-split-language="][<?php echo $language['language_id']; ?>]" />
+															</div>
+														<?php } ?>
+														</td>
+														<td class="text-right">
+															<button class="btn btn-danger" data-toggle="tooltip" onclick="$('#fields-value-<?php echo $query_row; ?>').remove(); updateNumberValue(<?php echo $result['id']; ?>);<?php if ($result['type'] == 'select'){ ?> saveselectValue('<?php echo $result['id']; ?>');<?php } ?><?php if ($result['type'] == 'radio'){ ?> saveradioValue('<?php echo $result['id']; ?>');<?php } ?><?php if ($result['type'] == 'checked'){ ?> savecheckedValue('<?php echo $result['id']; ?>');<?php } ?>" type="button" title="<?php echo $text_remove_module; ?>"><i class="fa fa-minus-circle"></i></button>
+														</td>
+													</tr>
+												<?php } ?>
+											<?php } ?>
+												<tr>
+													<td colspan="2"></td>
+													<td>
+														<button class="btn btn-success" data-toggle="tooltip" onclick="addSelectValue('<?php echo $result['id']; ?>','<?php echo $result['type']; ?>');" data-row="<?php echo $result['id']; ?>" type="button" title="<?php echo $text_add_module; ?>"><i class="fa fa-plus-circle"></i></button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<?php } ?>
+								<?php } ?>
+							</div>
+						</div>
+					</div>	
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label"> <?php echo $text_help_text; ?></label>
+					<div class="col-sm-10">
+						<div><?php echo $text_format; ?><br /></div>
+						<div>
+							<select name="format" class="form-control">
+								<option value="text"<?php if (isset($protection['format']) && $protection['format'] == 'text'){ ?> selected<?php } ?>><?php echo $text_text; ?></option>
+								<option value="checkbox"<?php if (isset($protection['format']) && $protection['format'] == 'checkbox'){ ?> selected<?php } ?>><?php echo $text_checkbox_text; ?></option>
+							</select>
+						</div><br /><br />
+						<ul class="nav nav-tabs" id="language">
+							<?php foreach ($languages as $language) { ?>
+							<li><a href="#language<?php echo $language['language_id']; ?>" data-toggle="tab" aria-expanded="true"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>"> <?php echo $language['name']; ?></a></li>
+							<?php } ?>
+						</ul>
+						<div class="tab-content">
+							<?php foreach ($languages as $language) { ?>
+								<div id="language<?php echo $language['language_id']; ?>" class="tab-pane">
+									<textarea type="text" id="cheapering_text<?php echo $language['language_id']; ?>" name="protection_text[<?php echo $language['code']; ?>]" value="" maxlength="10000" size="50" style="height: 70px; width: 500px;" data-lang="<?php echo $lang; ?>" class="form-control summernote" /><?php if (isset($protection['protection_text'][$language['code']])){ ?><?php echo $protection['protection_text'][$language['code']]; ?><?php } ?></textarea>
+								</div>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+				<div id="select-icons">
+					<div class="select-icons col-lg-offset-2 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10 hide">
+						<div class="row">
+							<h3><i class="fa fa-flag" aria-hidden="true"></i>&nbsp; <?php echo $entry_icons_fields_fa; ?></h3>
+							<div class="close-cheaper" onclick="closeIcons('.select-icons');"><svg class="svg-icon-cheaper"><use xlink:href="/catalog/view/javascript/cheaper30/icons.svg#svg-close"/></svg></div>
+							<div class="fa-icons">
+							<?php foreach ($default_icons as $id => $icons){ ?>
+								<div class="col-sm-12 col-xs-12 text-center"><h4><span>#</span> <strong><?php echo ${'text_select_icons_' . $id}; ?></strong> <span>#</span></h4></div>
+								<?php foreach ($icons as $icon){ ?>
+									<div class="hover-fa col-sm-4 col-xs-6" data-fa="<?php echo $icon; ?>" data-field="">
+										<i class="fa fa-<?php echo $icon; ?>"></i><span>&nbsp;&nbsp;<?php echo $icon; ?></span>
+									</div>
+								<?php } ?>
+								<div class="col-sm-12 col-xs-12"><br /></div>
+							<?php } ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="tab-pane" id="tab-position">
+			<fieldset>
+				<div class="form-group">
+				  <div class="col-sm-12"><br>
+					<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_alert_position_2; ?></div>
+				  </div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-12"><br>
+						<div class="row">
+							<div class="col-lg-6 col-md-8 col-sm-9 col-xs-12">
+							  <div class="col-sm-12 table-dashed p-2 mb-5">
+								<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_alert_position; ?></div>
+								<ol class="numeration-li list-unstyled mb-0 text-center">
+								<?php $key_field = 0; ?>
+								<?php foreach ($fields as $position => $columns){ ?>
+									<li class="numeration-bg table-border-gray p-3 bg-dashed-gray mb-5" data-position="<?php echo $position; ?>">
+										<div class="justify-content-end d-flex">
+											<div class="me-auto d-flex">
+												<button class="btn p-1" data-toggle="tooltip" title="<?php echo $text_sort_position_up; ?>" onClick="sortPositionUp(<?php echo $position; ?>); return false;"><i class="fa fa-chevron-up"></i></button><button class="btn p-1 ms-2" data-toggle="tooltip" title="<?php echo $text_sort_position_down; ?>" onClick="sortPositionDown(<?php echo $position; ?>); return false;"><i class="fa fa-chevron-down"></i></button>
+												<input type="hidden" name="sort_position[<?php echo $position; ?>]" value="<?php echo $position; ?>">
+											</div>
+											<div class="ms-auto d-flex">
+												<div class="input-group w-95 ms-2">
+													<div class="input-group-addon"><i class="fa fa-columns"></i></div>
+													<select name="field_position[<?php echo $position; ?>][column]" class="form-control w-35 d-inline-block" data-toggle="tooltip" title="<?php echo $text_position_column; ?>">
+														<?php for ($i=1; $i<=4; $i++){ ?>
+															<option value="<?php echo $i; ?>"<?php if (count($columns) == $i){ ?> selected="selected"<?php } ?>><?php echo $i; ?></option>
+														<?php } ?>
+													</select>
+												</div>
+												<button onClick="delete_pos(<?php echo $position; ?>); return false;" class="btn btn-danger z-1 ms-2" data-toggle="tooltip" title="<?php echo $text_position_delete; ?>"><i class="fa fa-trash-o"></i></button>
+											</div>
+										</div>
+										<div class="col-sm-12 p-0 pt-4">
+										  <div id="position_<?php echo $position; ?>">
+											<h4 class="text-center mb-4"><?php echo $text_numeration_position; ?><?php echo $position; ?></h4>
+												<?php if (count($columns) == 1) {$cl = 'col-sm-12';} ?>
+												<?php if (count($columns) == 2) {$cl = 'col-sm-6';} ?>
+												<?php if (count($columns) == 3) {$cl = 'col-sm-4';} ?>
+												<?php if (count($columns) == 4) {$cl = 'col-sm-3';} ?>
+												<?php foreach ($columns as $column => $fiels){ ?>
+													<div class="<?php echo $cl; ?>">
+														<ol class="move-li list-unstyled mb-0 text-center">
+														<li class="table-bordered padding mb-3 empty-li"<?php if ($fiels){ ?> style="display: none;"<?php } ?>><?php echo $text_numeration_empty; ?></li>
+														  <?php foreach ($fiels as $key => $field){ ?>
+															<?php $key = $key + 1; ?>
+															<?php $key_field = $key_field + 1; ?>
+															<li class="mb-3">
+																<?php if ($field['type'] == 'text'){ ?>
+																  <div class="input-group">
+																	<?php if ($field['icon']){ ?><span class="input-group-addon"><i class="fa fa-<?php echo $field['icon']; ?>"></i></span><?php } ?>
+																	<input type="text" class="form-control" placeholder="<?php echo $field['name']; ?>" disabled data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_title; ?>" />
+																	<span class="input-group-addon cursor-move" data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_data_title; ?>"><i class="fa fa-arrows"></i></span>
+																  </div>
+																  <input type="hidden" name="field_column[<?php echo $field['id']; ?>]" value="<?php echo $position; ?>.<?php echo $column; ?>.<?php echo $key; ?>">
+																<?php } ?>
+																<?php if ($field['type'] == 'textarea'){ ?>
+																  <div class="input-group">
+																	<?php if ($field['icon']){?><span class="input-group-addon"><i class="fa fa-<?php echo $field['icon']; ?>"></i></span><?php } ?>
+																	<textarea type="text" class="form-control" placeholder="<?php echo $field['name']; ?><?php if ($field['required']){ ?><?php echo $text_cheaper30_required; ?><?php } ?>" disabled data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_title; ?>"></textarea>
+																	<span class="input-group-addon cursor-move" data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_data_title; ?>"><i class="fa fa-arrows"></i></span>
+																  </div>
+																  <input type="hidden" name="field_column[<?php echo $field['id']; ?>]" value="<?php echo $position; ?>.<?php echo $column; ?>.<?php echo $key; ?>">
+																<?php } ?>
+																<?php if ($field['type'] == 'select'){ ?>
+																	<?php if ($field['query_value']){?>
+																	<div class="input-group">
+																	  <div class="table-border text-left p-3 bg-white">
+																		<div class="mb-2 text-left"><i class="fa fa-<?php echo $field['icon']; ?>"></i>&nbsp;&nbsp;<strong><?php echo $field['name']; ?></strong></div>
+																		<div class="input-group w-100" data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_title; ?>">
+																			<?php if ($field['icon']){ ?><span class="input-group-addon"><i class="fa fa-<?php echo $field['icon']; ?>"></i></span><?php } ?>
+																			<select class="form-control" disabled>
+																			<?php foreach ($field['query_value'] as $select_value){ ?>
+																				<?php foreach ($select_value as $select_val){ ?>
+																					<?php foreach ($select_val as $keyy => $select){ ?>
+																					  <?php if ($keyy == 'name') { ?>
+																						<?php foreach ($select as $cont => $sel){ ?>
+																							<option<?php if ($cont == 0) { ?> selected="selected"<?php } ?>><?php echo $sel; ?></option>
+																						<?php } ?>
+																					  <?php } ?>
+																					<?php } ?>
+																				<?php } ?>
+																			<?php } ?>
+																			</select>
+																		</div>
+																	  </div>
+																	  <span class="input-group-addon cursor-move" data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_data_title; ?>"><i class="fa fa-arrows"></i></span>
+																	</div>
+																	<input type="hidden" name="field_column[<?php echo $field['id']; ?>]" value="<?php echo $position; ?>.<?php echo $column; ?>.<?php echo $key; ?>">
+																	<?php } ?>
+																<?php } ?>
+																<?php if ($field['type'] == 'checked'){ ?>
+																	<?php if ($field['query_value']){?>
+																	<div class="input-group w-100">
+																		<div class="table-border text-left p-3 bg-white">
+																			<div class="mb-2"><i class="fa fa-<?php echo $field['icon']; ?>"></i>&nbsp;&nbsp;<strong><?php echo $field['name']; ?></strong></div>
+																			<div class="" data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_title; ?>}">
+																				<?php foreach ($field['query_value'] as $select_value){ ?>
+																				  <?php foreach ($select_value as $select_val){ ?>
+																					<?php foreach ($select_val as $keyy => $select){ ?>
+																						<?php if ($keyy == 'name') { ?>
+																							<?php foreach ($select as $sel){ ?>
+																								<div class="radio">
+																									<label class="text-left p-0"><input type="checkbox" value="<?php echo $sel; ?>" disabled> <?php echo $sel; ?></label>
+																								</div>
+																							<?php } ?>
+																						<?php } ?>
+																					<?php } ?>
+																				  <?php } ?>
+																				<?php } ?>
+																			</div>
+																		</div>
+																		<span class="input-group-addon cursor-move" data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_data_title; ?>"><i class="fa fa-arrows"></i></span>
+																	</div>
+																	<input type="hidden" name="field_column[<?php echo $field['id']; ?>]" value="<?php echo $position; ?>.<?php echo $column; ?>.<?php echo $key; ?>">
+																	<?php } ?>
+																<?php } ?>
+																<?php if ($field['type'] == 'radio'){ ?>
+																	<?php if ($field['query_value']){?>
+																	<div class="input-group w-100">
+																		<div class="table-border text-left p-3 bg-white">
+																			<div class="mb-2"><i class="fa fa-<?php echo $field['icon']; ?>"></i>&nbsp;&nbsp;<strong><?php echo $field['name']; ?></strong></div>
+																			<div class="" data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_title; ?>">
+																				<?php foreach ($field['query_value'] as $select_value){ ?>
+																				  <?php foreach ($select_value as $select_val){ ?>
+																					<?php foreach ($select_val as $keyy => $select){ ?>
+																						<?php if ($keyy == 'name') { ?>
+																							<?php foreach ($select as $sel){ ?>
+																								<div class="radio">
+																									<label class="text-left p-0"><input type="radio" value="<?php echo $sel; ?>" disabled> <?php echo $sel; ?></label>
+																								</div>
+																							<?php } ?>
+																						<?php } ?>
+																					<?php } ?>
+																				  <?php } ?>
+																				<?php } ?>
+																			</div>
+																		</div>
+																		<span class="input-group-addon cursor-move" data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_data_title; ?>"><i class="fa fa-arrows"></i></span>
+																	</div>
+																	<input type="hidden" name="field_column[<?php echo $field['id']; ?>]" value="<?php echo $position; ?>.<?php echo $column; ?>.<?php echo $key; ?>">
+																	<?php } ?>
+																<?php } ?>
+																<?php if ($field['type'] == 'file'){ ?>
+																<div class="input-group">
+																	<div data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_title; ?>">
+																		<div class="table-border text-left p-3 bg-white">
+																			<div class="mb-2 text-left"><i class="fa fa-<?php echo $field['icon']; ?>"></i>&nbsp;&nbsp;<strong><?php echo $field['name']; ?></strong></div>
+																			<button type="button" data-module_id="<?php echo $module_id; ?>" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-default btn-block button-upload" disabled><i class="fa fa-upload"></i> <?php echo $button_upload; ?></button>
+																		</div>
+																	</div>
+																	<span class="input-group-addon cursor-move" data-toggle="tooltip" data-html="true" title="<?php echo $text_hover_data_title; ?>"><i class="fa fa-arrows"></i></span>
+																</div>
+																<input type="hidden" name="field_column[<?php echo $field['id']; ?>]" value="<?php echo $position; ?>.<?php echo $column; ?>.<?php echo $key; ?>">
+																<?php } ?>
+															</li>
+														  <?php } ?>
+														</ol>
+													</div>
+												<?php } ?>
+										  </div>
+										</div>
+										<div class="clearfix"></div>
+									</li>
+								<?php } ?>
+								</ol>
+							  </div>
+							  <div class="text-right"><button onClick="add_pos(); return false;" class="btn btn-primary z-1 ms-2" data-toggle="tooltip" title="<?php echo $text_position_add; ?>"><i class="fa fa-plus"></i><span class="hidden-xs"> <?php echo $text_position_add; ?></span></button></div><br>
+							</div>
+							<div class="col-lg-6 col-md-4 col-sm-3 col-xs-12">
+								<div class="table-bordered p-3 mb-3 alert-success"><i class="fa fa-info-circle"></i> <?php echo $text_alert_position_3; ?></div>
+								<div class="table-bordered p-3 mb-3 alert-success"><i class="fa fa-info-circle"></i> <?php echo $text_alert_position_4; ?></div>
+								<div class="table-bordered p-3 mb-3 alert-success"><i class="fa fa-info-circle"></i> <?php echo $text_alert_position_5; ?></div>
+								<div class="table-bordered p-3 mb-3 alert-warning"><i class="fa fa-info-circle"></i> <?php echo $text_alert_position_6; ?></div><br>
+								<div class="p-3 alert-gray hidden-xs">
+									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_alert_position_7; ?></div>
+									<div id="html_result"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="tab-pane" id="tab-template">
+			<fieldset>
+				<div class="form-group">
+					<div class="col-sm-12">
+						<label class="col-sm-3 control-label marg-top" for="input-type_view"><span data-toggle="tooltip" title="" data-title="<?php echo $entry_type_view_help; ?>"><?php echo $entry_type_view; ?></span></label>
+						<div class="col-sm-9 col-xs-12">
+						  <select name="type_view" id="input-type_view" class="form-control" style="margin: 10px 0 !important;">
+							<?php if ($type_view){ ?>
+							<option value="1" selected="selected"><?php echo $entry_type_view_module; ?></option>
+							<option value="0"><?php echo $entry_type_view_button; ?></option>
+							<?php } else { ?>
+							<option value="1"><?php echo $entry_type_view_module; ?></option>
+							<option value="0" selected="selected"><?php echo $entry_type_view_button; ?></option>
+							<?php } ?>
+						  </select>
+						  <div class="text-danger" id="type_view_help">
+						  <?php echo $entry_type_view_danger; ?>
+						  </div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group" id="type_view">
+					<div class="col-sm-12">
+						<div class="col-sm-3 text-right">
+							<label class="control-label" for="input-status" data-toggle="tooltip" title="<?php echo $text_template_width_tooltip; ?>">
+								<span><?php echo $text_template_width; ?></span>
+							</label><br><br>
+							<span onclick="defaultCol();" class="btn btn-primary" data-toggle="tooltip" title="<?php echo $text_template_button_width_default_help; ?>"><?php echo $text_template_button_width_default; ?></span><br><br>
+						</div>
+						<div class="col-sm-9 col-xs-12">
+							<div class="row">
+								<?php foreach ($cols as $clac => $cls){ ?>
+									<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 mb-3">
+									  <div class="table-bordered p-3">
+											<div class="text-center mb-3"><span class="reding col-"></span></div><br>
+											<select name="popup_width[<?php echo $clac; ?>]" class="form-control">
+												<?php foreach ($cls['col'] as $cl){ ?>
+													<option value="<?php echo $cl['class']; ?>"<?php if ($cl['class'] == $popup_width[$clac]) { ?> selected="selected"<?php } ?>> <?php echo $cl['width']; ?></option>
+												<?php } ?>
+											</select>
+											<div class="alert alert-gray mt-3 mb-0"><?php echo $cls['scope']; ?></div>
+									  </div>
+									</div>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12"><br /><br />
+						<div class="col-sm-3 text-right">
+						<label class="control-label" for="input-status" data-toggle="tooltip" title="<?php echo $text_template_button_help; ?>"><span><?php echo $text_template_button; ?></span>
+						</label><br />
+						<?php if (isset($module_id)){ ?><label class="control-label" id="label-button" for="input-status" data-toggle="tooltip" title="<?php echo $text_template_button_copy_help; ?>">
+						<span onClick="copyTextToClipboard($('textarea#href_module').text());" class="btn btn-primary"><?php echo $text_template_button_copy; ?></span></label><?php } ?>
+						<div class="error-span hide"><?php echo $text_template_button_copy_error_help; ?></div>
+						</div>
+						<div class="col-sm-9">
+						  <div class="well well-sm">
+							<textarea disabled="disabled" class="form-control" id="href_module"><?php if (isset($module_id)){ ?><button onclick="ajaxCheaper('index.php?route=extension/module/cheaper30&module_id=<?php echo $module_id; ?>', this);" class="btn btn-primary cheapering" data-module_id="<?php echo $module_id; ?>"></button><?php } else { ?><?php echo $text_template_button_code; ?><?php } ?></textarea>
+						  </div>
+						</div>
+					</div><br />
+				</div>
+				<div class="form-group">
+				  <div class="col-sm-12">
+					<label class="col-sm-3 control-label" for="input-help"><span data-toggle="tooltip" title="<?php echo $help_paste_code_help; ?>"><?php echo $help_paste_code; ?></span><br /><br /><br /></label>
+					<div class="col-sm-9 col-xs-12">
+						<select id="input-help" class="form-control" style="margin: 10px 0 !important;">
+							<option value="" selected="selected"><?php echo $text_none; ?></option>
+							<?php foreach($help_hrefs as $help_href){ ?>
+								<option value="<?php echo $help_href['href']; ?>"><?php echo $help_href['help']; ?></option>
+							<?php } ?>
+						</select>
+						<div id="help_template" class="text-danger hide_cheaper"></div>
+					</div>
+				  </div>
+				</div>
+				<div class="form-group type-product">
+					<div class="col-sm-12">
+						<label class="col-sm-3 control-label" for="input-product"><span data-toggle="tooltip" title="<?php echo $text_product_help; ?>"><?php echo $text_product_label; ?></span></label>
+						<div class="col-sm-9 col-xs-12">
+						  <select name="product" id="input-product" class="form-control" style="margin: 10px 0 !important;">
+							<?php if ($product){ ?>
+							<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+							<option value="0"><?php echo $text_disabled; ?></option>
+							<?php } else { ?>
+							<option value="1"><?php echo $text_enabled; ?></option>
+							<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+							<?php } ?>
+						  </select>
+						  <div class="text-danger hide" id="update_type"><?php echo $text_template_update_type; ?></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group hide type-product" id="block-product">
+					<label class="col-sm-3 control-label" for="input-status"><?php echo $text_image; ?></label>
+					<div class="col-sm-9 col-xs-12">
+					  <div class="col-sm-6 col-xs-12">
+					    <input type="text" name="width" value="<?php if ($width){ ?><?php echo $width; ?><?php } ?>" placeholder="<?php echo $text_width; ?>" class="form-control" data-toggle="tooltip" title="<?php echo $text_help_required; ?>" />
+						<?php if ($error_width){ ?>
+							<div class="text-danger" style="padding-top: 7px;"><?php echo $error_width; ?></div>
+						<?php } ?>
+					  </div>
+					  <div class="col-sm-6 col-xs-12">
+					    <input type="text" name="height" value="<?php if ($height){ ?><?php echo $height; ?><?php } ?>" placeholder="<?php echo $text_height; ?>" class="form-control" />
+						<?php if ($error_height){ ?>
+							<div class="text-danger" style="padding-top: 7px;"><?php echo $error_height; ?></div>
+						<?php } ?>
+						
+					  </div>
+					</div>
+				</div>
+				<div class="form-group"><br /><br /></div>
+				<div class="form-group">
+				<div class="col-sm-3">
+					<label class="control-label" for="input-status" data-toggle="tooltip" title="<?php echo $text_template_system_help; ?>"><span><?php echo $text_template_system; ?></span></label><br /><br />
+				</div>
+				<div class="col-sm-4">
+				  <label class="col-sm-6 control-label" for="input-status"><?php echo $entry_bootstrap; ?> <span data-toggle="tooltip" title="<?php echo $entry_help_bootstrap; ?>"></span></label>
+				  <div class="col-sm-6 text-left">
+					<div class="lightOnOff settings">  
+					  <input type="checkbox" value="1" id="bootstrap" name="bootstrap"<?php if ($bootstrap){ ?> checked=""<?php } ?> data-name="bootstrap">
+					  <label for="bootstrap"></label>
+					</div>
+				  </div>
+				</div>
+				<div class="col-sm-4">
+				  <label class="col-sm-6 control-label" for="input-status"><?php echo $entry_font; ?> <span data-toggle="tooltip" title="<?php echo $entry_help_font; ?>"></span></label>
+				  <div class="col-sm-6 text-left">
+					<div class="lightOnOff settings">  
+					  <input type="checkbox" value="1" id="font" name="font"<?php if ($font){ ?> checked=""<?php } ?> data-name="font">
+					  <label for="font"></label>
+					</div>
+				  </div>
+				</div>
+				</div>
+				<div class="form-group"><br /></div>
+				<div class="form-group">
+					<div class="col-sm-12">
+						<label class="col-sm-3 control-label" for="input-product"><span data-toggle="tooltip" title="<?php echo $text_style_help; ?>" data-title="<?php echo $text_product_help; ?>"><?php echo $text_style; ?></span></label>
+						<div class="col-sm-9 col-xs-12">
+						  &lt;style&gt;
+						  <textarea class="form-control" name="style" style="min-height: 250px;"><?php if (isset($style)){ ?><?php echo $style; ?><?php } ?></textarea>
+						  &lt;/style&gt;
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="tab-pane" id="tab-captcha">
+			<fieldset>
+				<div class="form-group">
+					<div class="col-sm-12">
+						<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_captcha_info; ?></div>
+						<label class="col-sm-2 control-label" for="input-captcha"><span data-toggle="tooltip" title="" data-title="<?php echo $entry_type_captcha_help; ?>"><?php echo $entry_type_captcha; ?></span></label>
+						<div class="col-sm-10 col-xs-12">
+						  <select name="captcha" id="input-captcha" class="form-control">
+						    <option value=""><?php echo $text_none; ?></option>
+						    <?php foreach($captchas as $captch){ ?>
+						    <?php if ($captch['value'] == $captcha){ ?>
+						    <option value="<?php echo $captch['value']; ?>" selected="selected"><?php echo $captch['text']; ?></option>
+						    <?php } else { ?>
+						    <option value="<?php echo $captch['value']; ?>"><?php echo $captch['text']; ?></option>
+						    <?php } ?>
+						    <?php } ?>
+						  </select>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="tab-pane" id="tab-alerts">
+			<fieldset>
+				<div class="form-group"><div class="col-sm-12"><br><div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_alerts_info; ?></div></div></div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-email"><span data-toggle="tooltip" title="" data-title="<?php echo $entry_type_help_email_status; ?>"><?php echo $entry_type_email_status; ?></span></label>
+					<div class="col-sm-10 col-xs-12">
+						<select name="status_email" id="input-email" class="form-control">
+						    <?php if ($status_email){ ?>
+							<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+							<option value="0"><?php echo $text_disabled; ?></option>
+							<?php } else { ?>
+							<option value="1"><?php echo $text_enabled; ?></option>
+							<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+							<?php } ?>
+						</select><br>
+					</div>
+				</div>
+				<div class="form-group hide_cheaper" id="cheaper_input_email">	
+					<label class="col-sm-2 control-label" for="input-captcha"><span data-toggle="tooltip" title="" data-title="<?php echo $entry_type_help_email; ?>"><?php echo $entry_type_email; ?></span></label>
+					<div class="col-sm-10 col-xs-12">
+					  <select name="type_email" id="input-alerts" class="form-control">
+						<option value=""<?php if (!$type_email) { ?> selected="selected"<?php } ?>><?php echo $entry_type_email_default; ?></option>
+						<option value="1"<?php if ($type_email) { ?> selected="selected"<?php } ?>><?php echo $entry_type_email_other; ?></option>
+					  </select>
+					  <br>
+					  <div id="cheaper_email" class="hide_cheaper row">
+						<div class="col-sm-12 col-xs-12"><?php if ($error_cheaper30_email_empty) { ?><span class="text-danger"><?php echo $error_cheaper30_email_empty; ?></span><br><br><?php } ?><?php echo $entry_type_email_other_list; ?></div>
+						  <?php if (isset($emails)) { ?>
+							  <?php foreach ($emails as $ke_y => $email){ ?>
+							  <div class="col-sm-6 col-xs-12">
+								  <div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+									<input type="text" name="cheaper_email[]" class="form-control" placeholder="<?php echo $entry_type_email_other_placeholder; ?>" value="<?php echo $email; ?>">
+									<span class="input-group-addon cursor-pointer" onClick="$(this).parent().parent().remove();"><i class="fa fa-remove redcolor"></i></span>
+								  </div>
+								  <?php if ($error_cheaper30_email_array[$ke_y]) { ?>
+									<div class="text-danger"><?php echo $error_cheaper30_email_array[$ke_y]; ?></div>
+								  <?php } ?>
+							  </div>
+							  <?php } ?>
+						  <?php } ?>
+						<div class="col-sm-12 text-right">
+							<button onclick="addEmail($(this)); return false;" class="btn btn-primary" data-toggle="tooltip" title="<?php echo $entry_type_email_other_add; ?>"><i class="fa fa-plus"></i></button>
+						</div>
+					  </div>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset>
+				<div class="form-group">
+					<br>
+					<div class="col-sm-12"><div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_alerts_telegram; ?></div><br></div>
+					<label class="col-sm-2 control-label" for="input-captcha"><span data-toggle="tooltip" title="" data-title="<?php echo $entry_type_help_telegram_status; ?>"><?php echo $entry_type_telegram_status; ?></span></label>
+					<div class="col-sm-10 col-xs-12">
+					  <select name="status_telegram" id="input-alerts" class="form-control">
+						<?php if ($status_telegram) { ?>
+						<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+						<option value="0"><?php echo $text_disabled; ?></option>
+						<?php } else { ?>
+						<option value="1"><?php echo $text_enabled; ?></option>
+						<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+						<?php } ?>
+					  </select>
+					  <br>
+					</div>
+				</div>
+				<div class="hide_cheaper" id="cheaper_telegram">
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><?php echo $entry_type_telegram_token; ?></label>
+						<div class="col-sm-10 col-xs-12">
+							<input type="text" name="token_telegram" class="form-control" placeholder="<?php echo $entry_type_telegram_token; ?>" value="<?php echo $token_telegram; ?>">
+							<?php if ($error_cheaper30_telegram_token) { ?><span class="text-danger"><?php echo $error_cheaper30_telegram_token; ?></span><?php } ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><?php echo $entry_type_telegram_chat_id; ?></label>
+						<div class="col-sm-10 col-xs-12">
+							<input type="text" name="chat_id_telegram" class="form-control" placeholder="<?php echo $entry_type_telegram_chat_id; ?>" value="<?php echo $chat_id_telegram; ?>">
+							<?php if ($error_cheaper30_telegram_chat_id) { ?><span class="text-danger"><?php echo $error_cheaper30_telegram_chat_id; ?></span><?php } ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><span data-toggle="tooltip" title="" data-title="<?php echo $help_telegram_button_api_help; ?>"><?php echo $help_telegram_button_api; ?></span></label>
+						<div class="col-sm-10 col-xs-12">
+							<button onClick="$('#help_telegram').toggleClass('hide_cheaper'); return false;" class="btn btn-primary"><?php echo $help_telegram_button_api; ?></button>
+							<div id="help_telegram" class="hide_cheaper"><br>
+								<?php echo $help_telegram_api; ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="tab-pane" id="tab-calculator">
+			<fieldset>
+				<div class="form-group">
+				<?php if ($vers == 'Light'){ ?><br>
+					<div class="col-sm-12">
+						<div class="alert-default mb-4">
+							<div class="p-3">
+								<div class="alert alert-danger"><i class="fa fa-info-circle"></i> <?php echo $text_calculator_info_light; ?></div>
+								<div class="alert alert-warning mb-0"><i class="fa fa-info-circle"></i> <?php echo $text_calculator_info_light_2; ?></div>
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+				<div class="col-sm-12"><div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_calculator_info; ?></div></div>
+				<div class="col-sm-12"><div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_calculator_info_2; ?></div></div>
+				<div class="col-sm-12"><div class="alert alert-info"><i class="fa fa-info-circle"></i> <a onclick="$('.help_calculator').toggleClass('hide_cheaper'); return false;" class="cursor-pointer"> <strong><?php echo $text_calculator_info_3; ?></strong></a> <div class="help_calculator hide_cheaper"><br><?php echo $text_calculator_info_4; ?><a onclick="$('.help_calculator_2').toggleClass('hide_cheaper'); return false;" class="btn btn-primary"><?php echo $text_vivod; ?></a><br><div class="help_calculator_2 hide_cheaper"><br><?php echo $text_vivod_1; ?><br><br><img src="/admin/view/javascript/cheaper30/help_calculator_2.jpg"><br><br><?php echo $text_vivod_2; ?><br><br><img src="/admin/view/javascript/cheaper30/help_calculator_3.jpg"><br><br><?php echo $text_vivod_3; ?><br><br><img src="/admin/view/javascript/cheaper30/help_calculator_4.jpg"><br></div><br><br><?php echo $text_calculator_info_5; ?><a onclick="$('.help_calculator_3').toggleClass('hide_cheaper'); return false;" class="btn btn-primary"><?php echo $text_primer_calc; ?></a><br><div class="help_calculator_3 hide_cheaper"><br><img src="/admin/view/javascript/cheaper30/help_calculator.jpg"></div></div> </div></div></div>
+			</fieldset>
+			<fieldset class="d-flex flex-wrap<?php if ($vers == 'Light'){ ?> blur<?php } ?>">
+				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 mb-3">
+					<div class="table-border-gray padding text-center p-3 left-button">
+					<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_help_c; ?></div><br>
+						<?php foreach($results as $field_value_id => $result){ ?>
+							<span>
+								<span class="btn btn-default mb-3 button-calculator cursor-pointer" onClick="addSymbolButton($(this), <?php echo $result['id']; ?><?php if ($result['type'] == 'radio' or $result['type'] == 'checked' or $result['type'] == 'select'){ ?>, 'list'<?php } ?>); return false;" data-toggle="tooltip" title="<?php echo $text_click_f; ?>">
+									<?php if ($result['icon']){ ?><i class="fa fa-<?php echo $result['icon']; ?>"></i> <?php } ?><?php echo $result['name'][$config_language_id]; ?><?php if ($result['type'] == 'radio' or $result['type'] == 'checked' or $result['type'] == 'select'){ ?> <i class="fa fa-list-ol"></i><?php } ?>
+								</span>
+							</span>&nbsp;&nbsp;&nbsp;
+						<?php } ?>
+					</div><br>
+					<table class="table-bordered w-100 text-center border-spacing-1">
+						<thead>
+							<tr><td colspan="5" class="p-3"><?php echo $text_vibor_operation; ?></td></tr>
+						</thead>
+						<tbody>
+						<tr>
+						  <td data-toggle="tooltip" title="<?php echo $bracket_sign; ?>"><button class="btn btn-white w-100" onClick="addSymbol('('); return false;">(</button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $bracket_sign; ?>" onClick="addSymbol(')'); return false;">)</button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $kvadrat; ?>" onClick="addDouFunction('pow'); return false;" id="pow" data-help="<?php echo $functions['pow']['help']; ?>"><span style="font-size: 12px;">x<sup>N</sup></span></button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $kvadrat; ?>" onClick="addDouFunction('sqrt'); return false;" id="sqrt" data-help="<?php echo $functions['sqrt']['help']; ?>"><span style="font-size: 12px;">√</span></button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $text_add_active_block; ?>" onClick="addText(); return false;"><i class="fa fa-text-width"></i></button></td>
+						</tr>
+						<tr>
+						  <td><button class="btn btn-white w-100" onClick="addNumber('1'); return false;">1</button></td>
+						  <td><button class="btn btn-white w-100" onClick="addNumber('2'); return false;">2</button></td>
+						  <td><button class="btn btn-white w-100" onClick="addNumber('3'); return false;">3</button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $text_zapatya; ?>" onClick="addSymbol(','); return false;">,</button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $plus_sign; ?>" onClick="addSymbol('+'); return false;">+</button></td>
+						</tr>
+						<tr>
+						  <td><button class="btn btn-white w-100" onClick="addNumber('4'); return false;">4</button></td>
+						  <td><button class="btn btn-white w-100" onClick="addNumber('5'); return false;">5</button></td>
+						  <td><button class="btn btn-white w-100" onClick="addNumber('6'); return false;">6</button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $division_sign; ?>" onClick="addSymbol('/'); return false;">/</button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $minus_sign; ?>" onClick="addSymbol('-'); return false;">-</button></td>
+						</tr>
+						<tr>
+						  <td><button class="btn btn-white w-100" onClick="addNumber('7'); return false;">7</button></td>
+						  <td><button class="btn btn-white w-100" onClick="addNumber('8'); return false;">8</button></td>
+						  <td><button class="btn btn-white w-100" onClick="addNumber('9'); return false;">9</button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $multiplication_sign; ?>" onClick="addSymbol('*'); return false;">*</button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $text_tochka; ?>" onClick="addSymbol('.'); return false;">.</button></td>
+						</tr>
+						<tr>
+						  <td><button class="btn btn-white w-100" onClick="addNumber('0'); return false;">0</button></td>
+						  <td colspan="3" class="td-function"><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $text_add_active_block; ?>" onClick="addFunction(); return false;"><?php echo $text_add_function; ?></button></td>
+						  <td><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $equals_sign; ?>" onClick="addSymbol('='); return false;">=</button></td>
+						</tr>
+						<tr>
+						  <td colspan="5"><button class="btn btn-white w-100" data-toggle="tooltip" title="<?php echo $if_else; ?>" onClick="addCondition(); return false;"><?php echo $if_else; ?></button></td>
+						</tr>
+						</tbody>
+					</table><br>
+					<div class="table-border-gray padding text-center p-3 left-text">
+						<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_help_1; ?> </div><br>
+						<div class="paste-button-text"></div>
+					</div><br>
+				</div>
+				<div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 mb-3 d-flex flex-wrap d-init">
+					<div class="bg-gray d-flex flex-wrap p-15 table-dashed w-100" contenteditable="false" id="pasteOperation">
+						<?php if (isset($formulas)){ ?>
+							<?php foreach($formulas as $formula_id => $formula){ ?>
+								<div class="formula w-100 mb-3 pt-3 pb-3" data-formula="<?php echo $formula_id; ?>">
+									<strong>Формула <b><?php echo $formula_id; ?></b></strong></h4>
+									<?php foreach($formula as $sort_order => $formul){ ?>
+										<span class="labels" contenteditable="false" data-index="<?php echo $sort_order; ?>"<?php if ($formul['show']){ ?> data-show="<?php echo $formul['show']; ?>"<?php } ?>>
+											<?php if ($formul['type'] == 'field'){ ?>
+												<span class="btn btn-default element button-calculator" contenteditable="false" data-toggle="tooltip" data-html="true" title="" data-field-id="<?php echo $formul['field_id']; ?>" data-original-title="Для замены поля нажать и выбрать другое Поле или Знак, либо обычный Текст, нажав кнопку <i class=&quot;fa fa-text-width&quot;></i>"><?php if ($formul['value']){ ?><?php echo $formul['value']; ?><?php } else { ?><?php echo $text_delete_pole; ?><?php } ?></span><?php if ($formul['value']){ ?><input type="hidden" name="field_formula[<?php echo $formula_id; ?>]['<?php echo $formul['type']; ?>']['<?php echo $formul['field_id']; ?>'][]" value="<?php echo $sort_order; ?>"><?php } ?>
+											<?php } else if ($formul['type'] == 'list'){ ?>
+												<span class="btn btn-default element button-calculator" contenteditable="false" data-toggle="tooltip" data-html="true" title="" data-field-id="<?php echo $formul['field_id']; ?>" data-original-title="Для установки значений выбора списка Нажмите на кнопку"><?php if ($formul['value']){ ?><?php echo $formul['value']; ?><i class="fa fa-list-ol" onClick="selectListValues(<?php echo $formula_id; ?>,<?php echo $formul['field_id']; ?>);"></i><?php } else { ?><?php echo $text_delete_pole; ?><?php } ?></span><?php if ($formul['value']){ ?><input type="hidden" name="field_formula[<?php echo $formula_id; ?>]['<?php echo $formul['type']; ?>']['<?php echo $formul['field_id']; ?>'][]" value="<?php echo $sort_order; ?>"><?php } ?>
+											<?php } else if ($formul['type'] == 'function'){ ?>
+												<span class="btn btn-default element" contenteditable="false" data-toggle="tooltip" data-html="true" title="" data-field-id="<?php echo $formul['field_id']; ?>" data-original-title="<?php echo $formul['value']; ?>() - <?php echo $functions[$formul['value']]['help']; ?>"><?php echo $formul['value']; ?></span><?php if ($formul['value']){ ?><input type="hidden" name="field_formula[<?php echo $formula_id; ?>]['<?php echo $formul['type']; ?>']['<?php echo $formul['value']; ?>'][]" value="<?php echo $sort_order; ?>"><?php } ?>
+											<?php } else if ($formul['type'] == 'condition'){ ?>
+												<span class="btn element" contenteditable="true" data-field-condition="1">
+												Условие <i contenteditable="false" class="fa fa-cogs" onclick="ConditionValues(<?php echo $formula_id; ?>,<?php echo $sort_order; ?>);" data-formula_id="<?php echo $formula_id; ?>"  data-sort_order="<?php echo $sort_order; ?>" data-field-id="<?php echo $formul['field_id']; ?>"></i>
+												<?php if ($formul['conditions']){ ?>
+													<div class="body-condition-calc col-lg-offset-1 col-lg-10 col-md-offset-0 col-md-12 col-sm-offset-0 col-sm-12 col-xs-offset-0 col-xs-12" contenteditable="false">
+														<div class="condition-value-calculator ps-3 pe-3 condition-value-calculator-<?php echo $formula_id; ?>-<?php echo $sort_order; ?> hide">
+															<div class="row">
+																<h3><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;<?php echo $text_help_cond; ?></h3>
+																<div class="close-cheaper" onclick="closeIcons('.condition-value-calculator');"><svg class="svg-icon-cheaper"><use xlink:href="/catalog/view/javascript/cheaper30/icons.svg#svg-close"/></svg></div>
+																<?php foreach($formul['conditions'] as $sort_field => $condit){ ?>
+																	<div id="body-condition-calculator-<?php echo $formula_id; ?>-<?php echo $sort_field; ?>" class="col-sm-12">
+																		<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_h_cond; ?> </div>
+																		<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_help_3; ?></div>
+																		<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_help_31; ?> <a onclick="$('.help_condition').toggleClass('hide_cheaper'); return false;" class="cursor-pointer"><strong><?php echo $text_prim_zapoln; ?></strong><div></div></a><div class="help_condition hide_cheaper"><br><img src="/admin/view/stylesheet/cheaper30/select_list.jpg" class="img-responsive"><br></div></div>
+																		<table class="table table-striped table-bordered table-hover">
+																			<thead>
+																				<tr>
+																					<td class="text-center" width="1%"><?php echo $text_head_value_1; ?></td>
+																					<td class="text-center" width="33%"><span data-toggle="tooltip" data-html="true" title="<?php echo $text_mojno; ?>"><?php echo $text_if; ?></span></td>
+																					<td width="32%" class="text-center"><label class="control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $text_mojno; ?>"><?php echo $text_to; ?></span></label></td>
+																					<td width="32%" class="text-center"><label class="control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $text_mojno; ?>"><?php echo $text_else; ?></span></label></td>
+																				</tr>
+																			</thead>
+																			<tbody class="body-condition-calculator" data-id="#body-condition-calculator-<?php echo $formula_id; ?>-<?php echo $sort_field; ?>">
+																				<?php foreach($condit as $row => $cond){ ?>
+																					<tr id="fields-condition-<?php echo $row; ?>" style="cursor: move;" class="condition">
+																					<td class="text-center cont-td"><?php echo $row; ?></td>
+																					<?php foreach($cond as $condition => $cons){ ?>
+																						<td class="text-left" contenteditable="true" data-row="<?php echo $row; ?>-1" data-parts="<?php echo $condition; ?>" data-count_tr="<?php echo $row; ?>" data-field_id="<?php echo $sort_field; ?>" data-formula_id="<?php echo $formula_id; ?>">
+																							<?php foreach($cons as $field){ ?>
+																								<?php if ($field['type'] == 'number'){ ?>
+																									<span class="btn-default condit condit-lang" contenteditable="false">
+																										<?php foreach ($languages as $language) { ?>
+																											<div class="input-group">
+																												<input type="text" name="field_condition[<?php echo $formula_id; ?>][<?php echo $sort_field; ?>][<?php echo $row; ?>][<?php echo $condition; ?>][<?php echo $field['type']; ?>][<?php echo $field['sort_order']; ?>][][<?php echo $language['language_id']; ?>]" value="<?php if ($field['value'][$language['language_id']]){ ?><?php echo $field['value'][$language['language_id']]; ?><?php } ?>" data-cont="<?php echo $field['sort_order']; ?>" class="form-control w-100px text-left">
+																												<span class="input-group-addon"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>"></span>
+																											</div>
+																										<?php } ?>
+																										</span>&nbsp;&nbsp;
+																								<?php } elseif ($field['type'] == 'field'){ ?>
+																									<span class="btn btn-default condit" contenteditable="false"> <span><?php echo $field['value']; ?></span><input type="hidden" name="field_condition[<?php echo $formula_id; ?>][<?php echo $sort_field; ?>][<?php echo $row; ?>][<?php echo $condition; ?>]['<?php echo $field['type']; ?>']['<?php echo $field['field_id']; ?>'][]" value="<?php echo $field['sort_order']; ?>"> </span>&nbsp;&nbsp;
+																								<?php } else { ?>
+																									<span class="btn btn-default condit" contenteditable="false"> <span><?php echo $field['value']; ?></span><input type="hidden" name="field_condition[<?php echo $formula_id; ?>][<?php echo $sort_field; ?>][<?php echo $row; ?>][<?php echo $condition; ?>][<?php echo $field['type']; ?>]['<?php echo $field['value']; ?>'][]" value="<?php echo $field['sort_order']; ?>"> </span>&nbsp;&nbsp;
+																								<?php } ?>
+																							<?php } ?>
+																							<button class="btn btn-xs btn-default" data-toggle="tooltip" onclick="addConditionField('<?php echo $formula_id; ?>','<?php echo $sort_field; ?>','<?php echo $row; ?>-1','<?php echo $row; ?>','<?php echo $condition; ?>');" type="button" title="" data-title="<?php echo $if_else; ?>" contenteditable="false"><i class="fa fa-plus-circle"></i> <?php echo $text_add_polya_znaki; ?></button>
+																						</td>
+																					<?php } ?>
+																					<?php if (count($cond) == 1){ ?>
+																						<td class="text-left" contenteditable="true" data-row="<?php echo $row; ?>-1" data-parts="to" data-count_tr="<?php echo $row; ?>" data-field_id="<?php echo $sort_field; ?>" data-formula_id="<?php echo $formula_id; ?>">
+																							<button class="btn btn-xs btn-default" data-toggle="tooltip" onclick="addConditionField('<?php echo $formula_id; ?>','<?php echo $sort_field; ?>','<?php echo $row; ?>-1','<?php echo $row; ?>','to');" type="button" title="" data-title="<?php echo $if_else; ?>" contenteditable="false"><i class="fa fa-plus-circle"></i> <?php echo $text_add_polya_znaki; ?></button>
+																						</td>
+																						<td class="text-left" contenteditable="true" data-row="<?php echo $row; ?>-1" data-parts="else" data-count_tr="<?php echo $row; ?>" data-field_id="<?php echo $sort_field; ?>" data-formula_id="<?php echo $formula_id; ?>">
+																							<button class="btn btn-xs btn-default" data-toggle="tooltip" onclick="addConditionField('<?php echo $formula_id; ?>','<?php echo $sort_field; ?>','<?php echo $row; ?>-1','<?php echo $row; ?>','else');" type="button" title="" data-title="<?php echo $if_else; ?>" contenteditable="false"><i class="fa fa-plus-circle"></i> <?php echo $text_add_polya_znaki; ?></button>
+																						</td>
+																					<?php } ?>
+																					<?php if (count($cond) == 2){ ?>
+																						<td class="text-left" contenteditable="true" data-row="<?php echo $row; ?>-1" data-parts="else" data-count_tr="<?php echo $row; ?>" data-field_id="<?php echo $sort_field; ?>" data-formula_id="<?php echo $formula_id; ?>">
+																							<button class="btn btn-xs btn-default" data-toggle="tooltip" onclick="addConditionField('<?php echo $formula_id; ?>','<?php echo $sort_field; ?>','<?php echo $row; ?>-1','<?php echo $row; ?>','else');" type="button" title="" data-title="<?php echo $if_else; ?>" contenteditable="false"><i class="fa fa-plus-circle"></i> <?php echo $text_add_polya_znaki; ?></button>
+																						</td>
+																					<?php } ?>
+																					<td class="text-right">
+																					<button class="btn btn-danger" data-toggle="tooltip" onclick="removeCondition(<?php echo $row; ?>, $(this));" type="button" title="<?php echo $text_remove_module; ?>"><i class="fa fa-minus-circle"></i></button>
+																					</td>
+																					</tr>
+																				<?php } ?>
+																			</tbody>
+																			<tfoot>
+																				<tr>
+																					<td colspan="4"></td>
+																					<td class="text-right">
+																						<button class="btn btn-success" data-toggle="tooltip" onclick="addConditionValue('<?php echo $formula_id; ?>','<?php echo $sort_field; ?>');" type="button" title="" data-original-title="<?php echo $text_add_cond; ?>"><i class="fa fa-plus-circle"></i></button>
+																					</td>
+																				</tr>
+																				</tfoot>
+																		</table>
+																		<div class="mb-3">
+																			<div class="pull-right"><span class="btn btn-primary" title="" data-toggle="tooltip" onclick="closeIcons('.condition-value-calculator'); return false;" data-original-title="<?php echo $button_save; ?>"><i class="fa fa-save"></i> <?php echo $button_save; ?></span></div>
+																		</div>
+																	</div>
+																<?php } ?>
+															</div>
+															<div class="list-fields hide">
+																<div class="dropdown-menu dropdown-menu-right dropdown-cheaper">
+																	<ul class="col-sm-12 col-xs-12 list-unstyled">
+																		<li class="divider-head">&nbsp;&nbsp;&nbsp;Текст</li>
+																		<li role="separator" class="divider"></li>
+																		<li data-value="" data-type="text_input"><a><?php echo $text_add_text; ?></a></li>
+																	</ul><br>
+																	<ul class="col-sm-6 col-xs-12 list-unstyled">
+																		<li class="divider-head">&nbsp;&nbsp;&nbsp;<?php echo $text_polya_vibor; ?></li>
+																		<li role="separator" class="divider"></li>
+																			<?php foreach($results as $field_value_id => $result){ ?>
+																		<li data-value="<?php echo $result['id']; ?>" data-type="<?php echo $result['type']; ?>"><a><?php echo $result['name'][$config_language_id]; ?></a></li>
+																			<?php } ?>
+																	</ul>
+																	<ul class="col-sm-6 col-xs-12 list-unstyled">
+																		<li class="divider-head">&nbsp;&nbsp;&nbsp;<?php echo $text_znaki; ?></li>
+																		<li role="separator" class="divider"></li>
+																			<?php foreach($operations as $text => $operation){ ?>
+																		<li data-value="<?php echo $operation; ?>"><a><?php echo $text; ?></a></li>
+																			<?php } ?>
+																	</ul>
+																</div>
+															</div>
+														</div>
+													</div>
+												<?php } ?>
+												</span><input type="hidden" name="field_formula[<?php echo $formula_id; ?>]['<?php echo $formul['type']; ?>']['<?php echo $formul['value']; ?>'][]" value="<?php echo $sort_order; ?>">
+											<?php } else { ?>
+												<span class="btn element" contenteditable="true"><?php echo $formul['value']; ?></span><input type="hidden" name="field_formula[<?php echo $formula_id; ?>]['<?php echo $formul['type']; ?>']['<?php echo $formul['value']; ?>'][]" value="<?php echo $sort_order; ?>">
+											<?php } ?>
+										</span>
+									<?php } ?>
+									<br>
+								</div>
+							<?php } ?>
+						<?php } else { ?>
+							<div class="formula w-100 mb-3 pt-3 pb-3" data-formula="1">
+								<strong>Формула <b>1</b></strong></h4>
+								<span class="labels" contenteditable="false" data-index="1"><span class="btn element new_element" contenteditable="true"></span></span>
+								<br>
+							</div>
+						<?php } ?>
+					</div>
+					<div class="paste-help d-flex flex-wrap">
+						<div class="col-md-7 text-left"><?php echo $text_pole_calc; ?></div>
+						<div class="col-md-5 text-right pt-1 add-block"><span class="btn btn-warning br-3 cursor-pointer" data-toggle="tooltip" title="<?php echo $text_move_block_left; ?>" onClick="moveLeftNewElement();"><i class="fa fa-long-arrow-left"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn btn-primary br-3 cursor-pointer" data-toggle="tooltip" title="<?php echo $text_add_left; ?>" onClick="addLeftNewElement();"><i class="fa fa-angle-left"></i> <i class="fa fa-plus"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn btn-danger br-3 cursor-pointer" data-toggle="tooltip" title="<?php echo $text_del_block; ?>" onClick="removeNewElement();">&nbsp;<i class="fa fa-trash-o"></i>&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn btn-primary br-3 cursor-pointer" data-toggle="tooltip" title="<?php echo $text_add_right; ?>" onClick="addRightNewElement();"><i class="fa fa-plus"></i> <i class="fa fa-angle-right"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn btn-warning br-3 cursor-pointer" data-toggle="tooltip" title="<?php echo $text_move_block_right; ?>" onClick="moveRightNewElement();"><i class="fa fa-long-arrow-right"></i></span></div>
+					</div>
+					<div class="paste-help-bottom d-flex flex-wrap">
+						<div class="col-md-12 text-left pt-3"><span class="btn btn-success br-3 cursor-pointer" data-toggle="tooltip" title="<?php echo $text_add_formula; ?>" onClick="addFormula();"><i class="fa fa-plus"></i></span></div>
+					</div>
+				</div>
+			</fieldset>
+			<div id="select-value-calculator" class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10">
+				<div class="select-value-calculator hide ps-3 pe-3">
+					<div class="row">
+						<h3><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;<?php echo $text_val_calc; ?></h3>
+						<div class="close-cheaper" onclick="closeIcons('.select-value-calculator');"><svg class="svg-icon-cheaper"><use xlink:href="/catalog/view/javascript/cheaper30/icons.svg#svg-close"/></svg></div>
+						<?php if ($results){ ?>
+							<?php for ($formula_id=1; $formula_id <= $max_formula; $formula_id++){ ?>
+								<?php foreach ($results as $result) { ?>
+									<?php if ($result['type'] == 'select' or $result['type'] == 'radio' or $result['type'] == 'checked'){ ?>
+										<div id="body-value-calculator-<?php echo $formula_id; ?>-<?php echo $result['id']; ?>" class="col-sm-12 hide overf">
+											<div class="alert alert-info"><?php echo $text_calc_val; ?> <strong><?php echo $result['name'][$config_language_id]; ?></strong> <?php echo $text_calc_val_2; ?></div>
+											<div class="alert alert-info"><?php echo $text_val_setting; ?></div>
+											<div class="alert alert-info"><?php echo $text_val_setting_2; ?></div>
+											<table class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>
+														<td class="text-center" width="1%"><?php echo $text_head_value_1; ?></td>
+														<td class="text-left" width="59%"><?php echo $text_name_value; ?></td>
+														<td width="40%"><label class="control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $text_pustoe_val; ?>"><?php echo $text_raschet_calc; ?> </span></label></td>
+													</tr>
+												</thead>
+												<tbody class="body-value-calculator" data-id="#body-value-calculator-<?php echo $formula_id; ?>-<?php echo $result['id']; ?>">
+												<?php $query_row = 0; ?>
+												<?php foreach ($result['query_value'][$result['id']] as $query_value) { ?>
+													<?php $query_row = $query_row + 1; ?>
+													<tr id="fields-value-<?php echo $query_row; ?>" style="cursor: move;" class="ui-state-default">
+														<td class="text-center cont-td"><?php echo $query_row; ?></td>
+														<td class="text-left">
+														<?php foreach ($languages as $language) { ?>
+															<div class="input-group">
+																<span class="input-group-addon"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>" /></span>
+																<input type="text" value="<?php echo $query_value['name'][$language['language_id']]; ?>" placeholder="<?php echo $entry_param_fields; ?>" class="form-control name-fields" />
+															</div>
+														<?php } ?>
+														</td>
+														<td class="text-right">
+															<input type="text" name="field_value_calc[<?php echo $formula_id; ?>][<?php echo $result['id']; ?>][<?php echo $query_row; ?>][calc]" value="<?php if ($query_value['value'][$formula_id]){ ?><?php echo $query_value['value'][$formula_id]; ?><?php } else { ?><?php if ($query_value['value'][$formula_id] == '0'){ ?>0<?php } else { ?><?php } ?><?php } ?>" class="form-control"  />
+														</td>
+													</tr>
+												<?php } ?>
+												</tbody>
+											</table>
+											<div class="container-fluid mb-3">
+												<div class="pull-right"><span class="btn btn-primary" title="" data-toggle="tooltip" onclick="closeIcons('.select-value-calculator'); return false;" data-original-title="Сохранить"><i class="fa fa-save"></i> Сохранить</span></div>
+											</div>
+										</div>
+									<?php } ?>
+								<?php } ?>
+							<?php } ?>
+						<?php } ?>
+					</div>
+				</div>
+			</div>
+			<div><br><br></div>
+		</div>
+		<div class="tab-pane" id="tab-license"> 
+			<fieldset>
+				<div class="form-group">
+					<div class="col-sm-12"><br>
+						<div class="alert alert-success"><i class="fa fa-info-circle"></i> <?php echo $text_version_current; ?> <strong class="first-uppercase"><?php echo $vers; ?></strong>.<?php if (isset($cheaper30_code) or isset($module_cheaper30_code)) { ?> <?php echo $text_key; ?> <strong><?php echo isset($cheaper30_code) ? $cheaper30_code : ''; ?><?php echo isset($module_cheaper30_code) ? $module_cheaper30_code : ''; ?></strong><?php } ?></div>
+					</div>
+					<?php if ($vers != 'Pro'){ ?>
+						<?php if ($vers == 'Light'){ ?><div class="col-sm-12"><div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_kupit; ?></div></div><?php } ?><br>
+						<label class="col-sm-2 control-label" for="input-pro"><?php echo $text_vvod_key; ?> <strong>Pro</strong></label>
+						<div class="col-sm-10">
+							<input type="text" name="module_cheaper30_code" value="" placeholder="<?php echo $text_vvod_key_input; ?>" id="input-pro" class="form-control"><br>
+						</div>
+					<?php } ?>
+				</div>
+			</fieldset>
+		</div>
+		<div class="tab-pane" id="tab-help"> 
+			<fieldset>
+				<div class="form-group">
+					<div class="col-sm-12"><br>
+						<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_module_update; ?></div>
+						<div>
+							<strong class="btn btn-default mb-2"><?php echo $text_version_dou; ?></strong>
+							<?php echo $text_plan_update_1; ?>
+							<strong class="btn btn-default mb-2"><?php echo $text_version_pro; ?></strong><br>
+							<?php echo $text_plan_update_2; ?>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		</form>
+		<form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-delete" class="form-horizontal">
+		<div id="tab-guest" class="tab-pane<?php if (isset($module_id)){ ?> active<?php } ?>">
+		  <div class="panel-body">
+				<div class="row">
+				  <div class="col-lg-7 col-md-5 col-xs-6">
+					<div class="text-lef"><?php echo $pagination_cheaper; ?></div>
+				  </div>
+				  <div class="col-lg-3 col-md-4 col-xs-6">
+					  <div class="input-group input-group-sm">
+						<label class="input-group-addon" for="input-sort"><?php echo $entry_sort_order; ?></label>
+						<select id="input-sort" class="form-control" onchange="loadValue(this.value, '#tab-guest');">
+						  <?php foreach ($sorts as $sorts) { ?>
+						   <?php if ($sorts['value'] == $sort . '-' . $order) { ?>
+						  <option value="<?php echo $sorts['href']; ?>" selected="selected"><?php echo $sorts['text']; ?></option>
+						  <?php } else { ?>
+						  <option value="<?php echo $sorts['href']; ?>"><?php echo $sorts['text']; ?></option>
+						  <?php } ?>
+						  <?php } ?>
+						</select>
+					  </div>
+				  </div>
+				  <div class="col-lg-2 col-md-2 col-xs-6">
+					<div class="input-group input-group-sm">
+					<label class="input-group-addon" for="input-limit"><?php echo $limit_default; ?></label>
+						<select id="input-limit" class="form-control" onchange="loadValue(this.value, '#tab-guest');">
+						  <?php foreach ($limits as $limits) { ?>
+						  <?php if ($limits['value'] == $limit) { ?>
+						  <option value="<?php echo $limits['href']; ?>" selected="selected"><?php echo $limits['text']; ?></option>
+						  <?php } else { ?>
+						  <option value="<?php echo $limits['href']; ?>"><?php echo $limits['text']; ?></option>
+						  <?php } ?>
+						  <?php } ?>
+						</select>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			  <div class="col-sm-12 col-xs-12">
+			  <div class="table-responsive">
+				<table class="table table-bordered table-hover">
+				  <thead>
+					<tr id="head_table">
+					  <td width="1%" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+					  <td width="2%" class="text-left">№</td>
+					  <td width="8%" class="text-center"><?php echo $text_date; ?></td>
+					  <td class="text-left" width="64%"><?php echo $more_list_module; ?></td>
+					  <td class="text-center" width="25%"><?php echo $text_status; ?></td>
+					</tr>
+				  </thead>
+				  <tbody>
+				    <?php $a=0; ?>
+					<?php foreach ($cheaperings as $n){ ?>
+						<?php $a=$a+1; ?>
+					<?php } ?>
+					<?php foreach ($cheaperings as $n){ ?>
+					<?php if ($n['status'] == 0){ ?><?php $status = $status_off; ?><?php $class = " class='bg_status bg_status" . $n['id'] . " on'"; ?><?php } else { ?><?php $status = $status_on; ?><?php $class=" class='bg_status bg_status" . $n['id'] . "'"; ?><?php } ?>
+					<tr<?php echo $class; ?>>
+					  <td class="text-center">
+						<input type="checkbox" name="selected[]" value="<?php echo $n['id']; ?>" />
+					  </td>
+					  <td class="text-center"><?php echo $a; ?></td>
+					  <td class="text-center"><?php echo $n['date']; ?></td>
+					   <td class="text-left">
+							<?php if ($n['test_product']){ ?>
+							<?php echo $text_product; ?>: 
+								<span class="normal">
+									<?php if ($n['test_product']){ ?><a href="<?php echo $n['href_product']; ?>" target="_blank"><?php } ?><?php echo $n['name_product']; ?><?php if ($n['test_product']){ ?></a><?php } ?>
+									<?php if ($n['option']){ ?>
+										<?php foreach ($n['option'] as $option){ ?>
+											(-	<small><?php echo $option['name']; ?>: <?php echo $option['value']; ?></small>)
+										<?php } ?>
+									<?php } ?>
+								</span>
+								<br />
+							<?php } ?>
+						<?php if ($n['text']){ ?><?php echo $n['text']; ?><?php } ?>
+					   </td>
+					   <td class="text-center">
+							<select name="status_order" id="input-store<?php echo $n['id']; ?>" class="form-control" style="display: inline-block; padding-top: 5px; width: 146px;">
+								{<?php if ($n['status'] == 0){ ?>
+									<option value="0" selected="selected"><?php echo $status_off; ?></option>
+									<option value="1"><?php echo $status_on; ?></option>
+								<?php } else { ?>
+									<option value="0"><?php echo $status_off; ?></option>
+									<option value="1" selected="selected"><?php echo $status_on; ?></option>
+								<?php } ?>
+							</select>
+							<button type="button" onclick="ajaxsavestatus('<?php echo $n['id']; ?>','<?php echo $module_id; ?>');" form="form-featured" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary" style="" data-original-title="<?php echo $button_save; ?>"><i class="fa fa-save"></i></button>
+							<button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? ajaxdelete('<?php echo $n['id']; ?>','<?php echo $module_id; ?>') : false;"><i class="fa fa-trash-o"></i></button>
+							<div class="saving"><?php echo $text_save; ?></div>
+					   </td>
+					</tr>
+					<?php $a = $a - 1; ?>
+					<?php } ?>
+				  </tbody>
+				</table>
+			  </div></div>
+			  <div class="col-sm-12 col-xs-12"><div class="text-right marg-bottom"><?php echo $pagination_cheaper; ?></div></div>
+			  <div class="clearfix"></div>
+		</div>
+		</div>
+		</form>
+	</div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+function testStorageFields(){
+	/*$('#save_click').attr('onClick', 'confirm(\'<?php echo $text_confirm_save; ?>\') ? $(\'#form-module\').submit() : false;');*/
+	/*$('.alert-info-fixed').remove();
+	$('#container').append('<div class="alert-info-fixed"><div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_confirm_save; ?></div><div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_confirm_save_fixed; ?></div></div>');*/
+}
+$('#fields-value input[type=\'text\'].name-fields').on('keydown', function(e) {
+	testStorageFields();
+});
+$('body').prepend('<div class="divsend"></div>');
+function bluring() {
+	if ($("body").hasClass("bluring")) {
+		$('body').removeClass('bluring');
+		$('.modal-bg').removeClass('show');
+	} else {
+		$('body').addClass('bluring');
+		$('.modal-bg').addClass('show');
+	}
+}
+function getajaxpage(namesend, emailsend) {
+    $.ajax({
+        url: 'index.php?route=<?php if ($version == '2.3'){ ?>extension/<?php } ?>module/cheaper30/sendform',
+		type:'get',
+		data: 'namesend=' + namesend + '&emailsend=' + emailsend + '&token=<?php echo $token; ?>',
+		success: function(msg){
+			$('.divsend').empty();
+			$('.divsend').append(msg);
+			if ($('body .divsend').hasClass("show")) {
+				$('body .divsend').removeClass('show');
+			} else {
+				$('body .divsend').addClass('show');
+				$('.modal-bg').addClass('show');
+			}
+			bluring();
+		}
+    });
+}
+function ajaxsavestatus(id, module_id){
+	data = $('select#input-store' + id);
+    $.ajax({
+        url: 'index.php?route=<?php if ($version == '2.3'){ ?>extension/<?php } ?>module/cheaper30/updating',
+		type: 'get',
+		data: data.serialize() + '&id=' + id + '&module_id=' + module_id + '&token=<?php echo $token; ?>',
+		beforeSend: function(){
+			$('.bg_status' + id).addClass('loading');
+		},
+		success: function(){
+			$('#input-store' + id).parent().find('.saving').addClass('show');
+			
+			if ($('#input-store' + id).val() == '0') {
+				$('.bg_status' + id).addClass('on');
+			} else {
+				$('.bg_status' + id).removeClass('on');
+			}
+			$('.bg_status' + id).removeClass('loading');
+			setTimeout(function () {
+				$('#input-store' + id).parent().find('.saving').removeClass('show');
+			}, 3000);
+			
+		}
+    });
+}
+function ajaxdelete(id, module_id){
+	data = $('select#input-store' + id);
+    $.ajax({
+        url: 'index.php?route=<?php if ($version == '2.3'){ ?>extension/<?php } ?>module/cheaper30/delete',
+		type: 'get',
+		data: data.serialize() + '&id=' + id + '&module_id=' + module_id + '&token=<?php echo $token; ?>',
+		beforeSend: function(){
+			$('.bg_status' + id).addClass('loading');
+		},
+		success: function(){
+			$('.bg_status' + id).remove();
+			$('.bg_status' + id).removeClass('loading');
+		}
+    });
+}
+function centering(diving) {
+	var wsize = windowWorkSize(),
+	testElem = $(diving),
+	testElemWid =  testElem.outerWidth(),
+	testElemHei =  testElem.outerHeight();
+	testElem.css('top', wsize[1]/2 - testElemHei/2 + (document.body.scrollTop || document.documentElement.scrollTop) + 'px');
+	
+	function windowWorkSize(){
+	var wwSize = new Array();
+		if (window.innerHeight !== undefined) {wwSize= [window.innerWidth,window.innerHeight]} else {
+			wwSizeIE = (document.body.clientWidth) ? document.body : document.documentElement; 
+			wwSize= [wwSizeIE.clientWidth, wwSizeIE.clientHeight];
+		};
+		return wwSize;
+	};
+}
+//--></script>
+<script><!--
+$('select[name=\'to\']').on('change', function() {
+	$('.to').hide();
+
+	$('#to-' + this.value.replace('_', '-')).show();
+});
+
+$('select[name=\'to\']').trigger('change');
+
+$('select[name=\'type_view\']').on('change', function() {
+	$('#type_view, #type_view_help,#type-product').hide();
+	if (this.value == 0){
+		$('#type_view').show();
+		$('.type-product').show();
+	} else {
+		$('#type_view_help,#type-product').show();
+		$('.type-product').hide();
+	}
+});
+$('select[name=\'type_view\']').trigger('change');
+$('select#input-help').on('change', function(){
+	if ($(this).val()) {
+		$('#help_template').html('<?php echo $help_text_paste; ?> ' + $(this).val() + '<?php echo $help_text_paste23; ?>');
+		$('#help_template').removeClass('hide_cheaper');
+	} else {
+		$('#help_template').addClass('hide_cheaper');
+	}
+});
+$('select#input-alerts').on('change', function(){
+	if ($(this).val()) {
+		$('#cheaper_email').removeClass('hide_cheaper');
+	} else {
+		$('#cheaper_email').addClass('hide_cheaper');
+	}
+});
+$('select#input-alerts').trigger('change');
+$('select[name=\'status_email\']').on('change', function(){
+	if ($(this).val() == 1) {
+		$('#cheaper_input_email').removeClass('hide_cheaper');
+	} else {
+		$('#cheaper_input_email').addClass('hide_cheaper');
+	}
+});
+$('select[name=\'status_email\']').trigger('change');
+$('select[name=\'status_telegram\']').on('change', function(){
+	if ($(this).val() == 1) {
+		$('#cheaper_telegram').removeClass('hide_cheaper');
+	} else {
+		$('#cheaper_telegram').addClass('hide_cheaper');
+	}
+});
+$('select[name=\'status_telegram\']').trigger('change');
+function addEmail(_this){
+	_this.parent().before('<div class="col-sm-6 col-xs-12"><div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope-o"></i></span><input type="text" name="cheaper_email[]" class="form-control" placeholder="<?php echo $entry_type_email_other_placeholder; ?>"><span class="input-group-addon cursor-pointer" onClick="$(this).parent().parent().remove();"><i class="fa fa-remove redcolor"></i></span>');
+}
+//--></script>
+<?php if ($version == '2.2' or $version == '2.1' or $version == '2.0'){ ?><?php } else { ?>
+<link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+<link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script> 
+<script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script> 
+<script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script> 
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script> 
+<?php } ?>
+<script type="text/javascript" src="view/javascript/cheaper30/jquery-sortable.js"></script>
+<script type="text/javascript" src="view/javascript/cheaper30/jquery-sortab.js"></script>
+<script type="text/javascript" src="view/javascript/cheaper30/bootstrap-slider.js"></script>
+<script type="text/javascript" src="view/javascript/cheaper30/jquery.validate.js"></script>
+  <script type="text/javascript"><!--
+// Customers
+$('input[name=\'customers\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['customer_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'customers\']').val('');
+
+		$('#input-customer' + item['value']).remove();
+
+		$('#input-customer').parent().find('.well').append('<div id="customer' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="customer[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#input-customer').parent().find('.well').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+function allHeightBlock(value, id) {
+	/*if ($(window).width() < 767) {*/
+		$('#light-' + id + ' .cursor-move > div > .input-group-addon').each(function() {
+			
+			var width_div = $(this).outerWidth();
+			var width_parent = $(this).parent().outerWidth();
+			
+			if (width_div > width_parent) {
+				$(this).find('strong').css('display', 'none');
+				$(this).parent().addClass('classheight');
+				$(this).parent().find('.input-group .form-control').before($(this).parent().find('.input-group .input-group-addon'));
+				if (value == 1 || value == 0){
+					$(this).parent().find('.input-group .form-control').hide();
+					if (value == 0){$(this).find('.lightOnOff').css('width', 'auto');}
+					if (value == 1){$(this).find('.lightOnOff').removeAttr('style');}
+				} else {
+					$(this).find('.lightOnOff').removeAttr('style');
+				}
+			} else {
+				$(this).find('strong').removeAttr('style');
+				$(this).parent().removeClass('classheight');
+				$(this).parent().find('.input-group .form-control').after($(this).parent().find('.input-group .input-group-addon'));
+				$(this).parent().find('.input-group .form-control').removeAttr('style');
+			}
+		});
+	/*}*/
+}
+$('input[name=\'affiliates\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['customer_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'affiliates\']').val('');
+
+		$('#input-affiliate' + item['value']).remove();
+
+		$('#input-affiliate').parent().find('.well').append('<div id="affiliate' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="affiliate[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#input-affiliate').parent().find('.well').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// Products
+$('input[name=\'products\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'products\']').val('');
+
+		$('#input-product' + item['value']).remove();
+
+		$('#input-product').parent().find('.well').append('<div id="product' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#input-product').parent().find('.well').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+$('select[name^=\'product\']').on('change',function(){
+	if ($(this).val() == 1){
+		$('#block-product').removeClass('hide');
+		var text_href = $('#href_module').text();
+		
+		if (text_href.indexOf('&prod_id=<?php echo '<?php echo $product_id; ?>'; ?>') == '-1'){
+			text_href = text_href.replace('extension/module/cheaper30&module_id=','extension/module/cheaper30&prod_id=<?php echo '<?php echo $product_id; ?>'; ?>&module_id=');
+		}
+		$('#href_module').text(text_href);
+	} else {
+		$('#block-product').addClass('hide');
+		var text_href = $('#href_module').text();
+		
+		text_href = text_href.replace('&prod_id=<?php echo '<?php echo $product_id; ?>'; ?>','');
+		$('#href_module').text(text_href);
+	}
+});
+localStorage.setItem('storage_text_area', $('textarea#href_module').text());
+$('select[name^=\'product\']').trigger('change');
+
+function copyTextToClipboard(text){
+  var textArea = document.createElement('textarea');
+  textArea.value = text
+  document.body.insertBefore(textArea,document.body.firstChild);
+  textArea.focus();
+  textArea.select();
+  try{
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    $('span[onClick^=\'copyTextToClipboard\']').text('<?php echo $text_template_button_copy_success; ?>').addClass('btn-success');
+	setTimeout(function(){
+		$('span[onClick^=\'copyTextToClipboard\']').text('<?php echo $text_template_button_copy; ?>').removeClass('btn-success btn-danger');
+		$('.error-span').addClass('hide');
+	}, 7000);
+  } catch (err){
+		$('span[onClick^=\'copyTextToClipboard\']').text('<?php echo $text_template_button_copy_error; ?>').addClass('btn-danger');
+		$('.error-span').removeClass('hide');
+		$('#href_module').removeAttr('disabled');
+		$('textarea#href_module').select();
+		setTimeout(function(){
+			$('span[onClick^=\'copyTextToClipboard\']').text('<?php echo $text_template_button_copy; ?>').removeClass('btn-success btn-danger');
+			$('.error-span').addClass('hide');
+		}, 5000);
+  }
+  document.body.removeChild(textArea);
+}
+
+function table_load(module){
+	$('#tableLoad' + module).button('loading');
+	$('#fields-value input, #fields-value select').attr('disabled','disabled');
+	$('#select-text').addClass('loading');
+	
+	$('#select-text').load('index.php?route=extension/module/cheaper30/tableload&module=' + module + '&token=<?php echo $token; ?> #select-text', function(){
+		$('#tableLoad' + module).button('reset');
+		
+		$('#select-text').removeClass('loading');
+		moveSortorder();
+		tabs_module();
+		SortTabl();
+	});
+	$('#tab-position').load('index.php?route=extension/module/cheaper30/tableload&module=' + module + '&token=<?php echo $token; ?> #tab-position', function(){
+		$('#tableLoad' + module).button('reset');
+		sorTab();
+		
+	});
+	$('#tab-calculator').load('index.php?route=extension/module/cheaper30/tableload&module=' + module + '&token=<?php echo $token; ?> #tab-calculator', function(){
+		$('#tableLoad' + module).button('reset');
+
+		generation();
+		clickElement();
+		setTimeout(function(){
+			tooltipModule();
+		},0);
+	});
+	testStorageFields();
+	
+}
+function send(url) {
+	<?php if ($ckeditor){ ?>
+	$('textarea[name=\'message\']').val(CKEDITOR.instances['input-message'].getData());
+	<?php } else { ?>
+	
+	$('textarea[name=\'message\']').val($('#input-message').code());
+	<?php } ?>
+
+	$.ajax({
+		url: url,
+		type: 'post',
+		data: $('#content select, #content input, #content textarea'),
+		dataType: 'json',
+		beforeSend: function() {
+			$('#button-send').button('loading');
+		},
+		complete: function() {
+			$('#button-send').button('reset');
+		},
+		success: function(json) {
+			$('.alert, .text-danger').remove();
+
+			if (json['error']) {
+				if (json['error']['warning']) {
+					$('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '</div>');
+				}
+
+				if (json['error']['subject']) {
+					$('input[name=\'subject\']').after('<div class="text-danger">' + json['error']['subject'] + '</div>');
+				}
+
+				if (json['error']['message']) {
+					$('textarea[name=\'message\']').parent().append('<div class="text-danger">' + json['error']['message'] + '</div>');
+				}
+			}
+
+			if (json['next']) {
+				if (json['success']) {
+					$('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json['success'] + '</div>');
+
+					send(json['next']);
+				}
+			} else {
+				if (json['success']) {
+					$('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+				}
+			}
+		}
+	});
+}
+function tabs_module(){
+	$('#tab a').click(function(){
+		$(this).parent().parent().find('li').removeClass('active');
+		$(this).parent().addClass('active');
+		var id = $(this).attr('ref');
+		$('#tab + .tab-content > form > div').removeClass('active');
+		$(id).addClass('active');
+		return false;
+	});
+	$('#language a:first').tab('show');
+	$('#language_h1 a:first').tab('show');
+	$('#language_h4 a:first').tab('show');
+	$('#language_success a:first').tab('show');
+	$('#language_error a:first').tab('show');
+	$('#language_value a:first').tab('show');
+	<?php foreach ($error_cheaper30_h1_array as $language_id => $text_error){ ?>
+			$('#language_h1 a[href=\'#language_h1<?php echo $language_id; ?>\']').trigger('click');
+	<?php } ?>
+	<?php foreach ($error_cheaper30_errort_array as $language_id => $text_error){ ?>
+			$('#language_error a[href=\'#language_error<?php echo $language_id; ?>\']').trigger('click');
+	<?php } ?>
+	<?php foreach ($error_cheaper30_succes_array as $language_id => $text_error){ ?>
+			$('#language_success a[href=\'#language_success<?php echo $language_id; ?>\']').trigger('click');
+	<?php } ?>
+	<?php if ($error_cheaper30_email_array or $error_cheaper30_email_empty or $error_cheaper30_telegram_token or $error_cheaper30_telegram_chat_id){ ?>
+		$('a[ref=\'#tab-alerts\']').trigger('click');
+	<?php } ?>
+}
+tabs_module();
+var fields_value_row = parseInt(<?php echo $max_id; ?> + 1);
+
+moveSortorder(fields_value_row);
+selectTypeRegex(fields_value_row);
+
+function addFieldValue() {
+	html  = '<tr id="fields-value-row' + fields_value_row + '">';
+    html  += 	'<td class="nav text-center">';
+	html  += 		'<li>';
+	html  += 			'<span type="text" class="btn btn-default icons" data-field="' + fields_value_row + '" onClick="selectIcons(\'' + fields_value_row + '\'); return false;"><?php echo $text_select_icons; ?></span>';
+	html  += 			'<input type="hidden" value="" name="field_value[' + fields_value_row + '][icon]">';
+	html  += 		'</li>';
+	html  += 	'</td>';
+	html  += 	'<td class="text-left"><input type="hidden" name="field_value[' + fields_value_row + '][field_value_id]" value="' + fields_value_row + '" />';
+	<?php foreach ($languages as $language) { ?>
+	html  += 		'<div class="input-group">';
+	html  += 			'<span class="input-group-addon"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>" /></span><input type="text" name="field_value[' + fields_value_row + '][name][<?php echo $language['language_id']; ?>]" value="" placeholder="<?php echo $entry_name_fields; ?>" class="form-control name-fields" />';
+	html  += 		'</div>';
+	<?php } ?>
+	html  += 	'</td>';
+	html += 	'<td class="text-right"><select name="field_value[' + fields_value_row + '][type]" value=""  class="form-control select-regex" data-row="' + fields_value_row + '"><?php foreach ($select_type as $select){ ?><optgroup label="<?php echo $select['text']; ?>"><?php foreach ($select['items'] as $key => $item){ ?><option value="<?php echo $key; ?>"><?php echo $item; ?></option><?php } ?></optgroup><?php } ?></select></td>';
+	html  += 	'<td class="text-center parameter">-</td>';
+	html  += 	'<td class="text-center regex">-</td>';
+	html  += 	'<td class="text-center"><label><input type="checkbox" name="field_value[' + fields_value_row + '][required]" value="1"></label><br /></td>';
+	html += '  <td class="text-right"><button type="button" onclick="$(\'#fields-value-row' + fields_value_row + '\').remove(); testStorageFields();" data-toggle="tooltip" title="<?php echo $text_remove_module; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html  += '</tr>';
+	
+	$('#fields-value tbody').append(html);
+	
+	moveSortorder(fields_value_row);
+	selectTypeRegex(fields_value_row);
+	
+	$('select.select-regex[data-row="' + fields_value_row + '"]').find('option[value=\'text\']').trigger('click');
+
+	fields_value_row++;
+	
+}
+function appendRegexText(fields_value_row) {
+	
+	html_regex = '  		<select name="field_value[' + fields_value_row + '][regex]" class="form-control type-regex select' + fields_value_row + '" data-row="' + fields_value_row + '">';
+		html_regex += '  		<?php foreach ($code_regex_text as $regex){ ?><option value="<?php echo $regex['valid']; ?>"><?php echo $regex['text']; ?></option><?php } ?>';
+	html_regex += '  		</select><br />';
+	
+	return html_regex;
+}
+function appendRegexTextarea(fields_value_row) {
+	
+	html_regex = '  		<select name="field_value[' + fields_value_row + '][regex]" class="form-control type-regex-area select' + fields_value_row + '" data-row="' + fields_value_row + '">';
+		html_regex += '  		<?php foreach ($code_regex_textarea as $regex){ ?><option value="<?php echo $regex['valid']; ?>"><?php echo $regex['text']; ?></option><?php } ?>';
+	html_regex += '  		</select><br />';
+	
+	return html_regex;
+}
+function appendSelect(fields_value_row) {
+	
+	html_select = '<div class="input-group">';
+	html_select += 	'<span class="input-group-addon btn-primary" data-toggle="tooltip" onClick="selectValue(\'' + fields_value_row + '); updateNumberValue(' + fields_value_row + '); return false;" title="<?php echo $button_field_parametr_add; ?>"><i class="fa fa-edit"></i></span>';
+	html_select += 	'<select class="form-control"></select>';
+	html_select += '</div>';
+	
+	return html_select;
+}
+function appendSelectSelect(fields_value_row){
+	
+	html_radio = 	'<div class="radio-div well well-sm"></div>';
+	html_radio += 	'<span class="btn btn-primary" data-toggle="tooltip" onClick="selectValue(' + fields_value_row + ',\'select\'); updateNumberValue(' + fields_value_row + '); return false;" title="<?php echo $button_field_parametr_add; ?>"><i class="fa fa-edit"></i></span>';
+	
+	return html_radio;
+}
+function appendRadioSelect(fields_value_row){
+	
+	html_radio = 	'<div class="radio-div well well-sm"></div>';
+	html_radio += 	'<span class="btn btn-primary" data-toggle="tooltip" onClick="selectValue(' + fields_value_row + '); updateNumberValue(' + fields_value_row + '); return false;" title="<?php echo $button_field_parametr_add; ?>"><i class="fa fa-edit"></i></span>';
+	
+	return html_radio;
+}
+function appendChecked(fields_value_row){
+	html_checked = 	'<div class="radio-div well well-sm"></div>';
+	html_checked += 	'<span class="btn btn-primary" data-toggle="tooltip" onClick="selectValue(' + fields_value_row + '); updateNumberValue(' + fields_value_row + '); return false;" title="<?php echo $button_field_parametr_add; ?>"><i class="fa fa-edit"></i></span>';
+	
+	return html_checked;
+}
+function tooltipModule(){
+	setTimeout(function(){
+		$('[data-toggle=\'tooltip\']').tooltip({container: 'body'});
+	},0);
+}
+function ChangeType(row, value_row){
+	if (value_row == 'select' || value_row == 'radio' || value_row == 'checked') {
+			$('#body-value-' + row + ' tr[id^=\'fields-value-\']').find('input[type=\'text\']').each(function(i){
+				var _this = $(this);
+				var name_text = '';
+				_this.attr('name').split('!').forEach(function(i, item){
+					if (item == 1) {
+						name_text += '!' + value_row + '!';
+					} else {
+						name_text += i;
+					}
+				});
+				_this.attr('name',name_text)
+			});
+			$('#body-value-' + row + ' button[onClick^=\'addSelectValue(\']').each(function(){
+				$(this).attr('onClick','addSelectValue(\'' + $(this).attr('data-row') + '\',\'' + value_row + '\');');
+			});
+			<?php $chet = 0; ?>
+			var array_replace = [<?php foreach ($select_type as $select){ ?><?php foreach ($select['items'] as $key => $item){ ?><?php if ($chet > 0){ ?>,<?php } ?>'save<?php echo $key; ?>Value'<?php $chet = $chet + 1; ?><?php } ?><?php } ?>];
+			if (value_row == 'select') {
+				$('#body-value-' + row).each(function(){
+					var attr_onClick_save = $(this).find('span.btn-primary').attr('onClick');
+					array_replace.forEach(function(item){
+						attr_onClick_save = attr_onClick_save.replace(item, 'saveselectValue');
+					});
+					$(this).find('span.btn-primary').attr('onClick', attr_onClick_save);
+				});
+			}
+			if (value_row == 'radio') {
+				$('#body-value-' + row).each(function(){
+					var attr_onClick_save = $(this).find('span.btn-primary').attr('onClick');
+					array_replace.forEach(function(item){
+						attr_onClick_save = attr_onClick_save.replace(item, 'saveradioValue');
+					});
+					$(this).find('span.btn-primary').attr('onClick', attr_onClick_save);
+				});
+			}
+			if (value_row == 'checked') {
+				$('#body-value-' + row).each(function(){
+					var attr_onClick_save = $(this).find('span.btn-primary').attr('onClick');
+					array_replace.forEach(function(item){
+						attr_onClick_save = attr_onClick_save.replace(item, 'savecheckedValue');
+					});
+					$(this).find('span.btn-primary').attr('onClick', attr_onClick_save);
+				});
+			}
+		}
+}
+function moveSortorder(fields_value_row){
+	$('select.select-regex').change(function(){
+		tooltipModule();
+		
+		var row = $(this).attr('data-row');
+		var value_row = $(this).val();
+		ChangeType(row, value_row);
+	});
+	$('option[value=\'text\']').click(function(){
+		if ($(this).parent().parent().attr('data-row')) {
+			fields_value_row = $(this).parent().parent().attr('data-row');
+		}
+		
+		$(this).parent().parent().parent().parent().find('.regex, .parameter').empty();
+
+		var regexHtml = appendRegexText(fields_value_row);
+		$(this).parent().parent().parent().parent().find('.regex').append(regexHtml);
+		$(this).parent().parent().parent().parent().find('.regex select.type-regex').trigger('change');
+		selectTypeRegex(fields_value_row);
+	});
+	$('option[value=\'textarea\']').click(function(){
+		if ($(this).parent().parent().attr('data-row')) {
+			fields_value_row = $(this).parent().parent().attr('data-row');
+		}
+		
+		$(this).parent().parent().parent().parent().find('.regex, .parameter').empty();
+
+		var regexHtmlArea = appendRegexTextarea(fields_value_row);
+		
+		$(this).parent().parent().parent().parent().find('.regex').append(regexHtmlArea);
+		$(this).parent().parent().parent().parent().find('.regex select.type-regex-area').trigger('change');
+		selectTypeRegex(fields_value_row);
+	});
+	$('option[value=\'select\']').click(function(){
+		if ($(this).parent().parent().attr('data-row')) {
+			fields_value_row = $(this).parent().parent().attr('data-row');
+		}
+		
+		$(this).parent().parent().parent().parent().find('.regex, .parameter').empty();
+		
+		var addHtmlSelect = appendRadioSelect(fields_value_row);
+		
+		$(this).parent().parent().parent().parent().find('.parameter').append(addHtmlSelect);
+		
+		saveselectValue($(this).parent().parent().attr('data-row'),'select');
+		
+		selectTypeRegex(fields_value_row);
+	});
+	$('option[value=\'radio\']').click(function(){
+		if ($(this).parent().parent().attr('data-row')) {
+			fields_value_row = $(this).parent().parent().attr('data-row');
+		}
+		
+		$(this).parent().parent().parent().parent().find('.regex, .parameter').empty();
+		
+		var addHtmlRadio = appendRadioSelect(fields_value_row);
+		
+		$(this).parent().parent().parent().parent().find('.parameter').append(addHtmlRadio);
+		
+		saveradioValue($(this).parent().parent().attr('data-row'),'radio');
+		
+		selectTypeRegex(fields_value_row);
+	});
+	$('option[value=\'checked\']').click(function(){
+		if ($(this).parent().parent().attr('data-row')) {
+			fields_value_row = $(this).parent().parent().attr('data-row');
+		}
+		
+		$(this).parent().parent().parent().parent().find('.regex, .parameter').empty();
+		
+		var addHtmlChecked = appendChecked(fields_value_row);
+		
+		$(this).parent().parent().parent().parent().find('.parameter').append(addHtmlChecked);
+		
+		savecheckedValue($(this).parent().parent().attr('data-row'),'checked');
+		
+		selectTypeRegex(fields_value_row);
+	});
+	$('option[value=\'file\']').click(function(){
+		$(this).parent().parent().parent().parent().find('.regex, .parameter').empty();
+	});
+}
+
+function selectTypeRegex(fields_value_row){
+	$('select.type-regex, select.type-regex-area').on('change',function(){
+		
+		if ($(this).attr('data-row')) {
+			fields_value_row = $(this).attr('data-row');
+		}
+
+		$(this).parent().find('input, .row, .input-group-phone').remove();
+		
+		var select_value = $(this).val(); 
+		if (select_value == 'minlength'){
+			html = '<input type="text" class="form-control" placeholder="<?php echo $text_minlength; ?>" value="" name="field_value[' + fields_value_row + '][valid]">';
+			$(this).parent().append(html);
+		}
+		if (select_value == 'maxlength'){
+			html = '<input type="text" class="form-control" placeholder="<?php echo $text_maxlength; ?>" value="" name="field_value[' + fields_value_row + '][valid]">';
+			$(this).parent().append(html);
+		}
+		if (select_value == 'rangelength'){
+			html = 	'<div class="row">';
+				html += 	'<div class="col-sm-6 col-xs-12"><input type="text" class="form-control" placeholder="<?php echo $text_rangelength_before; ?>" value="" name="field_value[' + fields_value_row + '][valid][0]"></div>';
+				html += 	'<div class="col-sm-6 col-xs-12"><input type="text" class="form-control" placeholder="<?php echo $text_rangelength_after; ?>" value="" name="field_value[' + fields_value_row + '][valid][1]"></div>';
+			html += 	'</div>';
+			
+			$(this).parent().append(html);
+		}
+		if (select_value == 'min'){
+			html = '<input type="text" class="form-control" placeholder="<?php echo $text_min; ?>" value="" name="field_value[' + fields_value_row + '][valid]">';
+			$(this).parent().append(html);
+		}
+		if (select_value == 'max'){
+			html = '<input type="text" class="form-control" placeholder="<?php echo $text_max; ?>" value="" name="field_value[' + fields_value_row + '][valid]">';
+			$(this).parent().append(html);
+		}
+		if (select_value == 'range'){
+			html = 	'<div class="row">';
+				html += 	'<div class="col-sm-6 col-xs-12"><input type="text" class="form-control" placeholder="<?php echo $text_range_before; ?>" value="" name="field_value[' + fields_value_row + '][valid][0]"></div>';
+				html += 	'<div class="col-sm-6 col-xs-12"><input type="text" class="form-control" placeholder="<?php echo $text_range_after; ?>" value="" name="field_value[' + fields_value_row + '][valid][1]"></div>';
+			html += 	'</div>';
+			
+			$(this).parent().append(html);
+		}
+		if (select_value == 'step'){
+			html = '<input type="text" class="form-control" placeholder="<?php echo $text_step; ?>" value="" name="field_value[' + fields_value_row + '][valid]">';
+			$(this).parent().append(html);
+		}
+		if (select_value == 'phoneUS'){
+			html = '<div class="input-group-phone">';
+				html += '<label class="control-label" style="text-align: left; padding-bottom: 7px;"><span data-toggle="tooltip" title="<?php echo $text_help_phoneUS; ?>" style="font-weight: normal;"><?php echo $label_help_phoneUS; ?></span></label>';
+				<?php foreach ($languages as $language){ ?>
+					html += '<div class="input-group">';
+						html += '<span class="input-group-addon"><img title="<?php echo $language['name']; ?>" src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>"></span>';
+						html += '<input type="text" class="form-control" placeholder="<?php if (isset($phones_placeholder[$language['code']])){ ?><?php echo $phones_placeholder[$language['code']]; ?><?php } else { ?><?php echo $text_phoneUS; ?><?php } ?>" value="" name="field_value[' + fields_value_row + '][valid][<?php echo $language['code']; ?>]">';
+					html += '</div>';
+				<?php } ?>
+			html += '</div>';
+			$(this).parent().append(html);
+			tooltipModule();
+		}
+	});
+}
+function selectIcons(field_value_id){
+	$('body').removeClass('body-after');
+	$('.select-icons').removeClass('hide');
+	$('body').addClass('body-after');
+	centering('body > .select-icons');
+	$('.select-icons .hover-fa').attr('data-field', field_value_id);
+}
+function selectValue(field_value_id){
+	newValueAppendTr(field_value_id);
+	$('body').removeClass('body-after');
+	$('.select-value').removeClass('hide');
+	$('body').addClass('body-after');
+	$('.select-value div[id^=\'body-value-\']').addClass('hide');
+	$('.select-value #body-value-' + field_value_id).removeClass('hide');
+	BindClick();
+	
+	centering($('#select-value'));
+}
+function newValueAppendTr(field_value_id){
+	var htm_body_value = '';
+	
+	if ($('#body-value-' + field_value_id).html() == undefined){
+		htm_body_value += '<div class="col-sm-12 hide overf" id="body-value-' + field_value_id + '">';
+		htm_body_value += 	'<div class="container-fluid">';
+		htm_body_value += 		'<div class="pull-right"><span class="btn btn-primary" title="" data-toggle="tooltip" onclick="saveselectValue(\'' + field_value_id + '\'); $(\'.close-cheaper\').trigger(\'click\'); return false;" data-original-title="<?php echo $button_save; ?>"><i class="fa fa-save"></i> <?php echo $button_save; ?></span></div>';
+		htm_body_value += 	'</div>';
+		htm_body_value += 	'<div style="margin-top: 15px;"><?php echo $text_sor; ?></div>';
+		htm_body_value += 	'<table class="table table-striped table-bordered table-hover">';
+		htm_body_value += 	  '<thead>';
+		htm_body_value += 		'<tr>';
+		htm_body_value += 			'<td class="text-center" width="1%"><?php echo $text_head_value_1; ?></td>';
+		htm_body_value += 			'<td class="text-left"><?php echo $text_head_value_2; ?></td>';
+		htm_body_value += 			'<td width="1%"></td>';
+		htm_body_value += 		'</tr>';
+		htm_body_value += 	  '</thead>';
+		htm_body_value += 	  '<tbody class="body-value" data-id="#body-value-' + field_value_id + '">';
+		htm_body_value += 		'<tr>';
+		htm_body_value += 			'<td colspan="2"></td>';
+		htm_body_value += 			'<td>';
+		htm_body_value += 				'<button class="btn btn-success" data-toggle="tooltip" onclick="addSelectValue(\'' + field_value_id + '\',\'select\');" data-row="' + field_value_id + '" type="button" title="<?php echo $text_add_module; ?>"><i class="fa fa-plus-circle"></i></button>';
+		htm_body_value += 			'</td>';
+		htm_body_value += 		'</tr>';
+		htm_body_value += 	  '</tbody>';
+		htm_body_value += 	'</table>';
+		htm_body_value += '</div>';
+		
+	}
+	
+	$('#select-value .select-value .close-cheaper').after(htm_body_value);
+	
+	SortTabl();
+
+}
+function closeIcons(div){
+	$(div).addClass('hide');
+	$('body').removeClass('body-after');
+	$('.body-after-full').removeClass('body-after-full');
+	$('.d-init').removeClass('position-initial');
+}
+$('.hover-fa').click(function(){
+	var span_icons = $('#fields-value #fields-value-row' + $(this).attr('data-field') + ' span.icons');
+	span_icons.empty();
+	span_icons.append('<i class="fa fa-' + $(this).attr('data-fa') + '"></i>');
+	$('#fields-value input[name=\'field_value[' + $(this).attr('data-field') + '][icon]\']').val($(this).attr('data-fa'));
+	$('.close-cheaper').trigger('click');
+});
+$(document).keydown(function(e) {
+	if (!$('input[type=\'text\']').is(':focus')){
+		if (e.keyCode === 27){
+			closeIcons('.select-icons');
+			closeIcons('.select-value');
+			closeIcons('.select-value-calculator');
+			return false;
+		}
+		if (e.keyCode === 46/* || e.keyCode === 8*/){
+			if (!$('.new_element').is(':focus') && $('.condition-value-calculator').hasClass('hide')){
+				removeNewElement(e.keyCode);
+			}
+		}
+		if (e.keyCode === 37){
+			moveLeftNewElement();
+		}
+		if (e.keyCode === 39){
+			moveRightNewElement();
+		}
+		
+	}
+});
+function BindClick() {
+	/*$(document).bind('mouseup', function(e) {
+		if ($('body').find('.select-icons').has(e.target).length === 0) {
+			closeIcons('.select-icons');
+		}
+		if ($('body').find('.select-value').has(e.target).length === 0) {
+			closeIcons('.select-value');
+		}
+	});*/
+	/*$('.body-value input.form-control').on('focus', function(e){
+		saveselectValue($(this).attr('data-row'));
+	});*/
+}
+BindClick();
+function updateNumberValue(row) {
+	$('#body-value-' + row + ' tr[id^=\'fields-value-\']').each(function(i){
+		$(this).find('td').first().text(i+1);
+	});
+	tooltipModule();
+}
+function addSelectValue(row, type){
+	
+	var count_tr = 0;
+	count_tr = $('#body-value-' + row + ' tr[id^=\'fields-value-\']').length + 1;
+	
+	var value_html = '';
+	
+	value_html += '<tr id="fields-value-' + count_tr + '" style="cursor: move;" class="ui-state-default">';
+	value_html += 	'<td class="text-center cont-td">' + count_tr + '</td>';
+	value_html += 		'<td class="text-left">';
+								<?php foreach ($languages as $language) { ?>
+	value_html += 				'<div class="input-group">';
+	value_html += 					'<span class="input-group-addon"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>" /></span><input type="text" name="field_value[' + row +'][!' + type + '!][' + count_tr +'][<?php echo $language['language_id']; ?>]" value="<?php if (isset($result['param'][$language['language_id']])){ ?><?php echo $result['param'][$language['language_id']]; ?><?php } ?>" placeholder="<?php echo $entry_param_fields; ?>" class="form-control name-fields" data-language="<?php echo $language['language_id']; ?>" data-row="' + row + '" data-split-field-row="field_value[' + row +'][!' + type + '!][" data-split-language="][<?php echo $language['language_id']; ?>]" />';
+	value_html += 				'</div>';
+								<?php } ?>
+	value_html += 		'</td>';
+	value_html += 		'<td class="text-right">';
+	value_html += 			'<button class="btn btn-danger" data-toggle="tooltip" onclick="$(\'#fields-value-' + count_tr + '\').remove(); updateNumberValue(' + row + ');" type="button" title="<?php echo $text_remove_module; ?>"><i class="fa fa-minus-circle"></i></button>';
+	value_html += 		'</td>';
+	value_html += '</tr>';
+	
+	$('#body-value-' + row + ' .body-value tr').last().before(value_html);
+	
+	updateNumberValue(row);
+	
+	SortTabl();
+}
+function saveselectValue(row, type){
+	$('#fields-value-row' + row + ' .radio-div').empty();
+	
+	var cont = 0;
+	
+	var html = '<label class="checked_value control-label"><?php echo $text_select_value; ?></span></label>';
+	html += 		'<select class="form-control">';
+	$('#body-value-' + row + ' input[data-language=\'<?php echo $config_language_id; ?>\']').each(function(){
+		html += '<optgroup label="' + $(this).val() + '"></optgroup>';
+		cont++;
+	});
+	html += 		'</select>';
+	if (cont == 0) {
+		html = '<label class="checked_value control-label"><?php echo $text_select_value_empty; ?></span></label>';
+	}
+	$('#fields-value-row' + row + ' .radio-div').append(html);
+	//$('.close-cheaper').trigger('click');
+}
+function saveradioValue(row){
+	$('#fields-value-row' + row + ' .radio-div').empty();
+	var html = '<label class="checked_value control-label"><?php echo $text_select_value; ?></span></label>';
+	var cont = 0;
+	$('#body-value-' + row + ' input[data-language=\'<?php echo $config_language_id; ?>\']').each(function(){
+		html += '<label class="text-left"><input type="radio" disabled /> ' + $(this).val() + '</label>';
+		cont++;
+	});
+	if (cont == 0) {
+		html = '<label class="checked_value control-label"><?php echo $text_select_value_empty; ?></span></label>';
+	}
+	$('#fields-value-row' + row + ' .radio-div').append(html);
+	//$('.close-cheaper').trigger('click');
+}
+function savecheckedValue(row){
+	$('#fields-value-row' + row + ' .radio-div').empty();
+	var html = '<label class="checked_value control-label"><?php echo $text_select_value; ?></span></label>';
+	var cont = 0;
+	$('#body-value-' + row + ' input[data-language=\'<?php echo $config_language_id; ?>\']').each(function(){
+		html += '<label class="text-left"><input type="checkbox" disabled /> ' + $(this).val() + '</label>';
+		cont++;
+	});
+	if (cont == 0) {
+		html = '<label class="checked_value control-label"><?php echo $text_select_value_empty; ?></span></label>';
+	}
+	$('#fields-value-row' + row + ' .radio-div').append(html);
+	//$('.close-cheaper').trigger('click');
+}
+$('#tab-guest').delegate('.pagination a','click',function(e){
+    e.preventDefault();
+    loadValue(this.href, '#tab-guest');
+});
+function loadValue(href, clac){
+	$(clac).addClass('loading');
+	$(clac).load(href + ' ' + clac, function(){
+		$(clac).removeClass('loading');
+	});
+}
+$('#tab-guest').delegate('select#input-sort option, select#input-limit option','change',function(e){
+	$('#tab-guest').load(this.val() + ' #tab-guest', function(){
+		$('#tab-guest').removeClass('loading');
+	});
+});
+function SortTabl(){
+	$( "table tbody.body-value" ).sortable({
+		update: function( event, ui ) {
+			var data_id = $(this).attr('data-id');
+			var row = 0;
+			$(data_id + ' .body-value > tr').each(function(){
+				$(this).find('input[name^=\'field_value\']').each(function(){
+					$(this).attr('name', $(this).attr('data-split-field-row') + row + $(this).attr('data-split-language'));
+				});
+				row = row + 1;
+			});
+			
+			$(data_id + ' .body-value > tr').each(function(i){
+				$(this).find('.cont-td').text(i+1);
+			});
+		}
+	});
+}
+function sortPosition(){
+	$('.numeration-bg:not(.hide)').each(function(i){
+		var __this = $(this);
+		var position = parseInt(i + 1);
+		
+		__this.find('h4').text('<?php echo $text_numeration_position; ?> ' + position);
+		__this.attr('data-position', position);
+		__this.find('input[name^=\'sort_position\']').attr('name', 'sort_position[' + position + ']').attr('value', position);
+		__this.find('select[name^=\'field_position\']').attr('name', 'field_position[' + position + '][column]');
+		__this.find('button[onclick^=\'delete_pos\']').attr('onclick', 'delete_pos(' + position + '); return false;');
+		__this.find('button[onclick^=\'sortPositionUp\']').attr('onclick', 'sortPositionUp(' + position + '); return false;');
+		__this.find('button[onclick^=\'sortPositionDown\']').attr('onclick', 'sortPositionDown(' + position + '); return false;');
+		__this.find('[id^=\'position_\']').attr('id', 'position_' + position);
+		
+		var column = 1;
+		
+		__this.find('.move-li').each(function(){
+			var qt = 1;
+			var _this = $(this);
+			
+			_this.find('li:not(.empty-li)').each(function(sort){
+				$(this).find('.qt').text(qt);
+				$(this).find('input[name^=\'field_column\']').val(position + '.' + column + '.' + (sort + 1));
+				qt++;
+			});
+		column++;
+		});
+	});
+	sorTab();
+	resultPosition();
+}
+function sortLi(){
+	$('.numeration-bg').each(function(i){
+		var __this = $(this);
+		var column = 1;
+		__this.find('.move-li').each(function(){
+			var qt = 1;
+			var _this = $(this);
+			var position = _this.parent().parent().parent().parent().attr('data-position');
+			
+			_this.find('li:not(.empty-li)').each(function(sort){
+				$(this).find('.qt').text(qt);
+				$(this).find('input[name^=\'field_column\']').val(position + '.' + column + '.' + (sort + 1));
+				qt++;
+			});
+			var original = [];
+			if (_this.find('li.empty-li').length > 1){
+				_this.find('li.empty-li').each(function(){
+					var _thisText = $(this).text();
+					if (original[_thisText]){
+						$(this).remove();
+					} else {
+						original[_thisText] = true;
+					}
+				});
+			}
+			
+		column++;
+		});
+		
+	});
+	
+	resultPosition();
+}
+function clearLi(position_id){
+	$('ol.move-li > ol.move-li').each(function(){
+		$(this).find('li').unwrap();
+	});
+	$('#position_' + position_id + ' > div').each(function(){
+		if ($(this).find('ol').html() == undefined){
+			$(this).remove();
+		}
+	});
+}
+SortTabl();
+function sorTab(){
+	var adjustment;
+	$(".move-li").sortab({
+	  connectWith: '.move-li',
+	  placeholder: "ui-state-highlight",
+	  stop: function(){
+			
+			var $item = $(this);
+			var $clonedItem = $('<li/>').css({height: 0});
+			$item.removeAttr('style');
+			$item.removeClass('dragged');
+			
+			var position_id = $item.attr('data-position');
+			
+			$item.parent().find('.empty-li').hide();
+			$('.numeration-bg ol.move-li').each(function(){
+				if ($(this).find('li:not(.empty-li)').length == 0){
+					$(this).parent().find('.empty-li').show();
+				}
+			});
+			
+			$('#position_' + position_id + ' > div').each(function(){
+				if ($(this).html() == undefined){
+					$(this).remove();
+				}
+			});
+			
+			$('.tooltip-inner').addClass('hide');
+
+			sortLi();
+			
+	  },
+	}).disableSelection();
+}
+<?php if ($version == '2.1' or $version == '2.0'){ ?>
+	<?php foreach ($languages as $language) { ?>
+	$('#cheapering_text<?php echo $language['language_id']; ?>').summernote({height: 300<?php if ($version == '2.1'){ ?>, lang:'<?php echo $lang; ?>'<?php } ?>});
+	<?php } ?>
+<?php } ?>
+setTimeout(function(){
+	$('.bootstrap-datetimepicker-widget').attr('style', 'z-index: 2147483647 !important');
+},1000);
+$('a[href*=\'route=tool/upload/download\']').each(function(){
+	var attr_href = $(this).attr('href');
+	attr_href = attr_href.replace('route=tool/upload/download','route=tool/upload/download&token=<?php echo $token; ?>&user_token=<?php echo $token; ?>');
+	$(this).attr('href', attr_href);
+});
+function delete_pos(id){
+	if ($('.numeration-bg[data-position=\'' + id + '\']').find('.move-li li:not(.empty-li)').html() != undefined){
+		
+		$('body').prepend('<div class="divshadow show col-lg-offset-4 col-lg-4 col-sm-offset-3 col-sm-6 col-xs-offset-1 col-xs-10"><?php echo $text_position_delete_help; ?></div>');
+		$('body').prepend('<div class="modal-bg show"></div>');
+		
+		cliCkcloseShadow();
+	} else {
+		$('.numeration-bg[data-position=\'' + id + '\']').addClass('hide').attr('data-position', 0);
+		sortPosition();
+		sorTab();
+	}
+}
+function add_pos(){
+		
+		var position = $('ol.numeration-li > li').not('.hide').length + 1;
+		
+	var html_position = '';
+
+	html_position += '<li class="numeration-bg p-3 table-border-gray bg-dashed-gray mb-5" data-position="' + position + '">';
+	
+		html_position += '<div class="justify-content-end d-flex">';
+		html_position += 	'<div class="me-auto d-flex">';
+		html_position += 		'<button class="btn p-1" data-toggle="tooltip" title="<?php echo $text_sort_position_up; ?>" onClick="sortPositionUp(' + position + '); return false;"><i class="fa fa-chevron-up"></i></button><button class="btn p-1 ms-2" data-toggle="tooltip" title="<?php echo $text_sort_position_down; ?>" onClick="sortPositionDown(' + position + '); return false;"><i class="fa fa-chevron-down"></i></button>';
+		html_position += '<input type="hidden" name="sort_position[' + position + ']" value="' + position + '">';
+		html_position += 	'</div>';
+		
+		
+		html_position += 	'<div class="ms-auto d-flex">';
+		html_position += 		'<div class="input-group w-95 ms-2">';
+		html_position += 			'<div class="input-group-addon"><i class="fa fa-columns"></i></div>';
+		html_position += 			'<select name="field_position[' + position + '][column]" class="form-control w-35 d-inline-block" data-toggle="tooltip" title="<?php echo $text_position_column; ?>">';
+									<?php for ($i=1; $i<=4; $i++){ ?>
+		html_position += 				'<option value="<?php echo $i; ?>"><?php echo $i; ?></option>';
+									<?php } ?>
+		html_position += 			'</select>';
+		html_position += 		'</div>';
+		html_position += 		'<button onClick="delete_pos(' + position + '); return false;" class="btn btn-danger z-1 ms-2" data-toggle="tooltip" title="<?php echo $text_position_delete; ?>"><i class="fa fa-trash-o"></i></button>';
+		html_position += 	'</div>';
+		html_position += '</div>';
+		html_position += '<div class="col-sm-12 p-0 pt-4">';
+		html_position += 	'<div id="position_' + position + '">';
+		html_position += 		'<h4 class="text-center mb-4"><?php echo $text_numeration_position; ?>' + position + '</h4>';
+		
+			html_position += 	'<div class="col-sm-12">';
+			html_position += 		'<ol class="move-li list-unstyled mb-0 text-center">';
+			html_position += 			'<li class="table-bordered padding mb-3 empty-li"><?php echo $text_numeration_empty; ?></li>';
+			html_position += 		'</ol>';
+			html_position += 	'</div>';
+		
+		html_position += 		'<div class="clearfix"></div></div>';
+		html_position += '</div><div class="clearfix"></div>';
+	html_position += '</li>';
+	
+	$('ol.numeration-li').append(html_position);
+	
+	$('select[name=\'field_position[' + position + '][column]\'] option[value=\'1\']').attr('selected', 'selected');
+	
+	sorTab();
+	
+	columnPosition();
+	
+	setTimeout(function(){
+		tooltipModule();
+	},0);
+}
+function closeShadow(){
+	$('.divshadow, .modal-bg').remove();
+}
+function cliCkcloseShadow(){
+	$('.modal-bg').click(function(){
+		closeShadow();
+	});
+}
+cliCkcloseShadow();
+function columnPosition(){
+	$('select[name^=\'field_position\']').on('change', function(){
+		var position_id = $(this).parent().parent().parent().parent().attr('data-position');
+		var column = $(this).val();
+		
+		var html_ol = '<ol class="move-li list-unstyled mb-0 text-center"><li class="table-bordered padding mb-3 empty-li"><?php echo $text_numeration_empty; ?></li></ol>';
+		
+		var _this_move_li = $('#position_' + position_id + ' .move-li');
+		
+		/*if (old_column > column){*/
+			$('#position_' + position_id + ' .move-li').each(function(){
+				if ($(this).find('li:not(.empty-li)').length == 0){
+					$(this).parent().remove();
+				}
+			});
+		/*}*/
+		
+		var old_column = $('#position_' + position_id + ' .move-li').length;	
+		
+		var difference = parseInt(column - old_column);
+		
+		if (column == 1){
+			$('#position_' + position_id + ' > div').removeClass('col-sm-12 col-sm-6 col-sm-4 col-sm-3').addClass('col-sm-12');
+			if ($('#position_' + position_id + ' div').html() == undefined){
+				$('#position_' + position_id).append('<div class="col-sm-12">' + html_ol + '</div>');
+			}
+		}
+		if (column == 2){
+			$('#position_' + position_id + ' > div').removeClass('col-sm-12 col-sm-6 col-sm-4 col-sm-3').addClass('col-sm-6');
+			if (Math.sign(difference) == 1){
+				for (i = 0; i < difference; i++) {
+					$('#position_' + position_id).append('<div class="col-sm-6">' + html_ol + '</div>');
+				}
+			}
+		}
+		if (column == 3){
+			$('#position_' + position_id + ' > div').removeClass('col-sm-12 col-sm-6 col-sm-4 col-sm-3').addClass('col-sm-4');
+			if (Math.sign(difference) == 1){
+				for (i = 0; i < difference; i++) {
+					$('#position_' + position_id).append('<div class="col-sm-4">' + html_ol + '</div>');
+				}
+			}
+		}
+		if (column == 4){
+			$('#position_' + position_id + ' > div').removeClass('col-sm-12 col-sm-6 col-sm-4').addClass('col-sm-3');
+			for (i = 0; i < difference; i++) {
+				$('#position_' + position_id).append('<div class="col-sm-3">' + html_ol + '</div>');
+			}
+		}
+		
+		$('#position_' + position_id + ' > div').each(function(){
+			if ($(this).html() == undefined){
+				$(this).remove();
+			}
+		});
+		
+		var real_column = $('#position_' + position_id + ' .move-li').length;
+		_this_move_li.each(function(i, item){
+			var paste_html = '';
+			if ((i+1) > column){
+				_this_move_li[(column - 1)].append(item);
+			}
+		});
+		
+		clearLi(position_id);
+		
+		sortPosition();
+		
+		sortLi();
+		
+		//sorTab();
+	}); 
+}
+columnPosition();
+function sortPositionUp(id){
+	$('[data-position=\'' + id + '\']').fadeToggle('slow', 'linear');
+		
+	setTimeout(function(){
+		$('[data-position=\'' + ((id - 1) < 1 ? (id - 1) : 1) + '\']').before($('[data-position=\'' + id + '\']'));
+		$('[data-position=\'' + id + '\']').fadeToggle('slow', 'linear');
+	}, 500);
+	
+	setTimeout(function(){
+		sortPosition();
+	}, 700);
+}
+function sortPositionDown(id){
+	var count = $('[data-position]').length;
+	
+	$('[data-position=\'' + id + '\']').fadeToggle('slow', 'linear');
+		
+	setTimeout(function(){
+		$('[data-position=\'' + ((id + 1) <= count ? (id + 1) : count) + '\']').after($('[data-position=\'' + id + '\']'));
+		$('[data-position=\'' + id + '\']').fadeToggle('slow', 'linear');
+	}, 500);
+	
+	setTimeout(function(){
+		sortPosition();
+	}, 700);
+}
+function formSubmit(){
+	var empty = [];
+	$('.numeration-bg:not(.hide)').each(function(){
+		if ($('.numeration-bg[data-position=\'' + $(this).attr('data-position') + '\']').find('.move-li li:not(.empty-li)').html() == undefined){
+			empty.push($(this).attr('data-position'));
+		}
+	});
+
+	if (empty.length > 0){
+		empty.forEach(function(i){
+			$('[data-position=\'' + i + '\']').remove();
+		});
+	}
+	
+	$('[data-position] .move-li').each(function(){
+		if ($(this).find('li').not('.empty-li').length == 0){
+			$(this).parent().remove();
+		}
+	});
+	
+	sortPosition();
+	
+	$('[data-position]').each(function(){
+		var column = $(this).find('.move-li').length;
+		
+		$(this).find('select[name^=\'field_position\'] > option').removeAttr('selected');
+		$(this).find('select[name^=\'field_position\']').val(column).change('change');
+
+		var col_class = '';
+		
+		if (column == 1){
+			col_class += 	'col-sm-12';
+		}
+		if (column == 2){
+			col_class += 	'col-sm-6';
+		}
+		if (column == 3){
+			col_class += 	'col-sm-4';
+		}
+		if (column == 4){
+			col_class += 	'col-sm-3';
+		}
+		
+		$(this).find('.move-li').parent().removeAttr('class').addClass(col_class);
+	});
+	
+	var equals = 0;
+	$('.text-danger').remove();
+	/*$('[data-formula]').each(function(){
+		var _this_equals = [];
+		
+		var _this = $(this);
+		_this.find('[data-index]').each(function(){
+			if ($(this).find('.element:not([data-field-condition])').text().indexOf('=') != '-1'){
+				_this_equals.push(1);
+			}
+		});
+		if (_this_equals.length > 1){
+			_this.append('<span class="text-danger">Для одной формулы не может быть несколько знаков равно (=)</span>');
+			equals++;
+		}
+	});*/
+	
+	if (equals > 0) {
+		alert('Для одной формулы не может быть несколько знаков равно (=)');
+	} else {
+		$('#form-module').submit();
+	}
+	
+	cliCkcloseShadow();
+}
+function resultPosition(){
+	$('#html_result').addClass('loading');
+	var html_result = '';
+	$('.numeration-li > li').not('.hide').find('[id^=\'position_\']').each(function(){
+		html_result += '<div class="d-flex flex-wrap">' + $(this).html() + '</div>';
+	});
+	
+	$('#html_result').empty().prepend('<div class="row">' + html_result + '</div>');
+	$('#html_result').find('h4, .cursor-move, input[type=\'hidden\'], .empty-li').remove();
+	$('#html_result').find('[data-toggle=\'tooltip\']').removeAttr('data-toggle');
+	
+	$('#html_result ol.move-li').removeClass('move-li');
+	
+	$('#html_result').find('.move-li').each(function(){
+		if ($(this).find('li').html() == undefined){
+			$(this).parent().remove();
+		}
+	});
+	
+	$('#html_result .d-flex.flex-wrap').each(function(){
+		var column = $(this).children().not('.clearfix').length;
+		
+		var col_class = '';
+		
+		if (column == 1){
+			col_class += 	'col-sm-12';
+		}
+		if (column == 2){
+			col_class += 	'col-sm-6';
+		}
+		if (column == 3){
+			col_class += 	'col-sm-4';
+		}
+		if (column == 4){
+			col_class += 	'col-sm-3';
+		}
+		
+		$(this).children().not('.clearfix').removeAttr('class').addClass(col_class);
+	});
+	setTimeout(function(){
+		$('#html_result').removeClass('loading');
+	},500);
+}
+resultPosition();
+$('select[name^=\'popup_width\']').on('change', function(){
+	$(this).parent().parent().find('.col-').addClass('reding').text($(this).val());
+});
+$('select[name^=\'popup_width\']').trigger('change');
+function defaultCol(){
+	$('select[name^=\'popup_width\'] option').removeAttr('selected');
+	<?php foreach ($popup_width_default as $col => $clac){ ?>
+		$('select[name=\'popup_width\[<?php echo $col; ?>\]\'] option[value=\'<?php echo $clac; ?>\']').attr('selected', 'selected');
+		$('select[name=\'popup_width\[<?php echo $col; ?>\]\']').val('<?php echo $clac; ?>').trigger('change');
+	<?php } ?>
+}
+localStorage.setItem('replaceItem',0);
+function clickElement(){
+	$('.element').on('click', function(){
+		$('.element').removeClass('new_element');
+		$(this).addClass('new_element');
+		
+		if ($(this).hasClass('new_number')){
+			localStorage.setItem('addNumberItem',0);
+		} else {
+			localStorage.setItem('addNumberItem',1);
+		}
+		localStorage.setItem('replaceItem',1);
+		
+	});
+	
+	$('.new_element').on('click', function(){
+		if ($(this).find('sup')){
+			$(this).find('sup').focus().html('&nbsp;');
+		}
+	});
+	$('.new_element').find('sup').on('focusout', function(){
+		
+		var sup_text = $(this).text().replace(/[^+\d]/g, '');
+		if (sup_text == ''){
+			$(this).html('n');
+		} else {
+			var sup_text_length = sup_text.length;
+			for (i=1; i<=sup_text_length; i++){
+				sup_text = sup_text.replace('&nbsp;', '').replace(' ', '');
+			}
+			$(this).text(sup_text);
+		}
+	});
+	tooltipModule();
+	
+	keydownCheaper();
+	
+	addGlass();
+}
+function addGlass(){
+	$('.strong-show').remove();
+	var text_arr = ''; var text_arr_dropdown = '';
+	$('#pasteOperation > div').each(function(){
+		var _this = $(this);
+		var length = _this.find('span.labels').length;
+		var data_index = 1;
+		var formula_id = _this.attr('data-formula');
+		var test_glass = true;
+		
+		_this.find('span.labels').each(function(){
+			var __this = $(this);
+			
+			if (__this.find('.element').text() == '='){
+				data_index = __this.attr('data-index');
+			}
+		});
+		if (data_index > 2){
+			if (data_index == parseInt(length - 1)){
+				data_index = parseInt(length);
+			} else {
+				test_glass = false;
+			}
+		} else {
+			data_index = 1;
+		}
+		
+		if (_this.find('span.labels[data-index=\'' + data_index + '\'] input[name^=\'field_formula\']').attr('name') !== undefined){
+			if (_this.find('span.labels[data-index=\'' + data_index + '\'] input[name^=\'field_formula\']').attr('name').indexOf('[\'field\']') != -1){
+				test_glass = false;
+			}
+			if (_this.find('span.labels[data-index=\'' + data_index + '\'] input[name^=\'field_formula\']').attr('name').indexOf('[\'list\']') != -1){
+				test_glass = false;
+			}
+		}
+		
+		var data_show = _this.find('span.labels[data-show]').attr('data-show');
+		if (data_show == undefined){data_show = 0;}
+		
+		var textOnclick = 'onClick="offGlass(\'' + formula_id + '\',\'' + data_index + '\');"';
+		var fa = 'fa-eye';
+		var input = '<input type="hidden" name="formula_field_show[' + formula_id + '][' + data_index + ']" value="' + data_show + '">';
+		if (data_show == 0){
+			var textOnclick = 'onClick="onGlass(\'' + formula_id + '\',\'' + data_index + '\');"';
+			fa = 'fa-eye-slash';
+			input = '';
+		}
+		
+		if (test_glass){
+			if (_this.find('span.labels').text().indexOf('=') != -1 && _this.find('span.labels[data-index=\'' + data_index + '\'] .element').text() != '=' && _this.find('span.labels[data-index=\'' + data_index + '\'] .element').text() != ''){
+				_this.find('span.labels[data-index=\'' + data_index + '\']').attr('data-show',data_show);
+				_this.find('span.labels[data-index=\'' + data_index + '\'] .element br').remove();
+				_this.find('span.labels[data-index=\'' + data_index + '\'] .element').append('<strong class="strong-show"' + textOnclick + '><i class="fa ' + fa + '" data-toggle="tooltip" data-html="true" title="<?php echo $text_view_show; ?>"></i>' + input + '</strong>');
+				
+				text_arr += '<span class="btn btn-default mb-3 me-3 button-text cursor-pointer" data-toggle="tooltip" title="<?php echo $text_press_pole; ?>">' + _this.find('span.labels[data-index=\'' + data_index + '\']').text() + '</span>';
+				
+				text_arr_dropdown += '<li data-value="' + _this.find('span.labels[data-index=\'' + data_index + '\']').text().replace(/\t/g,'').trim() + '"><a>' + _this.find('span.labels[data-index=\'' + data_index + '\']').text().replace(/\t/g,'').trim() + '</a></li>';
+			}
+		}
+	});
+	$('.paste-button-text').empty().append(text_arr);
+	
+	if (text_arr_dropdown){
+		$('.dropdown-cheaper').append('<ul class="col-sm-12 col-xs-12 list-unstyled text-v"><li class="divider-head">&nbsp;&nbsp;&nbsp;<?php echo $text_text_block; ?></li><li role="separator" class="divider"></li>' + text_arr_dropdown + '</ul>');
+	}
+	$('.text-v + .text-v').remove();
+	
+	$('.paste-button-text > span').on('click', function(){
+		if ($('.new_element').length == 0){
+			alert('Нужно выбрать активный элемент в поле Калькуляции');
+		} else {
+			var data_formula_id = $('.new_element').parent().parent().attr('data-formula');
+			var data_index = $('.new_element').parent().attr('data-index');
+			
+			var htm = '<span class="btn element new_element" contenteditable="true">' + $(this).text().replace(/\t/g,'').trim() + '</span><input type="hidden" name="field_formula[' + data_formula_id + '][\'symbol\'][\'' + $(this).text().replace(/\t/g,'').trim() + '\'][]" value="' + data_index + '">';
+			$('.new_element').parent().empty().html(htm);
+		}
+	});
+}
+addGlass();
+function keydownCheaper(){
+	$(document).keydown(function(e){
+		setTimeout(function(){
+			if ($('.new_element').attr('data-field-id') == undefined && $('.new_element').attr('data-field-condition') == undefined && !$('input[name^=\'field_condition\']').is(':focus')){
+				$('.new_element').parent().find('input[type=\'hidden\']').remove();
+				var formula_id = $('.new_element').parent().parent().attr('data-formula');
+				var index = $('.new_element').parent().attr('data-index');
+				var number_text = $('.new_element').text();
+				if (number_text.indexOf("'") !== -1){
+					number_text = number_text.replace('\'','');
+					$('.new_element').text(number_text);
+				}
+				$('.new_element').parent().append('<input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\'' + number_text + '\'][]" value="' + index + '">');
+			}
+		},0);
+	});
+}
+clickElement();
+function oneClick(){
+	if ($('#pasteOperation .element').length == 1){
+		$('#pasteOperation .element').addClass('new_element');
+	}
+}
+oneClick();
+function addSymbol(symbol, system){
+
+	if ($('.new_element').length == 0){
+		alert('Нужно выбрать активный элемент в поле Калькуляции');
+	}
+	
+	$('.new_element.element').attr('contenteditable','true').removeClass('btn-default');
+	
+	if (system == undefined){
+		system = 'symbol';
+	}
+	
+	var new_element = $('.new_element').parent();
+	
+	var text = $('.new_element').text();
+
+		if (text == ''){
+			$('.new_element').html(symbol);
+			
+			$('.new_element').parent().find('input[type=\'hidden\']').remove();
+			var formula_id = $('.new_element').parent().parent().attr('data-formula');
+			$('.new_element').parent().append('<input type="hidden" name="field_formula[' + formula_id + '][\'' + system + '\'][\'' + symbol + '\'][]" value="">');
+
+		} else {
+			
+			$('.new_element').removeClass('new_element');
+			new_element.after('<span class="labels" contenteditable="false"><span class="btn element new_element" contenteditable="true"></span></span>');
+			$('.new_element').html(symbol);
+			
+			$('.new_element').parent().find('input[type=\'hidden\']').remove();
+			var formula_id = $('.new_element').parent().parent().attr('data-formula');
+			$('.new_element').parent().append('<input type="hidden" name="field_formula[' + formula_id + '][\'' + system + '\'][\'' + symbol + '\'][]" value="">');
+			
+			new_element = $('.new_element').parent();
+			
+		}
+			
+		$('.new_element').removeClass('new_element');
+		new_element.after('<span class="labels" contenteditable="false"><span class="btn element new_element" contenteditable="true"></span></span>');
+
+	
+	$('.new_element').removeClass('new_number');
+	
+	generation();
+	clickElement();
+}
+localStorage.setItem('addNumberItem',0);
+
+function addNumber(number){
+
+	if ($('.new_element').length == 0){
+		alert('Нужно выбрать активный элемент в поле Калькуляции');
+	}
+	
+	if (!$('.new_element').text()){
+		$('.new_element').addClass('new_number');
+	}
+	
+	$('.new_element.element').attr('contenteditable','true').removeClass('btn-default');
+	
+	var new_element = $('.new_element').parent();
+	
+		if ($('.new_element').hasClass('new_number')){
+			/*localStorage.setItem('addNumberItem',0);*/
+		} else {
+			
+			$('.new_element').removeClass('new_element');
+		
+			new_element.after('<span class="labels" contenteditable="false"><span class="btn element new_element new_number" contenteditable="true"></span></span>');
+
+		}
+		
+		$('.new_element').focus().append(number);
+		
+		$('.new_element').parent().find('input[type=\'hidden\']').remove();
+		var formula_id = $('.new_element').parent().parent().attr('data-formula');
+		var number_text = $('.new_element').text();
+		$('.new_element').parent().append('<input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\'' + number_text + '\'][]" value="">');
+	
+	generation();
+	clickElement();
+}
+
+function addText(){
+	$('.new_element').attr('contenteditable','true').removeAttr('data-toggle').removeAttr('data-original-title').removeAttr('title').text(' ').focus();
+	$('.new_element').removeAttr('data-field-id').removeClass('btn-default button-calculator').removeAttr('data-html');
+	
+	keydownCheaper();
+}
+function generation(){
+	var index = 1;
+	var formula_id = 1;
+	
+	$('#pasteOperation > div').not('.new_element').each(function(){
+		
+		var _this = $(this);
+		
+		_this.find('span.labels').not('.new_element').each(function(){
+			
+			var __this = $(this);
+		
+			var formula_split = $(this).find('input[name^=\'field_formula\']').attr('name');
+			
+			['field','symbol','function','list','condition'].forEach(function(item){
+				if (formula_split !== undefined){
+					if (formula_split.split('][\'' + item + '\']')[1] !== undefined){
+						var formula_index = 'field_formula[' + formula_id + '][\'' + item + '\']' + formula_split.split('][\'' + item + '\']')[1];
+						
+						__this.find('input[name^=\'field_formula\']').attr('name', formula_index);
+						
+						
+					}
+				}
+			});
+			
+		});
+		
+		_this.attr('data-formula', formula_id);
+		_this.find('strong b').text(formula_id);
+		
+		index = 1;
+		_this.find('span.labels').not('.new_element').each(function(){
+			$(this).attr('data-index', index);
+			$(this).find('input[name^=\'field_formula\']').val(index);
+			
+			var test_count = 1;
+			
+			if (_this.find('i[onclick^=\'ConditionValues\']').length != 0){
+				
+				$(this).find('.fa-cogs').attr('data-sort_order',index).attr('data-formula_id',formula_id).attr('onclick','ConditionValues(' + formula_id + ',' + index + ');');
+				
+				$(this).find('.fa-cogs').parent().find('.body-condition-calc > .condition-value-calculator').removeAttr('class').attr('class','condition-value-calculator ps-3 pe-3 condition-value-calculator-' + formula_id + '-' + index + ' hide');
+				
+				var div = $('.condition-value-calculator-' + formula_id + '-' + index);
+				
+				div.find('[data-id]').attr('data-id','#body-condition-calculator-' + formula_id + '-' + index);
+				
+				div.find('td[data-field_id]').attr('data-field_id',index);
+				
+				div.find('input[name^=\'field_condition\']').each(function(){
+					var __this = $(this);
+					
+					var parents = __this.parent().parent();
+					if (__this.parent().parent().attr('data-row') == undefined){
+						var parents = __this.parent().parent().parent();
+					}
+					
+					var data_parts = parents.attr('data-parts');
+					var data_formula_id = parents.attr('data-formula_id');
+					var data_count_tr = parents.attr('data-count_tr');
+					var data_row = parents.attr('data-row');
+					
+					var name_field = 'field_condition[' + data_formula_id + '][' + index + '][' + data_count_tr + '][' + data_parts + __this.attr('name').split(data_parts)[1];
+					
+					__this.attr('name',name_field);
+					
+				});
+				
+				var data_formula_id = div.find('td[data-field_id]').attr('data-formula_id');
+				var data_row = div.find('td[data-field_id]').attr('data-row');
+				var data_field_id = div.find('td[data-field_id]').attr('data-field_id');
+				var data_count_tr = div.find('td[data-field_id]').attr('data-count_tr');
+				var data_parts = div.find('td[data-field_id]').attr('data-parts');
+				
+				
+				div.find('td[data-field_id] > button').attr('onclick','addConditionField(\'' + data_formula_id + '\',\'' + data_field_id + '\',\'' + data_row + '\',\'' + data_count_tr + '\',\'' + data_parts + '\');');
+				
+				test_count++;
+			}
+			
+			index++;
+		});
+
+		formula_id++;
+	});
+	
+	addGlass();
+	
+	tooltipModule();
+}
+function addSymbolButton(_this, id, list){
+	
+	if ($('.new_element').length == 0){
+		alert('Нужно выбрать активный элемент в поле Калькуляции');
+	}
+	
+	var field = 'field';
+	var help_button = '<?php echo $text_press_zamena; ?> &lt;i class=&quot;fa fa-text-width&quot;&gt;&lt;/i&gt;';
+	if (list != undefined){
+		field = 'list';
+		help_button = '<?php echo $text_press_ustan; ?>';
+	}
+	
+	var formula_id = $('.new_element').parent().parent().attr('data-formula');
+	
+	if ($('.new_element').text() == '' || localStorage.getItem('replaceItem') == 1){
+		
+			var new_element = $('.new_element').parent();
+			var new_element_list = $('.new_element');
+			
+			$('.new_element').removeClass('new_element');
+			
+			if (localStorage.getItem('replaceItem') == 0){
+				new_element.after('<span class="labels" contenteditable="false"><span class="btn element new_element" contenteditable="true"></span></span>');
+			}
+			
+			var html = _this.html();
+			
+			if (list != undefined){
+				html = html.replace('fa-list-ol">','fa-list-ol" onClick="selectListValues(' + formula_id + ',' + id + ');">');
+			}
+			
+			new_element.replaceWith('<span class="labels" contenteditable="false"><span class="btn btn-default element' + (localStorage.getItem('replaceItem') == 1 ? ' new_element' : '') + ' button-calculator" contenteditable="false" data-toggle="tooltip" data-html="true" title="' + help_button + '" data-field-id="' + id + '" data-field-id="' + id + '">' + html + '</span><input type="hidden" name="field_formula[' + formula_id + '][\'' + field + '\'][' + id + '][]" value=""></span>');
+			
+			var next_index = parseInt(new_element.attr('data-index')) + 1;
+			
+			var next_element = new_element.parent().find('[data-index=\'' + next_index + '\'] > span');
+			
+			if (next_element.html() != undefined){
+				if (!next_element.text()){
+					$('.new_element').removeClass('new_element');
+					next_element.addClass('new_element');
+					
+				}
+			}
+			
+			localStorage.setItem('replaceItem',0);
+		
+	} else {
+		var new_element = $('.new_element').parent();
+		$('.new_element').removeClass('new_element');
+
+		new_element.after('<span class="labels" contenteditable="false"><span class="btn btn-default element new_element" contenteditable="true"></span></span>');
+		
+		var html = _this.html();
+		
+		if (list != undefined){
+			html = html.replace('fa-list-ol">','fa-list-ol" onClick="selectListValues(' + formula_id + ',' + id + ');">');
+		}
+		
+		$('.new_element').parent().replaceWith('<span class="labels" contenteditable="false"><span class="btn btn-default element new_element button-calculator" contenteditable="false" data-toggle="tooltip" data-html="true" title="' + help_button + '" data-field-id="' + id + '">' + html + '</span><input type="hidden" name="field_formula[' + formula_id + '][\'' + field + '\'][' + id + '][]" value=""></span>');
+
+	}
+
+	generation();
+	clickElement();
+}
+function removeNewElement(keyCode){
+	var new_element = $('.new_element');
+	if ($('.new_element').length == 0){
+		alert('<?php echo $text_press_active; ?>');
+	} else {
+		if ($('.element').length == 1){
+			if ($('.element').html == undefined){
+				alert('<?php echo $text_no_del_edinstv; ?>');
+			} else {
+				$('.element').attr('contenteditable','true').removeAttr('data-toggle').removeAttr('data-original-title').removeAttr('title').text('');
+				$('.element').parent().find('input[type=\'hidden\']').remove();
+			}
+		} else {
+			
+			if (keyCode == undefined || keyCode == 46){
+				var new_index = parseInt(new_element.parent().attr('data-index'));
+			}
+			if (keyCode == 8){
+				var new_index = parseInt(new_element.parent().attr('data-index')) - 1;
+				if (new_index < 1){new_index = 1;}
+			}
+			
+			var new_element_parent = new_element.parent().parent();
+			
+			if (!$('.new_element').find('sup').is(':focus')){
+				
+				if ($('.new_element').find('.fa-cogs').length != 0){
+					var data_formula_id = $('.new_element').find('.fa-cogs').attr('data-formula_id');
+					var data_sort_order = $('.new_element').find('.fa-cogs').attr('data-sort_order');
+					
+					$('#body-condition-calculator-' + data_formula_id + '-' + data_sort_order).remove();
+				}
+				
+				$('.new_element').parent().remove();
+
+			}
+			
+			generation();
+			
+			new_element_parent.find('[data-index=\'' + new_index + '\'] > span').addClass('new_element');
+			
+		}
+	}
+	$('.formula').each(function(){
+		if ($(this).find('span').length == 0){
+			$(this).remove();
+		}
+	});
+	generation();
+	clickElement();
+	if ($('.new_element').length == 0){
+		$('.element').last().addClass('new_element');
+	}
+}
+function moveRightNewElement(){
+	if ($('.new_element').length == 0){
+		alert('<?php echo $text_nujno_select; ?>');
+	}
+	var new_element = $('.new_element').parent();
+	var index = new_element.attr('data-index');
+	var next_index = parseInt(index) + 1;
+	
+	new_element.parent().find('span[data-index=\'' + next_index + '\']').after(new_element);
+	generation();
+}
+function moveLeftNewElement(){
+	if ($('.new_element').length == 0){
+		alert('<?php echo $text_nujno_select; ?>');
+	}
+	var new_element = $('.new_element').parent();
+	var index = new_element.attr('data-index');
+	var prev_index = parseInt(index) - 1;
+	if (prev_index < 1){
+		prev_index = 1;
+	}
+	
+	new_element.parent().find('span[data-index=\'' + prev_index + '\']').before(new_element);
+	generation();
+}
+function addRightNewElement(){
+	if ($('.new_element').length == 0){
+		alert('<?php echo $text_nujno_select_2; ?>');
+	}
+	var new_element = $('.new_element').parent();
+	$('.new_element').removeClass('new_element');
+	
+	new_element.after('<span class="labels" contenteditable="false"><span class="btn element new_element" contenteditable="true"></span></span>');
+	
+	generation();
+	clickElement();
+}
+function addLeftNewElement(){
+	if ($('.new_element').length == 0){
+		alert('<?php echo $text_nujno_select_3; ?>');
+	}
+	var new_element = $('.new_element').parent();
+	$('.new_element').removeClass('new_element');
+	
+	new_element.before('<span class="labels" contenteditable="false"><span class="btn element new_element" contenteditable="true"></span></span>');
+	
+	generation();
+	clickElement();
+}
+sorTab();
+
+function addFormula(){
+	$('.new_element').removeClass('new_element');
+	
+	var formula_last = $('.formula').last();
+	var formula_last_id = parseInt(formula_last.attr('data-formula')) + 1;
+	formula_last.after('<div class="formula w-100 mb-3 pt-3 pb-3" data-formula="' + formula_last_id + '"><strong><?php echo $text_formula; ?> <b>' + formula_last_id + '</b></strong><span class="labels" contenteditable="false" data-index="1"><span class="btn element new_element" contenteditable="true"></span></span><br></div>');
+	
+	clickElement();
+}
+function addFunction(){
+	
+	var function_select = '';
+	
+	function_select += 			'<select class="form-control select-function">';
+	function_select += 				'<option value=""><?php echo $text_select_function; ?></option>';
+									<?php foreach ($functions as $function => $funct){ ?>
+	function_select += 					'<option value="<?php echo $funct['onсlick']; ?>" id="<?php echo $function; ?>"><?php echo $function; ?>() - <?php echo $funct['help']; ?></option>';
+									<?php } ?>
+	function_select += 			'</select>';
+	
+	$('.td-function > button').addClass('d-none');
+	$('.td-function').prepend(function_select);
+	
+	$('select.select-function').on('change', function(){
+		var func = this[this.options.selectedIndex].id;
+		
+		window[this.value](func);
+		$('.td-function > button').removeClass('d-none');
+		$('.td-function > select').remove();
+	});
+}
+function addOneFunction(func){
+	if ($('.new_element').length == 0){
+		alert('<?php echo $text_nujno_select_4; ?>');
+	}
+	
+	var new_element = $('.new_element');
+	var new_element_text = new_element.html();
+	
+	$('.new_element').parent().find('input[type=\'hidden\']').remove();
+	var formula_id = $('.new_element').parent().parent().attr('data-formula');
+	var number_text = $('.new_element').text();
+	var field_id = $('.new_element').attr('data-field-id');
+	
+	$('.new_element').removeClass('new_element');
+	
+	
+	var text_help = $('select option#' + func).html();
+	
+	var itog_function = '';
+	new_element.parent().attr('data-toggle','tooltip').attr('title',text_help);
+	new_element.html(func);
+	new_element.parent().find('.element').attr('contenteditable','false').addClass('btn-default');
+	new_element.parent().append('<input type="hidden" name="field_formula[' + formula_id + '][\'function\'][\'' + func + '\'][]" value="">');
+	
+	itog_function += 	'<span class="labels" contenteditable="false"><span class="btn element" contenteditable="true">(</span><input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\'(\'][]" value=""></span>';
+	itog_function += 	'<span class="labels" contenteditable="false">';
+		if (field_id == undefined){
+			itog_function += 		'<span class="btn element new_element" contenteditable="true">' + new_element_text + '</span><input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\'' + new_element_text + '\'][]" value="">';
+		} else {
+			itog_function += 		'<span class="btn element new_element" contenteditable="true" data-field-id="' + field_id + '">' + new_element_text + '</span><input type="hidden" name="field_formula[' + formula_id + '][\'field\'][\'' + field_id + '\'][]" value="">';
+		}
+	itog_function += 	'</span>';
+	itog_function += 	'<span class="labels" contenteditable="false"><span class="btn element" contenteditable="true">)</span><input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\')\'][]" value=""></span>';
+	
+	new_element.parent().after(itog_function);
+	
+	generation();
+	clickElement();
+	tooltipModule();
+}
+
+function addDouFunction(func){
+	
+	if ($('.new_element').length == 0){
+		alert('<?php echo $text_nujno_select_4; ?>');
+	}
+	
+	var new_element = $('.new_element');
+	var new_element_text = new_element.html();
+	
+	$('.new_element').parent().find('input[type=\'hidden\']').remove();
+	var formula_id = $('.new_element').parent().parent().attr('data-formula');
+	var number_text = $('.new_element').text();
+	var field_id = $('.new_element').attr('data-field-id');
+	
+	$('.new_element').removeClass('new_element');
+	
+	if (func == 'pow' || func == 'sqrt' || func == 'toFixed'){
+		var text_help = func + '()' + ' - ' + $('#' + func).attr('data-help');
+	} else {
+		var text_help = $('select option#' + func).html();
+	}
+	
+	var itog_function = '';
+	new_element.removeAttr('data-toggle').removeAttr('data-original-title').removeAttr('title');
+	new_element.parent().attr('data-original-title',text_help).attr('data-toggle','tooltip').attr('title',text_help);
+	
+	new_element.html(func);
+	new_element.parent().find('.element').attr('contenteditable','false').addClass('btn-default');
+	new_element.parent().append('<input type="hidden" name="field_formula[' + formula_id + '][\'function\'][\'' + func + '\'][]" value="">');
+	
+	itog_function += 	'<span class="labels" contenteditable="false"><span class="btn element" contenteditable="true">(</span><input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\'(\'][]" value=""></span>';
+	
+	itog_function += 	'<span class="labels" contenteditable="false">';
+		if (field_id == undefined){
+			itog_function += '<span class="btn element new_element" contenteditable="true">' + new_element_text + '</span><input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\'' + new_element_text + '\'][]" value="">';
+		} else {
+			itog_function += '<span class="btn element new_element" contenteditable="true" data-field-id="' + field_id + '">' + new_element_text + '</span><input type="hidden" name="field_formula[' + formula_id + '][\'field\'][\'' + field_id + '\'][]" value="">';
+		}
+	itog_function += 	'</span>';
+	
+	itog_function += 	'<span class="labels" contenteditable="false" data-toggle="tooltip" title="<?php echo $text_obyazateln_zapatoi; ?>"><span class="btn element" contenteditable="true">,</span><input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\',\'][]" value=""></span>';
+	if (/*func == 'roundUp' || */func == 'sqrt'){
+		itog_function += 	'<span class="labels" contenteditable="false" data-toggle="tooltip" title="<?php echo $text_zadat_kratnost; ?>"><span class="btn element" contenteditable="true">2</span><input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\'2\'][]" value=""></span>';
+	} else if (func == 'min' || func == 'max' || func == 'medium'){
+		itog_function += 	'<span class="labels" contenteditable="false" data-toggle="tooltip" title="<?php echo $text_zadat_pole_chislo; ?>"><span class="btn element" contenteditable="true"></span></span>';
+	} else if (func == 'pow' || func == 'nth_root' || func == 'log'){
+		itog_function += 	'<span class="labels" contenteditable="false" data-toggle="tooltip" title="<?php echo $text_zadat_stepen_chisla; ?>"><span class="btn element" contenteditable="true">N</span><input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\'N\'][]" value=""></span>';
+	} else if (func == 'toFixed'){
+		itog_function += 	'<span class="labels" contenteditable="false" data-toggle="tooltip" title="<?php echo $text_zadat_kol_vo_znakov; ?>"><span class="btn element" contenteditable="true">N</span><input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\'N\'][]" value=""></span>';
+	} else {
+		itog_function += 	'<span class="labels" contenteditable="false"><span class="btn element" contenteditable="true"></span></span>';
+	}
+	itog_function += 	'<span class="labels" contenteditable="false"><span class="btn element" contenteditable="true">)</span><input type="hidden" name="field_formula[' + formula_id + '][\'symbol\'][\')\'][]" value=""></span>';
+	
+	new_element.parent().after(itog_function);
+	
+	if ($('.new_element').text() == ''){
+		$('.new_element').parent().attr('data-toggle','tooltip').attr('title','<?php echo $text_zadat_pole_chislo; ?>');
+	}
+	
+	generation();
+	clickElement();
+	setTimeout(function(){
+		tooltipModule();
+	},0);
+	
+}
+function selectListValues(formula_id, field_id){
+	newValueAppendCalculatorTr(formula_id, field_id);
+	$('.select-value-calculator').removeClass('hide');
+	$('.select-value-calculator div[id^=\'body-value-calculator-\']').addClass('hide');
+	$('.select-value-calculator #body-value-calculator-' + formula_id + '-' + field_id).removeClass('hide');
+	$('body').addClass('body-after');
+	centering($('#select-value-calculator'));
+	
+	replaceComma();
+}
+function newValueAppendCalculatorTr(formula_id, field_id){
+	var htm_body_value = '';
+	
+	if ($('#body-value-calculator-' + formula_id + '-' + field_id).html() == undefined){
+		
+		var values = [];
+		$('#body-value-' + field_id + ' input.name-fields').each(function(){
+			values.push($(this).attr('value'));
+		});
+		
+		$('#body-value-calculator-' + formula_id + '-' + field_id).remove();
+		
+		htm_body_value += 	'<div id="body-value-calculator-' + formula_id + '-' + field_id + '" class="col-sm-12 hide overf">';
+		htm_body_value += 		'<div class="alert alert-info"><?php echo $text_alert_calc_1; ?></div>';
+		htm_body_value += 		'<div class="alert alert-info"><?php echo $text_alert_calc_2; ?></div>';
+		htm_body_value += 		'<div class="alert alert-info"><?php echo $text_alert_calc_3; ?></div>';
+		htm_body_value += 		'<table class="table table-striped table-bordered table-hover">';
+		htm_body_value += 			'<thead>';
+		htm_body_value += 				'<tr>';
+		htm_body_value += 					'<td class="text-center" width="1%"><?php echo $text_head_value_1; ?></td>';
+		htm_body_value += 					'<td class="text-left" width="59%"><?php echo $text_name_value; ?></td>';
+		htm_body_value += 					'<td width="40%"><label class="control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $text_pust; ?> </span></label></td>';
+		htm_body_value += 				'</tr>';
+		htm_body_value += 			'</thead>';
+		htm_body_value += 			'<tbody class="body-value-calculator" data-id="#body-value-calculator-' + formula_id + '-' + field_id + '">';
+		
+		if (values){
+			values.forEach(function(item,i){
+				i++;
+			
+				htm_body_value += 		'<tr id="fields-value-' + i + '" style="cursor: move;" class="ui-state-default">';
+				htm_body_value += 			'<td class="text-center cont-td">' + i + '</td>';
+				htm_body_value += 			'<td class="text-left">';
+				
+				<?php foreach ($languages as $language) { ?>
+				htm_body_value += 				'<div class="input-group">';
+				htm_body_value += 					'<span class="input-group-addon"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>" title="<?php echo $language['name']; ?>" /></span>';
+				htm_body_value += 					'<input type="text" value="' + item + '" placeholder="<?php echo $entry_param_fields; ?>" class="form-control name-fields" />';
+				htm_body_value += 				'</div>';
+				<?php } ?>
+				
+				htm_body_value += 			'</td>';
+				htm_body_value += 			'<td class="text-right">';
+				htm_body_value += 				'<input type="text" name="field_value_calc[' + formula_id + '][' + field_id + '][' + i + '][calc]" value="" class="form-control"  />';
+				htm_body_value += 			'</td>';
+				htm_body_value += 		'</tr>';
+				
+			});
+		}
+		
+		htm_body_value += 			'</tbody>';
+		htm_body_value += 		'</table>';
+		htm_body_value += 		'<div class="container-fluid mb-3">';
+		htm_body_value += 			'<div class="pull-right"><span class="btn btn-primary" title="" data-toggle="tooltip" onclick="closeIcons(\'.select-value-calculator\'); return false;" data-original-title="<?php echo $button_save; ?>"><i class="fa fa-save"></i> <?php echo $button_save; ?></span></div>';
+		htm_body_value += 		'</div>';
+		htm_body_value += 	'</div>';
+		
+	}
+	
+	$('.select-value-calculator > .row').append(htm_body_value);
+	
+	SortTabl();
+	tooltipModule();
+
+}
+function centering(diving){
+	var wsize = windowWorkSize(),
+	testElem = $(diving),
+	testElemWid =  testElem.outerWidth(),
+	testElemHei =  testElem.outerHeight(),
+	toPing = wsize[1]/2 - testElemHei/2 + (document.body.scrollTop || document.documentElement.scrollTop) - 100;
+	if (toPing < 0) {toPing = 100;}
+			
+	testElem.css('top', toPing + 'px');
+
+	function windowWorkSize(){
+	var wwSize = new Array();
+		if (window.innerHeight !== undefined) {wwSize= [window.innerWidth,window.innerHeight]} else {
+			wwSizeIE = (document.body.clientWidth) ? document.body : document.documentElement; 
+			wwSize= [wwSizeIE.clientWidth, wwSizeIE.clientHeight];
+		};
+		
+		return wwSize;
+	};
+	
+}
+
+function offGlass(formula_id, data_index){
+	var input = $('input[name=\'formula_field_show[' + formula_id + '][' + data_index + ']\']');
+
+	input.parent().attr('onClick','onGlass(\'' + formula_id + '\',\'' + data_index + '\');');
+	
+	input.parent().find('.fa-eye').removeClass('fa-eye').addClass('fa-eye-slash');
+	
+	input.parent().parent().parent().attr('data-show','0');
+	
+	input.remove();
+}
+
+function onGlass(formula_id, data_index){
+	
+	var input = $('[onclick=\'onGlass(\\\'' + formula_id + '\\\',\\\'' + data_index + '\\\');\']');
+	
+	input.find('.fa-eye-slash').removeClass('fa-eye-slash').addClass('fa-eye');
+	
+	input.parent().parent().attr('data-show','1');
+	
+	input.append('<input type="hidden" name="formula_field_show[' + formula_id + '][' + data_index + ']" value="1">');
+	
+	input.attr('onClick','offGlass(\'' + formula_id + '\',\'' + data_index + '\');');
+
+}
+function replaceComma(){
+	$('input[name^=\'field_value_calc\']').on('keydown', function(e){
+		var val1 = $(this).val().replace(',','.');
+		$(this).val(val1);
+	});
+	$('input[name^=\'field_value_calc\']').on('keyup', function(e){
+		var val1 = $(this).val().replace(',','.');
+		$(this).val(val1);
+	});
+}
+replaceComma();
+function addCondition(){
+	if ($('.new_element').length == 0){
+		alert('<?php echo $text_nujno_select_4; ?>');
+	}
+	$('.new_element').parent().attr('data-field-condition','1');
+	var formula_id = $('.new_element').parent().parent().attr('data-formula');
+	var index = $('.new_element').parent().attr('data-index');
+	var id = $('.new_element').parent().find('input[name^=\'field_formula\']').val();
+	if (id == undefined){
+		id = index;
+	}
+	var data_index = 1;
+	var length = $('[data-formula=\'' + formula_id + '\']').find('span.labels').length;
+	var test_show = true;
+	
+	$('[data-formula=\'' + formula_id + '\'] span.labels').each(function(){
+		if ($(this).find('.element').text() == '='){
+			data_index = $(this).attr('data-index');
+		}
+	});
+	if (data_index == 2 && id == 1){
+		test_show = false;
+	}
+	if (data_index > 2 && data_index == parseInt(length - 1) && id == length){
+		test_show = false;
+	}
+	
+	$('.new_element br').remove();
+	if (test_show){
+		$('.new_element').empty();
+		$('.new_element').parent().find('input[type=\'hidden\']').remove();
+		$('.new_element').append('<?php echo $text_condition; ?> <i contenteditable="false" class="fa fa-cogs" onClick="ConditionValues(' + formula_id + ',' + id + ');" data-formula_id="' + formula_id + '" data-sort_order="' + id + '"></i>');
+		$('.new_element').after('<input type="hidden" name="field_formula[' + formula_id + '][\'condition\'][\'conditions\'][]" value="' + index + '">');
+	} else {
+		alert('<?php echo $text_mojon_add; ?>');
+	}
+}
+function ConditionValues(formula_id, field_id){
+	newValueAppendCalculatorConditionTr(formula_id, field_id);
+	
+	$('.condition-value-calculator-' + formula_id + '-' + field_id).removeClass('hide');
+	
+	$('body').addClass('body-after');
+	$('.d-init').addClass('position-initial');
+	
+	$('.body-condition-calc').removeAttr('style');
+	setTimeout(function(){
+		centering($('.body-condition-calc'));
+	}, 0);
+
+}
+
+function tdAttributes(formula_id, field_id){
+	$('.condition-value-calculator-' + formula_id + '-' + field_id).each(function(){
+		var _this = $(this);
+		
+		_this.find('[id^=\'fields-condition\']').each(function(i2){
+			var __this = $(this);
+			i2++;
+			
+			__this.find('td[data-row]').each(function(i){
+				var ___this = $(this);
+				
+				var parts = 'if';
+				if (i == 1){parts = 'to';}
+				if (i == 2){parts = 'else';}
+				___this.attr('data-parts',parts).attr('data-count_tr',i2).attr('data-field_id',field_id).attr('data-formula_id',formula_id);
+			});
+		});
+	});
+}
+
+function newValueAppendCalculatorConditionTr(formula_id, field_id){
+	var htm_body_value = '';
+	
+	if ($('.condition-value-calculator-' + formula_id + '-' + field_id).html() == undefined){
+	
+		var values = [];
+		$('#body-condition-' + field_id + ' input.name-fields').each(function(){
+			values.push($(this).attr('value'));
+		});
+	
+		$('[onclick=\'ConditionValues(' + formula_id + ',' + field_id + ');\'] + .body-condition-calc').remove();
+
+		htm_body_value += 	'<div class="body-condition-calc col-lg-offset-1 col-lg-10 col-md-offset-0 col-md-12 col-sm-offset-0 col-sm-12 col-xs-offset-0 col-xs-12" contenteditable="false">';
+		htm_body_value += 	'<div class="condition-value-calculator ps-3 pe-3 condition-value-calculator-' + formula_id + '-' + field_id + ' hide">';
+		htm_body_value += 	'<div class="row">';
+		htm_body_value += 		'<h3><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;<?php echo $text_help_cond; ?></h3>';
+		htm_body_value += 		'<div class="close-cheaper" onclick="closeIcons(\'.condition-value-calculator\');"><svg class="svg-icon-cheaper"><use xlink:href="/catalog/view/javascript/cheaper30/icons.svg#svg-close"/></svg></div>';
+		htm_body_value += 		'<div id="body-condition-calculator-' + formula_id + '-' + field_id + '" class="col-sm-12">';
+		htm_body_value += 			'<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_h_cond; ?> </div>';
+		htm_body_value += 			'<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_help_3; ?></div><div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_help_31; ?> <a onclick="$(\'.help_condition\').toggleClass(\'hide_cheaper\'); return false;" class="cursor-pointer"><strong><?php echo $text_prim_zapoln; ?></strong><div></div></a><div class="help_condition hide_cheaper"><br><img src="/admin/view/stylesheet/cheaper30/select_list.jpg" class="img-responsive"><br></div></div>';
+		htm_body_value += 			'<table class="table table-striped table-bordered table-hover">';
+		htm_body_value += 				'<thead>';
+		htm_body_value += 					'<tr>';
+		htm_body_value += 						'<td class="text-center" width="1%"><?php echo $text_head_value_1; ?></td>';
+		htm_body_value += 						'<td class="text-center" width="33%"><span data-toggle="tooltip" data-html="true" title="<?php echo $text_mojno; ?>"><?php echo $text_if; ?></span></td>';
+		htm_body_value += 						'<td width="32%" class="text-center"><label class="control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $text_mojno; ?>"><?php echo $text_to; ?></span></label></td>';
+		htm_body_value += 						'<td width="32%" class="text-center"><label class="control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $text_mojno; ?>"><?php echo $text_else; ?></span></label></td>';
+		htm_body_value += 					'</tr>';
+		htm_body_value += 				'</thead>';
+		htm_body_value += 				'<tbody class="body-condition-calculator" data-id="#body-condition-calculator-' + formula_id + '-' + field_id + '">';
+		htm_body_value += 				'<tr>';
+		htm_body_value += 				'</tr>';
+		htm_body_value += 				'</tbody>';
+		htm_body_value += 				'<tfoot>';
+		htm_body_value += 					'<tr>';
+		htm_body_value += 						'<td colspan="4"></td>';
+		htm_body_value += 						'<td class="text-right"><button class="btn btn-success" data-toggle="tooltip" onclick="addConditionValue(' + formula_id + ',' + field_id + ');" type="button" title="" data-original-title="<?php echo $if_else; ?>"><i class="fa fa-plus-circle"></i></button></td>';
+		htm_body_value += 					'</tr>';
+		htm_body_value += 				'</tfoot>';
+		htm_body_value += 			'</table>';
+		htm_body_value += 			'<div class="mb-3">';
+		htm_body_value += 				'<div class="pull-right"><span class="btn btn-primary" title="" data-toggle="tooltip" onclick="closeIcons(\'.condition-value-calculator\'); return false;" data-original-title="Сохранить"><i class="fa fa-save"></i> Сохранить</span></div>';
+		htm_body_value += 			'</div>';
+		htm_body_value += 		'</div>';
+		htm_body_value += 		'<div class="list-fields hide">';
+		htm_body_value += 			'<div class="dropdown-menu dropdown-menu-right dropdown-cheaper">';
+		htm_body_value += 			'<ul class="col-sm-12 col-xs-12 list-unstyled"><li class="divider-head">&nbsp;&nbsp;&nbsp;<?php echo $text_text_t; ?></li><li role="separator" class="divider"></li><li data-value="" data-type="text_input"><a><?php echo $text_add_text; ?></a></li></ul><br>';
+		htm_body_value += 			'<ul class="col-sm-6 col-xs-12 list-unstyled"><li class="divider-head">&nbsp;&nbsp;&nbsp;<?php echo $text_polya_vibor; ?></li><li role="separator" class="divider"></li>';
+									<?php foreach ($results as $field_value_id => $result) { ?>
+		htm_body_value += 				'<li data-value="<?php echo $result['id']; ?>" data-type="<?php echo $result['type']; ?>"><a><?php echo $result['name'][$config_language_id]; ?></a></li>';
+									<?php } ?>
+		htm_body_value += 			'</ul>';
+		htm_body_value += 			'<ul class="col-sm-6 col-xs-12 list-unstyled"><li class="divider-head">&nbsp;&nbsp;&nbsp;<?php echo $text_znaki; ?></li><li role="separator" class="divider"></li>';
+									<?php foreach ($operations as $text => $operation) { ?>
+		htm_body_value += 				'<li data-value="<?php echo $operation; ?>"><a><?php echo $text; ?></a></li>';
+									<?php } ?>
+		htm_body_value += 			'</ul>';
+		htm_body_value += 			'</div>';
+		htm_body_value += 		'</div>';
+		htm_body_value += 	'</div>';
+		htm_body_value += 	'</div>';
+		htm_body_value += 	'</div>';
+		
+	}
+	
+	$('[onclick=\'ConditionValues(' + formula_id + ',' + field_id + ');\']').after(htm_body_value);
+
+	tooltipModule();
+	
+	
+
+}
+function addConditionValue(formula_id, field_id, row){
+	
+	var count_tr = $('[data-id=\'#body-condition-calculator-' + formula_id + '-' + field_id + '\'] tr[id^=\'fields-condition\']').length + 1;
+	
+	var value_html = '';
+	
+	value_html += '<tr id="fields-condition-' + count_tr + '" style="cursor: move;" class="condition">';
+	value_html += 	'<td class="text-center cont-td">' + count_tr + '</td>';
+	value_html += 	'<td class="text-left" contenteditable="true" data-row="' + count_tr + '-1">';
+	value_html += 		'<button class="btn btn-xs btn-default" data-toggle="tooltip" onclick="addConditionField(\'' + formula_id + '\',\'' + field_id + '\',\'' + count_tr + '-1\',\'' + count_tr + '\',\'if\');" type="button" title="" data-title="<?php echo $text_add_cond; ?>" contenteditable="false"><i class="fa fa-plus-circle"></i> Добавить Поля/Знаки</button>';
+
+	value_html += 	'</td>';
+	value_html += 	'<td class="text-left" contenteditable="true" data-row="' + count_tr + '-2">';
+	value_html += 		'<button class="btn btn-xs btn-default" data-toggle="tooltip" onclick="addConditionField(\'' + formula_id + '\',\'' + field_id + '\',\'' + count_tr + '-2\',\'' + count_tr + '\',\'to\');" type="button" title="" data-title="<?php echo $text_add_cond; ?>" contenteditable="false"><i class="fa fa-plus-circle"></i> Добавить Поля/Знаки</button>';
+	value_html += 	'</td>';
+	value_html += 	'<td class="text-left" contenteditable="true" data-row="' + count_tr + '-3">';
+	value_html += 		'<button class="btn btn-xs btn-default" data-toggle="tooltip" onclick="addConditionField(\'' + formula_id + '\',\'' + field_id + '\',\'' + count_tr + '-3\',\'' + count_tr + '\',\'else\');" type="button" title="" data-title="<?php echo $text_add_cond; ?>" contenteditable="false"><i class="fa fa-plus-circle"></i> Добавить Поля/Знаки</button>';
+	value_html += 	'</td>';
+	
+	value_html += 	'<td class="text-right">';
+	value_html += 			'<button class="btn btn-danger" data-toggle="tooltip" onclick="$(\'#fields-condition-' + count_tr + '\').remove();" type="button" title="<?php echo $text_remove_module; ?>"><i class="fa fa-minus-circle"></i></button>';
+	value_html += 	'</td>';
+	value_html += '</tr>';
+	
+	$('[data-id=\'#body-condition-calculator-' + formula_id + '-' + field_id).append(value_html);
+
+	tdAttributes(formula_id, field_id);
+	
+	addGlass();
+	
+}
+
+function addConditionField(formula_id, field_id, row, count_tr, parts){
+
+	var button = $('#body-condition-calculator-' + formula_id + '-' + field_id + ' [data-row=\'' + row + '\'] > button');
+
+	button.attr('data-toggle','dropdown');
+	button.after($('.list-fields').html());
+	
+	var onClick = '';
+	
+	$('.dropdown-cheaper ul li a:not([class])').attr('data-formula_id', formula_id).attr('data-field_id', field_id).attr('data-row', row).attr('data-count_tr', count_tr).attr('data-parts', parts).attr('onClick', 'clickPole($(this));');
+
+}
+function clickPole(_this){
+	
+	var formula_id = _this.attr('data-formula_id');
+	var field_row = _this.attr('data-field_id');
+	var data_row = _this.attr('data-row');
+	var data_count_tr = _this.attr('data-count_tr');
+	var data_parts = _this.attr('data-parts');
+	var data_type = _this.parent().attr('data-type');
+	
+	var row = _this.attr('data-row');
+	
+	var data_id = '#body-condition-calculator-' + formula_id + '-' + field_row;
+	
+	var cont = $(data_id + ' td[data-row=\'' + row + '\']').find('.condit').length + 1; 
+	
+	var paste_html = '';
+	
+	if (data_type != undefined){
+		var txt = _this.text();
+		field_id = _this.parent().attr('data-value');
+		
+		if (data_type == 'text_input'){
+
+			paste_html += '<span class="btn-default condit condit-lang" contenteditable="false">';
+				<?php foreach ($languages as $language) { ?>
+					paste_html += '<div class="input-group">';
+						paste_html += '<input type="text" name="field_condition[' + formula_id + '][' + field_row + '][' + data_count_tr + '][' + data_parts + '][number][' + cont + '][][<?php echo $language['language_id']; ?>]" value="" data-cont="" class="form-control w-100px text-left">';
+						paste_html += '<span class="input-group-addon"><img src="<?php if ($version == '2.3' or $version == '2.2'){ ?>language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png<?php } ?><?php if ($version == '2.1' or $version == '2.0'){ ?>view/image/flags/<?php echo $language['image']; ?><?php } ?>"></span>';
+					paste_html += '</div>';
+				<?php } ?>
+			paste_html += '</span>&nbsp;&nbsp;';
+
+		} else {
+			paste_html += '<span class="btn btn-default condit" contenteditable="false"> <span>' + txt + '</span><input type="hidden" name="field_condition[' + formula_id + '][' + field_row + '][' + data_count_tr + '][\'' + data_parts + '\'][\'field\'][' + field_id + '][]" value="' + cont + '"> </span>&nbsp;&nbsp;';
+		}
+	} else {
+		var txt = _this.parent().attr('data-value');
+		
+		paste_html += '<span class="btn btn-default condit" contenteditable="false"><span>' + txt + '</span><input type="hidden" name="field_condition[' + formula_id + '][' + field_row + '][' + data_count_tr + '][\'' + data_parts + '\'][\'symbol\'][\'' + txt + '\'][]" value="' + cont + '"></span>&nbsp;&nbsp;';
+	}
+	
+	if (txt != undefined && txt){
+		$(data_id + ' td[data-row=\'' + row + '\'][data-parts=\'' + data_parts + '\'] > button').before(paste_html);
+		$(data_id + ' td[data-row=\'' + row + '\'][data-parts=\'' + data_parts + '\'] .dropdown-cheaper + .dropdown-cheaper').remove();
+	}
+	
+	keyUpTd();
+};
+function keyUpTd(){
+	/*$(document).on("keyup", "input[name^=\'field_condition[\']", function(e){
+		var _this = $(this);
+		var val = _this.val().replace(/[^+\d]/g,'');
+		
+		var formula_id = _this.parent().parent().attr('data-formula_id');
+		var field_row = _this.parent().parent().attr('data-field_id');
+		var data_count_tr = _this.parent().parent().attr('data-count_tr');
+		var data_parts = _this.parent().parent().attr('data-parts');
+		
+		var data_cont = _this.attr('data-cont');
+		
+		_this.attr('name','field_condition[' + formula_id + '][' + field_row + '][' + data_count_tr + '][\'' + data_parts + '\'][number][' + data_cont + '][]').attr('value',val);
+		
+	});*/
+	/*
+	$(document).on("keyup", ".body-condition-calculator td[data-row]", function(e) {
+		var _this = $(this);
+		
+		var formula_id = _this.attr('data-formula_id');
+		var field_row = _this.attr('data-field_id');
+		var data_count_tr = _this.attr('data-count_tr');
+		var data_parts = _this.attr('data-parts');
+		var val = _this.text().replace(/[^+\d]/g,'');
+		
+		if (_this.find('input[type=\'hidden\']').length == 0){
+			_this.append('<input type="hidden" name="field_condition[\'' + formula_id + '\'][\'' + field_row + '\'][\'' + data_count_tr + '\'][\'' + data_parts + '\'][\'symbol\'][\'' + val + '\'][]" value="1">');
+		}
+		if (val == ''){
+			_this.find('input[type=\'hidden\']').remove();
+		}
+		_this.find('input[type=\'hidden\']').val(val);
+	});
+	*/
+}
+keyUpTd();
+
+function removeCondition(row, _this){
+	var data_id = _this.parent().parent().parent().attr('data-id');
+	$('#fields-condition-' + row).remove();
+	
+	generationCondition(data_id);
+}
+function generationCondition(data_id){
+	$('[data-id=' + data_id + ']').each(function(){
+		var __this = $(this).find('tr');
+		
+			
+		__this.each(function(i){
+			var __this_tr = $(this);
+			
+			i++;
+			__this_tr.attr('id','fields-condition-' + i);
+			__this_tr.find('.cont-td').text(i);
+			__this_tr.find('[data-row]').attr('data-row',i + '-1').attr('data-count_tr',i);
+			
+			__this_tr.find('[data-row]').each(function(){
+				var _this_td = $(this);
+				
+				var data_parts = _this_td.attr('data-parts');
+				var data_formula_id = _this_td.attr('data-formula_id');
+				var data_field_id = _this_td.attr('data-field_id');
+				
+				
+				__this_tr.find('[data-row] input[name^=\'field_condition\']').each(function(){
+					var ___this_input = $(this);
+					
+					var name_first = 'field_condition[' + data_formula_id + '][' + data_field_id + '][' + i + ']';
+					var name_last = ___this_input.attr('name').split('[' + data_parts + ']')[1];
+					var itog_name = name_first + '[' + data_parts + ']' + name_last;
+					
+					if (name_last != undefined){
+						___this_input.attr('name',itog_name);
+					}
+					
+				});
+			});
+
+		});
+	});
+}
+//--></script>
+<style type="text/css">
+	.select-icons, .select-value {
+		background: #fff;
+		border: 2px solid #1fa67a;
+		border-radius: 4px;
+		box-shadow: 0 5px 7px #ddd;
+		height: 70%;
+		position: fixed;
+		top: 15%;
+		z-index: 9;
+	}
+	.select-icons > .row, .select-value > .row {
+		height: 100%;
+		padding-bottom: 15px;
+		padding-top: 55px;
+	}
+	.overf {
+		height: 100%;
+		overflow-y: auto;
+	}
+	.fa-icons {
+		height: 100%;
+		overflow-y: auto;
+	}
+	.body-after:after {
+		background: #000;
+		bottom: 0;
+		content: "";
+		left: 0;
+		opacity: 0.1;
+		position: fixed;
+		right: 0;
+		top: 0;
+		z-index: 8;
+	}
+	.select-icons h3, .select-value h3 {
+		background: #1fa67a;
+		color: #fff;
+		font-size: 18px;
+		left: 0;
+		padding: 10px 15px;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	.hover-fa {
+		cursor: pointer;
+		height: 32px;
+		overflow: hidden;
+		padding-bottom: 7px;
+		padding-top: 7px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.fa-icons span {
+		font-size: 14px;
+		position: relative;
+	}
+	.fa-icons h4 span {
+		color: #999;
+	}
+	.hover-fa:hover {
+		background: #1fa67a;
+		color: #fff;
+	}
+	.hover-fa:hover span {
+		color: #fff;
+		top: -5px;
+		display: inline-block;
+	}
+	.hover-fa:hover .fa {
+		font-size: 28px;
+		margin-top: -5px;
+		margin-left: -3px;
+	}
+	.close-cheaper {
+		cursor: pointer;
+		padding: 4px 5px;
+		position: absolute;
+		right: 2px;
+		top: 4px;
+		z-index: 1;
+	}
+	.close-cheaper svg {
+		fill: #ffffff;
+	}
+	.svg-icon-cheaper {
+		height: 1.8em;
+		width: 1.8em;
+	}
+	#fields-value span.icons {
+		border-color: #ddd;
+		color: #777;
+	}
+	#fields-value span.icons .fa {
+		font-size: 35px;
+	}
+	.navs-value {
+		margin-bottom: 3px;
+	}
+	.navs-value input {
+		margin-top: 7px;
+	}
+	.input-group-addon.btn-primary {
+		background-color: #1e91cf !important;
+		border-color: #197bb0 !important;
+		color: #fff !important;
+		cursor: pointer;
+	}
+	.radio-div {
+		margin-top: 15px;
+	}
+	.radio-div input {
+		top: 2px;
+		font-weight: normal;
+	}
+	.radio-div label {
+		display: block;
+		font-weight: normal;
+	}
+	.checked_value span {
+		display: block;
+		font-size: 12px;
+		margin-bottom: 7px;
+	}
+	#tab-guest .input-group-sm > .form-control {
+		padding: 4px 9px;
+	}
+</style>
+<div class="modal-bg"></div>
+<?php echo $footer; ?>
