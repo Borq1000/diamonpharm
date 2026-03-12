@@ -86,7 +86,38 @@ class ControllerExtensionModuleProstoreMainSlider extends Controller {
 
 		$data['module'] = $module++;
 
-		return $this->load->view('extension/module/prostore_main_slider', $data);
+		$html = $this->load->view('extension/module/prostore_main_slider', $data);
+
+		// Мобильный CSS: инжектируется из PHP, обходит кеш Twig
+		$mobileCss = '<style>
+@media (max-width: 767px) {
+  .intro__item-wrapper {
+    position: relative;
+    min-height: 60vh;
+    overflow: hidden;
+  }
+  .intro__item-cover,
+  .intro__item-image {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+  }
+  .intro__item-cover img,
+  .intro__item-image img {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 60vh !important;
+    object-fit: cover !important;
+  }
+}
+</style>';
+
+		return $mobileCss . $html;
 
 	}
 }
