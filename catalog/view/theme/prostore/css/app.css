@@ -6692,6 +6692,20 @@ body.compensate-for-scrollbar {
     }
 }
 
+/* Mobile slider fix: full-width without coverflow gaps */
+@media (max-width: 767px) {
+	.intro__swiper {
+		border-radius: 0;
+	}
+	.intro__item {
+		border-radius: 0;
+	}
+	.intro__swiper--resizable .intro__item-cover img {
+		-o-object-fit: cover;
+		object-fit: cover;
+	}
+}
+
 .stories-features {
   margin: 0 0 6rem;
 }
