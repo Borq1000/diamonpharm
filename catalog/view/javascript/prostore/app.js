@@ -975,7 +975,6 @@ function initSwiper() {
 	$('.js-swiper-intro').each(function( index ) {
 		var $swiperIntro = $(this);
 		var $effect = $swiperIntro.data('swiper-effect') || 'slide';
-		if (window.innerWidth < 768 && $effect === 'coverflow') { $effect = 'slide'; }
 		var $speed = $swiperIntro.data('swiper-speed') || 300;
 		var $auto = $swiperIntro.data('swiper-auto');
 		var $length = $swiperIntro.data('swiper-length');

@@ -1,11 +1,11 @@
 <?php
 class ControllerExtensionModuleProstoreMainSlider extends Controller {
 	public function index($setting) {
-		static $module = 0;		
+		static $module = 0;
 
 		$this->load->model('design/banner');
 		$this->load->model('tool/image');
-		
+
 		$data['autoplay'] = $setting['autoplay'];
 		$data['speed'] = $setting['speed'];
 		$data['lazyload'] = $this->config->get('theme_prostore_lazyload');
@@ -29,11 +29,11 @@ class ControllerExtensionModuleProstoreMainSlider extends Controller {
 			$isRightImage = 0;
 			$i = 0;
 			foreach ($setting['slider_image'] as  $result) {
-				
+
 				if(!isset($result['language'][$this->config->get('config_language_id')])){ continue; }
 				$result = $result['language'][$this->config->get('config_language_id')];
-				if (is_file(DIR_IMAGE . $result['image'])) { 
-				
+				if (is_file(DIR_IMAGE . $result['image'])) {
+
 					if ($result['position'] == 2) {
 						$isRightImage = 1;
 					} else {
@@ -42,6 +42,20 @@ class ControllerExtensionModuleProstoreMainSlider extends Controller {
 					$fillWholeSlide = 0;
 					if (isset($result['full'])) {
 						$fillWholeSlide = $result['full'];
+					}
+
+					// Мобильная картинка: resize с сохранением пропорций оригинала
+					$image2_resized = '';
+					if (!empty($result['image2']) && is_file(DIR_IMAGE . $result['image2'])) {
+						$img2_info = @getimagesize(DIR_IMAGE . $result['image2']);
+						if ($img2_info && $img2_info[0] > 0) {
+							$img2_w = 768;
+							$img2_h = (int)round($img2_info[1] * ($img2_w / $img2_info[0]));
+						} else {
+							$img2_w = 768;
+							$img2_h = 500;
+						}
+						$image2_resized = $this->model_tool_image->resize($result['image2'], $img2_w, $img2_h);
 					}
 
 					$data['banners'][$result['sort_order']][] = array(
@@ -55,14 +69,14 @@ class ControllerExtensionModuleProstoreMainSlider extends Controller {
 						'width_pc'  => $result['width_pc'],
 						'height_pc'  => $result['height_pc'],
 						'image' => $this->model_tool_image->resize($result['image'], 1920, 800),
-						'image2' => ((!empty($result['image2']) && isset($result['image2'])) && is_file(DIR_IMAGE . $result['image2'])) ? $this->model_tool_image->resize($result['image2'], 768, 500) : '',
+						'image2' => $image2_resized,
 					);
 				}
-			}			
+			}
 		}
-		
+
 		ksort($data['banners']);
-		
+
 		$data['left_image_count'] = $i;
 		$data['isrightimage'] = $isRightImage;
 		if (!$isRightImage && !empty($data['banners']) ) {
@@ -73,7 +87,7 @@ class ControllerExtensionModuleProstoreMainSlider extends Controller {
 		$data['module'] = $module++;
 
 		return $this->load->view('extension/module/prostore_main_slider', $data);
-		
+
 	}
 }
 ?>
