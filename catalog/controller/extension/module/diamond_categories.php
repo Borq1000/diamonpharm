@@ -26,7 +26,16 @@ class ControllerExtensionModuleDiamondCategories extends Controller {
 
                 if ($category_info) {
                     if ($category_info['image']) {
-                        $image = $this->model_tool_image->resize($category_info['image'], 600, 420);
+                        // Resize с сохранением пропорций оригинала (без белых полей)
+                        $img_info = @getimagesize(DIR_IMAGE . $category_info['image']);
+                        if ($img_info && $img_info[0] > 0) {
+                            $img_w = 600;
+                            $img_h = (int)round($img_info[1] * ($img_w / $img_info[0]));
+                        } else {
+                            $img_w = 600;
+                            $img_h = 420;
+                        }
+                        $image = $this->model_tool_image->resize($category_info['image'], $img_w, $img_h);
                     } else {
                         $image = $this->model_tool_image->resize('placeholder.png', 600, 420);
                     }
