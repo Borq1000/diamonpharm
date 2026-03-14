@@ -1,13 +1,13 @@
 # Кеширование статики (взамен NitroPack — без отключения ETag)
 
-# Изображения — 1 месяц
+# Изображения — 1 год
 <FilesMatch "\.(jpg|jpeg|png|gif|svg|webp|JPG|JPEG|PNG|GIF|SVG|WEBP)$">
-Header set Cache-Control "max-age=2592000, public"
+Header set Cache-Control "max-age=31536000, public, immutable"
 </FilesMatch>
 
-# Шрифты — 1 месяц
+# Шрифты — 1 год
 <FilesMatch "\.(otf|woff|woff2|ttf|eot)$">
-Header set Cache-Control "max-age=2592000, public"
+Header set Cache-Control "max-age=31536000, public, immutable"
 </FilesMatch>
 
 # CSS/JS — 1 неделя, с обязательной ревалидацией

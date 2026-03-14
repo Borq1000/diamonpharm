@@ -1,5 +1,44 @@
 <?php
 class ControllerExtensionModuleProstoreMainSlider extends Controller {
+
+	// Конвертирует PNG-кеш в JPEG для экономии трафика (фото не нуждаются в прозрачности)
+	private function resizeToJpeg($filename, $width, $height, $quality = 85) {
+		$url = $this->model_tool_image->resize($filename, $width, $height);
+
+		if (strtolower(pathinfo($filename, PATHINFO_EXTENSION)) !== 'png') {
+			return $url;
+		}
+
+		$base = utf8_substr($filename, 0, utf8_strrpos($filename, '.'));
+		$png_path = DIR_IMAGE . 'cache/' . $base . '-' . (int)$width . 'x' . (int)$height . '.png';
+		$jpg_path = DIR_IMAGE . 'cache/' . $base . '-' . (int)$width . 'x' . (int)$height . '.jpg';
+
+		// Нет PNG-кеша — пробуем с заглавным расширением
+		if (!is_file($png_path)) {
+			$png_path = DIR_IMAGE . 'cache/' . $base . '-' . (int)$width . 'x' . (int)$height . '.PNG';
+		}
+
+		if (!is_file($jpg_path) || (is_file($png_path) && filemtime($png_path) > filemtime($jpg_path))) {
+			if (is_file($png_path)) {
+				$img = @imagecreatefrompng($png_path);
+				if ($img) {
+					$bg = imagecreatetruecolor(imagesx($img), imagesy($img));
+					imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+					imagecopy($bg, $img, 0, 0, 0, 0, imagesx($img), imagesy($img));
+					imagejpeg($bg, $jpg_path, $quality);
+					imagedestroy($img);
+					imagedestroy($bg);
+				}
+			}
+		}
+
+		if (is_file($jpg_path)) {
+			return preg_replace('/\.png$/i', '.jpg', $url);
+		}
+
+		return $url;
+	}
+
 	public function index($setting) {
 		static $module = 0;
 
@@ -55,7 +94,7 @@ class ControllerExtensionModuleProstoreMainSlider extends Controller {
 							$img2_w = 768;
 							$img2_h = 500;
 						}
-						$image2_resized = $this->model_tool_image->resize($result['image2'], $img2_w, $img2_h);
+						$image2_resized = $this->resizeToJpeg($result['image2'], $img2_w, $img2_h);
 					}
 
 					$data['banners'][$result['sort_order']][] = array(
@@ -68,7 +107,7 @@ class ControllerExtensionModuleProstoreMainSlider extends Controller {
 						'text_color'  => $result['text_color'],
 						'width_pc'  => $result['width_pc'],
 						'height_pc'  => $result['height_pc'],
-						'image' => $this->model_tool_image->resize($result['image'], 1920, 800),
+						'image' => $this->resizeToJpeg($result['image'], 1920, 800),
 						'image2' => $image2_resized,
 					);
 				}
@@ -88,8 +127,8 @@ class ControllerExtensionModuleProstoreMainSlider extends Controller {
 
 		$html = $this->load->view('extension/module/prostore_main_slider', $data);
 
-		// Мобильный CSS: инжектируется из PHP, обходит кеш Twig
-		$mobileCss = '<style>
+		// PHP-инжекция: CSS + атрибуты изображений (обходит кеш Twig)
+		$inject = '<style>
 @media (max-width: 767px) {
   .intro__item-wrapper {
     position: relative;
@@ -115,9 +154,16 @@ class ControllerExtensionModuleProstoreMainSlider extends Controller {
     object-fit: cover !important;
   }
 }
-</style>';
+</style>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  var s=document.querySelectorAll(".intro__swiper .swiper-slide:not(.swiper-slide-duplicate) picture img");
+  if(s.length){s[0].setAttribute("fetchpriority","high");s[0].removeAttribute("loading");}
+  for(var i=1;i<s.length;i++){s[i].setAttribute("loading","lazy");}
+});
+</script>';
 
-		return $mobileCss . $html;
+		return $inject . $html;
 
 	}
 }
