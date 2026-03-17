@@ -313,6 +313,8 @@ class ControllerProductProduct extends Controller {
 
 			if ($product_info['image']) {
 				$data['thumb'] = $this->resizeToJpeg($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_thumb_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_thumb_height'));
+				// Preload LCP-изображения товара
+				$this->document->addLink($data['thumb'], 'preload_as_image');
 			} else {
 				$data['thumb'] = '';
 			}
