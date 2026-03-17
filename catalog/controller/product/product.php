@@ -2,6 +2,43 @@
 class ControllerProductProduct extends Controller {
 	private $error = array();
 
+	// Конвертирует PNG-кеш в JPEG для экономии трафика
+	private function resizeToJpeg($filename, $width, $height, $quality = 85) {
+		$url = $this->model_tool_image->resize($filename, $width, $height);
+
+		if (strtolower(pathinfo($filename, PATHINFO_EXTENSION)) !== 'png') {
+			return $url;
+		}
+
+		$base = utf8_substr($filename, 0, utf8_strrpos($filename, '.'));
+		$png_path = DIR_IMAGE . 'cache/' . $base . '-' . (int)$width . 'x' . (int)$height . '.png';
+		$jpg_path = DIR_IMAGE . 'cache/' . $base . '-' . (int)$width . 'x' . (int)$height . '.jpg';
+
+		if (!is_file($png_path)) {
+			$png_path = DIR_IMAGE . 'cache/' . $base . '-' . (int)$width . 'x' . (int)$height . '.PNG';
+		}
+
+		if (!is_file($jpg_path) || (is_file($png_path) && filemtime($png_path) > filemtime($jpg_path))) {
+			if (is_file($png_path)) {
+				$img = @imagecreatefrompng($png_path);
+				if ($img) {
+					$bg = imagecreatetruecolor(imagesx($img), imagesy($img));
+					imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+					imagecopy($bg, $img, 0, 0, 0, 0, imagesx($img), imagesy($img));
+					imagejpeg($bg, $jpg_path, $quality);
+					imagedestroy($img);
+					imagedestroy($bg);
+				}
+			}
+		}
+
+		if (is_file($jpg_path)) {
+			return preg_replace('/\.png$/i', '.jpg', $url);
+		}
+
+		return $url;
+	}
+
 	public function index() {
 		$this->load->language('product/product');
 
@@ -269,13 +306,13 @@ class ControllerProductProduct extends Controller {
 			$this->load->model('tool/image');
 
 			if ($product_info['image']) {
-				$data['popup'] = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_height'));
+				$data['popup'] = $this->resizeToJpeg($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_height'));
 			} else {
 				$data['popup'] = '';
 			}
 
 			if ($product_info['image']) {
-				$data['thumb'] = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_thumb_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_thumb_height'));
+				$data['thumb'] = $this->resizeToJpeg($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_thumb_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_thumb_height'));
 			} else {
 				$data['thumb'] = '';
 			}
@@ -286,8 +323,8 @@ class ControllerProductProduct extends Controller {
 
 			foreach ($results as $result) {
 				$data['images'][] = array(
-					'popup' => $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_height')),
-					'thumb' => $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height'))
+					'popup' => $this->resizeToJpeg($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_height')),
+					'thumb' => $this->resizeToJpeg($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height'))
 				);
 			}
 
@@ -399,7 +436,7 @@ $data['price'] = '<p class="products__item-price1" style="">
 
 			foreach ($results as $result) {
 				if ($result['image']) {
-					$image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height'));
+					$image = $this->resizeToJpeg($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height'));
 				} else {
 					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height'));
 				}
@@ -468,7 +505,17 @@ $data['price'] = '<p class="products__item-price1" style="">
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
 
-			$this->response->setOutput($this->load->view('product/product', $data));
+			$html = $this->load->view('product/product', $data);
+
+			// Оптимизация: fetchpriority на главное фото, снятие lazy
+			$html .= '<script>
+(function(){
+  var m=document.querySelector(".sku__slide img, .sku__gallery img");
+  if(m){m.fetchPriority="high";m.removeAttribute("loading");}
+})();
+</script>';
+
+			$this->response->setOutput($html);
 		} else {
 			$url = '';
 

@@ -23,7 +23,7 @@ class ControllerExtensionModulePopup extends Controller {
 		$data['image'] = '';
 		if ($this->config->get('module_popup_image') && is_file(DIR_IMAGE . $this->config->get('module_popup_image'))) {
 			$this->load->model('tool/image');
-			$data['image'] = $this->model_tool_image->resize($this->config->get('module_popup_image'), 500, 333);
+			$data['image'] = $this->model_tool_image->resize($this->config->get('module_popup_image'), 400, 267);
 		}
 
 		$data['image_link'] = $this->config->get('module_popup_image_link');
