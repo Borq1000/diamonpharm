@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>Messengers — кнопки мессенджеров на странице товара</name>
+	<version>1.0.0</version>
+	<author>Diamond Pharm</author>
+	<link>https://diamondpharm.ru</link>
+	<code>messengers_product</code>
+
+	<!-- Инъекция данных мессенджеров в контроллер товара -->
+	<file path="catalog/controller/product/product.php">
+		<operation>
+			<search><![CDATA[$data['heading_title'] = $product_info['name'];]]></search>
+			<add position="after"><![CDATA[
+		// Messengers module — ссылки для кнопок «Узнать цену»
+		$data['messenger_whatsapp'] = $this->config->get('module_messengers_whatsapp');
+		$data['messenger_telegram'] = $this->config->get('module_messengers_telegram');
+		$data['messenger_max']      = $this->config->get('module_messengers_max');
+		$data['messenger_status']   = $this->config->get('module_messengers_status');
+]]></add>
+		</operation>
+	</file>
+</modification>

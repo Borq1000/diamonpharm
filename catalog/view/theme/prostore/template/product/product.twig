@@ -345,6 +345,8 @@
 												</div>
 												{% endif %}
 											</div>
+
+
 										</div>
 									</div>
 									<div class="sku__group order-3 order-xl-1">
@@ -596,8 +598,45 @@
 										</div>
 									</div>
 									{% endif %}
-									{% if soc_share_prod %}
+									{% if messenger_status and (messenger_whatsapp or messenger_telegram or messenger_max) %}
+									<style>
+									.dp-messengers{display:flex;flex-direction:column;gap:10px;max-width:50%}
+									@media(max-width:767px){.dp-messengers{max-width:100%}}
+									.dp-msg-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 20px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer;background:transparent}
+									.dp-msg-btn:hover{text-decoration:none}
+									.dp-msg-btn img{width:32px;height:32px;border-radius:50%;flex-shrink:0;object-fit:cover}
+									.dp-msg-btn--wa{border:2px solid #25D366;color:#25D366}
+									.dp-msg-btn--wa:hover{background:#25D366;color:#fff}
+									.dp-msg-btn--tg{border:2px solid #0088cc;color:#0088cc}
+									.dp-msg-btn--tg:hover{background:#0088cc;color:#fff}
+									.dp-msg-btn--max{border:2px solid #6C3CE1;color:#6C3CE1}
+									.dp-msg-btn--max:hover{background:#6C3CE1;color:#fff}
+									</style>
 									<div class="sku__group order-8 order-xl-8">
+										<div class="dp-messengers">
+											{% if messenger_whatsapp %}
+											<a class="dp-msg-btn dp-msg-btn--wa" href="{{ messenger_whatsapp }}?text={{ ('Здравствуйте! Хочу узнать цену на: ' ~ heading_title)|url_encode }}" target="_blank" rel="noopener noreferrer">
+												<img src="image/catalog/000/wsp.png" alt="WhatsApp" width="24" height="24">
+												<span>Узнать цену WhatsApp</span>
+											</a>
+											{% endif %}
+											{% if messenger_telegram %}
+											<a class="dp-msg-btn dp-msg-btn--tg" href="{{ messenger_telegram }}" target="_blank" rel="noopener noreferrer">
+												<img src="image/catalog/000/Telegram.png" alt="Telegram" width="24" height="24">
+												<span>Узнать цену Telegram</span>
+											</a>
+											{% endif %}
+											{% if messenger_max %}
+											<a class="dp-msg-btn dp-msg-btn--max" href="{{ messenger_max }}" target="_blank" rel="noopener noreferrer">
+												<img src="image/catalog/000/max-messenger.jpg" alt="Max" width="24" height="24">
+												<span>Узнать цену Max</span>
+											</a>
+											{% endif %}
+										</div>
+									</div>
+									{% endif %}
+									{% if soc_share_prod %}
+									<div class="sku__group order-9 order-xl-9">
 										<a class="ui-btn ui-btn--40 ui-btn--primary js-share" href="#">{{ text_prostore_share }}<svg class="icon-share"><use xlink:href="catalog/view/theme/prostore/sprites/sprite.svg#icon-share"></use></svg></a>
 										<!-- Popups :: Start-->
 										<div class="fancybox-is-hidden popup" id="share">
@@ -605,12 +644,10 @@
 											<div class="popup__form">{% if soc_share_code %}{{ soc_share_code }}{% else %}{% endif %}</div>
 										</div>
 										<!-- Popups :: End-->
-										</br></br>
-										{{ description }}
 									</div>
 									{% endif %}
 									{% if href %}
-									<div class="sku__group order-9 order-xl-9">
+									<div class="sku__group order-10 order-xl-10">
 										<a class="ui-btn ui-btn--primary" href="{{ href }}">{{ text_prostore_popup_link }}</a>
 									</div>
 									{% endif %}
@@ -1198,7 +1235,6 @@
 	
 </main>
 <!-- Main :: End-->
-
 
 {{ footer }}
 <script>
@@ -1867,4 +1903,6 @@ reviewScroll();
 </script>
 <!-- Schema Org :: End-->
 {% endif %}
+
+
 </body></html>
