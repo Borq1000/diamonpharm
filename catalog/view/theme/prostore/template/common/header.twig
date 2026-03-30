@@ -102,6 +102,19 @@ font-family: "{{fonts|replace({'+': ' '})}}", Arial, Helvetica, sans-serif;}
 .news-featured__title {
     text-transform: uppercase !important;
 }
+/* Постоянные тени карточек товаров */
+.products__item-in {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(0, 0, 0, 0.04) !important;
+}
+.products__item:hover .products__item-in {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+/* Скрыть «Обратный звонок» в футере на мобильном */
+@media(max-width:767px){
+    .footer__support-link--callback{display:none !important}
+}
 </style>
 
 {% for link in links %} 
