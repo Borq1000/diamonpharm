@@ -602,7 +602,7 @@
 									<style>
 									.dp-messengers{display:flex;flex-direction:column;gap:10px;max-width:50%}
 									@media(max-width:767px){.dp-messengers{max-width:100%}}
-									.dp-msg-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 20px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer;background:transparent}
+									.dp-msg-btn{display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:11px 20px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer;background:transparent}
 									.dp-msg-btn:hover{text-decoration:none}
 									.dp-msg-btn img{width:32px;height:32px;border-radius:50%;flex-shrink:0;object-fit:cover}
 									.dp-msg-btn--wa{border:2px solid #25D366;color:#25D366}
@@ -612,7 +612,7 @@
 									.dp-msg-btn--max{border:2px solid #6C3CE1;color:#6C3CE1}
 									.dp-msg-btn--max:hover{background:#6C3CE1;color:#fff}
 									</style>
-									<div class="sku__group order-8 order-xl-8">
+									<div class="sku__group order-2 order-xl-3">
 										<div class="dp-messengers">
 											{% if messenger_whatsapp %}
 											<a class="dp-msg-btn dp-msg-btn--wa" href="{{ messenger_whatsapp }}?text={{ ('Здравствуйте! Хочу узнать цену на: ' ~ heading_title)|url_encode }}" target="_blank" rel="noopener noreferrer">
@@ -1030,9 +1030,11 @@
 										{% if product.manufacturer %}<span class="products__item-id">{{ product.manufacturer }}</span>{% endif %}
 										<a class="products__item-title" href="{{ product.href }}">{{ product.name }}</a>
 										{% if product.price %}
-										<p class="products__item-price">{% if (product.special) %}<mark>-{{ product.discount }}</mark><ins>{{ product.special }} </ins><del>{{ product.price }}</del>{% else %}{{ product.price }}{% endif %}
-										</p>
+										<p class="products__item-price" style="display:none">{{ product.price }}</p>
 										{% endif %}
+										<div class="products__item-cheaper30" style="margin-top:5px;">
+											<button onclick="ajaxCheaper('index.php?route=extension/module/cheaper30&prod_id={{ product.product_id }}&module_id=71', this);ym(98911048,'reachGoal','click_price'); return true;" class="ui-btn ui-btn--primary" data-module_id="71">Узнать цену <svg class="icon-cart"><use xlink:href="catalog/view/theme/prostore/sprites/sprite.svg#icon-cart"></use></svg></button>
+										</div>
 										{% if (category_time and product.special and product.special_date_end) %}
 										<div class="products__item-discount">
 											<div class="ui-discount">
@@ -1054,7 +1056,7 @@
 											</div>
 										</div>
 										{% endif %}
-										<div class="products__item-action">
+										<div class="products__item-action" style="display:none">
 											<div class="ui-add-to-cart {% if product.isincart %}is-active{% endif %}">
 												<button type="button" class="ui-btn ui-btn--primary" onclick="{% if product.isincart %}window.location.href='{{cart_link}}';{% else %}cart.add('{{ product.product_id }}', '{{ product.minimum }}');{% endif %}" {% if product.buy_btn %}disabled{% endif %} data-button-cart="{{ button_cart }}" data-add-to-cart="{{ text_prostore_in_cart }}">{% if product.isincart %}{{ text_prostore_in_cart }}{% else %}{{ button_cart }}{% endif %}<svg class="icon-cart"><use xlink:href="catalog/view/theme/prostore/sprites/sprite.svg#icon-cart"></use>
 													</svg>
@@ -1143,9 +1145,11 @@
 									{% if product.manufacturer %}<span class="products__item-id">{{ product.manufacturer }}</span>{% endif %}
 									<a class="products__item-title" href="{{ product.href }}">{{ product.name }}</a>
 									{% if product.price %}
-									<p class="products__item-price">{% if (product.special) %}<mark>-{{ product.discount }}</mark><ins>{{ product.special }} </ins><del>{{ product.price }}</del>{% else %}{{ product.price }}{% endif %}
-									</p>
+									<p class="products__item-price" style="display:none">{{ product.price }}</p>
 									{% endif %}
+									<div class="products__item-cheaper30" style="margin-top:5px;">
+										<button onclick="ajaxCheaper('index.php?route=extension/module/cheaper30&prod_id={{ product.product_id }}&module_id=71', this);ym(98911048,'reachGoal','click_price'); return true;" class="ui-btn ui-btn--primary" data-module_id="71">Узнать цену <svg class="icon-cart"><use xlink:href="catalog/view/theme/prostore/sprites/sprite.svg#icon-cart"></use></svg></button>
+									</div>
 									{% if (category_time and product.special and product.special_date_end) %}
 									<div class="products__item-discount">
 										<div class="ui-discount">
@@ -1167,7 +1171,7 @@
 										</div>
 									</div>
 									{% endif %}
-									<div class="products__item-action">
+									<div class="products__item-action" style="display:none">
 										<div class="ui-add-to-cart {% if product.isincart %}is-active{% endif %}">
 											<button type="button" class="ui-btn ui-btn--primary" onclick="{% if product.isincart %}window.location.href='{{cart_link}}';{% else %}cart.add('{{ product.product_id }}', '{{ product.minimum }}');{% endif %}" {% if product.buy_btn %}disabled{% endif %} data-button-cart="{{ button_cart }}" data-add-to-cart="{{ text_prostore_in_cart }}">{% if product.isincart %}{{ text_prostore_in_cart }}{% else %}{{ button_cart }}{% endif %}<svg class="icon-cart"><use xlink:href="catalog/view/theme/prostore/sprites/sprite.svg#icon-cart"></use>
 												</svg>
