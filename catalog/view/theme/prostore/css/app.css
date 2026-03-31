@@ -26593,6 +26593,21 @@ padding: 0 2.5rem;
 }
 
 /* Responsive Design */
+@media (max-width: 1199px) and (min-width: 993px) {
+    .jufora-story-stats {
+        gap: 25px;
+    }
+    .jufora-story-row {
+        gap: 40px;
+    }
+    .jufora-story-stat-number {
+        font-size: 1.8rem;
+    }
+    .jufora-story-stat-label {
+        font-size: 13px;
+    }
+}
+
 @media (max-width: 992px) {
     .jufora-story-row {
         flex-direction: column;
@@ -26665,4 +26680,9 @@ padding: 0 2.5rem;
         padding: 14px 28px;
         font-size: 15px;
     }
+}
+
+/* Центрирование кнопки «Узнать цену» в блоке «С этим товаром покупают» */
+.products-featured .products__item-cheaper30 {
+    text-align: center;
 }

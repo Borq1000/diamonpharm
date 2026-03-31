@@ -4,3 +4,6 @@
 .products__item-in{box-shadow:0 2px 12px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.06)!important;border-radius:10px!important;border:1px solid rgba(0,0,0,.04)!important}.products__item:hover .products__item-in{box-shadow:0 8px 25px rgba(0,0,0,.12),0 2px 6px rgba(0,0,0,.08)!important}
 /* Diamond Pharm: скрыть «Обратный звонок» в футере на мобильном */
 @media(max-width:767px){a.footer__support-link[href="#callback-footer"],a.footer__support-link--callback[href="#callback-footer"]{display:none!important}}
+/* Diamond Pharm: блок статистики — не обрезать на средних экранах */
+@media(max-width:1199px) and (min-width:993px){.jufora-story-stats{gap:25px}.jufora-story-row{gap:40px}.jufora-story-stat-number{font-size:1.8rem}.jufora-story-stat-label{font-size:13px}}
+.products-featured .products__item-cheaper30{text-align:center}
